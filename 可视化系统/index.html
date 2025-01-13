@@ -14,7 +14,18 @@
     <div class="eeg"></div>、
     <div class="container">
         <div class="eeg-3d"></div>
-        <div class="eeg-5"></div>
+        <div class="eeg-5">   
+            <div class="left">
+            <button class="btn">Delta</button>
+            <button class="btn">Theta</button>
+            <button class="btn">Alpha</button>
+            <button class="btn">Beta</button>
+            <button class="btn">Gamma</button>
+            </div>
+            <div class="right">
+            <!-- 存放五个不同频段的脑电图 -->
+        </div>
+        </div>
         <div class="zanding"></div>
     </div>
 
@@ -51,17 +62,56 @@
         height: 500px;
         background-color: #fff;
         border-radius: 10px;
+        /* 修改flex布局，从顶部开始 */
+        display: flex;
+        justify-content: center;  /* 水平居中 */
+        /* gap: 20px;  两个元素之间的间距 */
+        
     }
     .zanding{
         width: 30%;
         height: 500px;
         background-color: #fff;
         border-radius: 10px;
+        
     }
     .container {
         display: flex;
         justify-content: center;  /* 水平居中 */
         gap: 20px;  /* 两个元素之间的间距 */
+    }
+
+    .btn {
+        width: 100%;  /* 按钮宽度 */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4c78af;  /* 按钮背景色 */
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .left {
+        width: 20%;
+        height: 100%;
+        border: 2px solid #4CAF50;  /* 绿色边框 */
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        /* padding: 10px; */
+    }
+
+    .right {
+        width: 80%;
+        height: 100%;
+        border: 2px solid #2196F3;  /* 蓝色边框 */
+        border-radius: 8px;
+        /* padding: 10px; */
+    .btn:hover {
+        background-color: #45a049;  /* 鼠标悬停时的颜色 */
     }
 </style>
 
