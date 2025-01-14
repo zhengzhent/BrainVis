@@ -5,19 +5,48 @@ body {
       rgb(44, 114, 251, 1)
     );
   }
-  .top-video {
-    width: 100%;
-    height: 100px;
+  .top-container{
+    display: flex;
+    gap: 20px;
+  }
+  #origin-video {
+    width: 20%;
+    height: 190px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px; /* 添加底部间距 */
   }
-  .eeg-image {
-    width: 100%;
-    height: 100px;
+  #video-clip{
+    display: flex;
+    width: 75%;
+    gap: 10px;
+    height: 190px;
     background-color: #fff;
     border-radius: 10px;
-    /* margin-bottom: 10px;  添加底部间距 */
+    margin-bottom: 10px; /* 添加底部间距 */
+  }
+  #video-clip img {
+    width: 200px;
+    height: 180px;
+    border: 1px solid #ccc;
+    margin-top: 3px;
+    margin-left: 22px
+  }
+  .video-button {
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    gap: 20px;
+    background-color: #fff;
+    margin-bottom: 10px;
+  }
+  .eeg-image {
+    width: 100%;
+    height: 190px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;  
   }
   .eeg-3d {
     width: 35%;
@@ -41,7 +70,7 @@ body {
     background-color: #fff;
     border-radius: 10px;
   }
-  .container {
+  .bottom-container {
     display: flex;
     justify-content: center; /* 水平居中 */
     gap: 20px; /* 两个元素之间的间距 */
