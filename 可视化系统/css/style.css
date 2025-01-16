@@ -76,7 +76,7 @@ body {
     gap: 20px; /* 两个元素之间的间距 */
   }
 
-  .btn {
+  .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c{
     width: 100%; /* 按钮宽度 */
     padding: 10px 20px;
     border: none;
@@ -108,4 +108,9 @@ body {
     .btn:hover {
       background-color: #45a049; /* 鼠标悬停时的颜色 */
     }
+  }
+  #chart-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
   }
