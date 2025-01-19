@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>带暂停和播放功能的 62 通道脑电波展示</title>
+    <title>62 通道脑电波展示</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <style>
       #chart {
@@ -23,7 +23,7 @@
     </style>
   </head>
   <body>
-    <h1>62 通道脑电波展示（带暂停和播放功能）</h1>
+    <h1>62 通道脑电波展示</h1>
     <div class="controls">
       <button id="playButton">播放</button>
       <button id="pauseButton">暂停</button>
@@ -91,7 +91,8 @@
       fetch('SEED-DV/single-channel/sub1_channel0.json')
         .then((response) => response.json())
         .then((data) => {
-          const numChannels = data.length // 获取通道数
+          // const numChannels = data.length // 获取通道数
+          const numChannels = 10 // 获取通道数
           const frameInterval = 10 // 每次增加 1 点的时间间隔（毫秒）
           let timeIndex = 0 // 当前时间索引
           let isPlaying = true // 播放状态

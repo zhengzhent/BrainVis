@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>62 通道脑电波展示</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <style>
+      #chart {
+        width: 100%;
+        height: 2000px;
+      }
+      #controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+      button {
+        font-size: 16px;
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>62 通道脑电波展示</h1>
+    <div id="controls">
+      <button id="playPauseBtn">暂停</button>
+    </div>
+    <div id="chart"></div>
+
+    <script>
+      // 初始化 ECharts 实例
+      const chart = echarts.init(document.getElementById('chart'))
+
+      // 初始配置
+      const option = {
+        title: {
+          text: '62 通道脑电波',
+          left: 'center',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'line',
+          },
+        },
+        dataZoom: [
+          {
+            type: 'slider',
+            xAxisIndex: Array.from({ length: 62 }, (_, i) => i), // 应用于所有 x 轴
+            start: 0,
+            end: 100,
+          },
+        ],
+        animation: true, // 启用全局动画
+        grid: [],
+        xAxis: [],
+        yAxis: [],
+        series: [],
+      }
+
+      // 加载脑电数据
+      fetch('SEED-DV/single-channel/sub1_channel0.json')
+        .then((response) => response.json())
+        .then((data) => {
+          const numChannels = data.length // 通道数量
+          //   const numChannels = 10 // 获取通道数
+          const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
+          let timeIndex = 0 // 当前时间索引
+          let isPlaying = true // 控制播放状态
+
+          // 创建通道的坐标轴和波形
+          for (let i = 0; i < numChannels; i++) {
+            option.grid.push({
+              top: `${i * (100 / numChannels)}%`,
+              height: `${100 / numChannels - 1}%`,
+              left: '10%',
+              right: '5%',
+            })
+
+            option.xAxis.push({
+              type: 'category',
+              data: [],
+              gridIndex: i,
+              boundaryGap: false,
+              axisLabel: {
+                show: i === numChannels - 1,
+              },
+            })
+
+            option.yAxis.push({
+              type: 'value',
+              gridIndex: i,
+              name: `通道 ${i + 1}`,
+              position: 'left',
+              splitLine: {
+                show: false,
+              },
+            })
+
+            option.series.push({
+              name: `通道 ${i + 1}`,
+              type: 'line',
+              data: [],
+              xAxisIndex: i,
+              yAxisIndex: i,
+              lineStyle: {
+                color: 'black',
+                width: 1,
+              },
+              showSymbol: false,
+              smooth: true, // 启用曲线平滑
+              animationDuration: 300, // 每次更新的动画时间
+              animationEasing: 'linear', // 动画缓动效果
+            })
+          }
+
+          chart.setOption(option)
+
+          // 动态更新图表的函数
+          function updateChart() {
+            if (timeIndex < timeData.length && isPlaying) {
+              const nextTime = timeData[timeIndex]
+
+              for (let i = 0; i < numChannels; i++) {
+                const nextValue = data[i][timeIndex]
+                option.series[i].data.push(nextValue)
+
+                if (option.xAxis[i].data.length < timeData.length) {
+                  option.xAxis[i].data.push(nextTime)
+                }
+              }
+
+              chart.setOption(option)
+              timeIndex++
+            }
+
+            if (isPlaying) {
+              requestAnimationFrame(updateChart) // 基于浏览器刷新率平滑更新
+            }
+          }
+
+          // 播放和暂停按钮逻辑
+          const playPauseBtn = document.getElementById('playPauseBtn')
+          playPauseBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying
+            playPauseBtn.textContent = isPlaying ? '暂停' : '播放'
+            if (isPlaying) {
+              requestAnimationFrame(updateChart)
+            }
+          })
+
+          // 启动更新循环
+          requestAnimationFrame(updateChart)
+        })
+        .catch((error) => {
+          console.error('Error loading brain signal data:', error)
+        })
+    </script>
+  </body>
+</html>

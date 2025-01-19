@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS 引用 -->
+    <!-- <link rel="stylesheet" href="css/normalize.css"> -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="top-container">
+        <!-- 原始视频 -->
+        <video id="origin-video" controls>
+            <source src="SEED-DV/Video/1st_10min.mp4" type="video/mp4">
+            您的浏览器不支持 video 标签。
+        </video>
+        <!-- 逐帧视频 -->
+        <div id="video-clip"></div>
+        <!-- 视频按钮 -->
+        <div class="video-button">
+            <button class="btn_p">Play</button>
+            <button class="btn_s">Stop</button>
+            <button class="btn_c">Choose</button>
+        </div>
+    </div>
+    <!-- EEG 图像 -->
+    <div class="eeg-image"></div>
+
+    <div class="bottom-container">
+        <!-- EEG 3D -->
+        <div class="eeg-3d"></div>
+        <!-- EEG 五个频段 -->
+        <div class="eeg-5">
+            <div class="left-bottom">
+                <button class="btn1">Delta</button>
+                <button class="btn2">Theta</button>
+                <button class="btn3">Alpha</button>
+                <button class="btn4">Beta</button>
+                <button class="btn5">Gamma</button>
+            </div>
+            <div class="right-5EEG">
+                
+                <!-- 存放五个不同频段的脑电图 -->
+            </div>
+        </div>
+        <div class="zanding"></div>
+    </div>
+
+    <script src="js/video-clip.js"></script>
+    <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
+    <script src="../可视化系统/js/echarts.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
