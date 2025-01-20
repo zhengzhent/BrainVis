@@ -6,6 +6,12 @@
     <title>62 通道脑电波展示</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <style>
+      body {
+        background-color: #0a0a2a;  /* 深蓝色背景 */
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
       #chart {
         width: 100%;
         height: 2000px;
@@ -61,11 +67,11 @@
       }
 
       // 加载脑电数据
-      fetch('SEED-DV/single-channel/sub1_channel0.json')
+      fetch('sub1_channel0.json')
         .then((response) => response.json())
         .then((data) => {
-          const numChannels = data.length // 通道数量
-          //   const numChannels = 10 // 获取通道数
+          // const numChannels = data.length // 通道数量
+            const numChannels = 5// 获取通道数
           const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
           let timeIndex = 0 // 当前时间索引
           let isPlaying = true // 控制播放状态
@@ -106,9 +112,15 @@
               xAxisIndex: i,
               yAxisIndex: i,
               lineStyle: {
-                color: 'black',
-                width: 1,
-              },
+                color: [
+                '#00ffff',  // Ch1 青色
+                '#4169e1',  // Ch2 蓝色
+                '#ff69b4',  // Ch3 粉色
+                '#9370db',  // Ch4 紫色
+                '#32cd32'   // Ch5 绿色
+            ][i],
+            width: 1.5,
+        },
               showSymbol: false,
               smooth: true, // 启用曲线平滑
               animationDuration: 300, // 每次更新的动画时间
