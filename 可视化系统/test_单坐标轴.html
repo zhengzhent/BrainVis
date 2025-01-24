@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <style>
       body {
-        background-color: #0a0a2a;  /* 深蓝色背景 */
+        background-color: #0a0a2a; /* 深蓝色背景 */
         margin: 0;
         padding: 20px;
         font-family: Arial, sans-serif;
@@ -24,8 +24,8 @@
       .charts-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 1px;  /* 减小间距 */
-        background-color: rgba(0, 0, 0, 0.5);  /* 半透明黑色背景 */
+        gap: 1px; /* 减小间距 */
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
         border-radius: 5px;
         padding: 10px;
       }
@@ -33,14 +33,14 @@
         position: relative;
         height: 15vh;
         width: 100%;
-        background-color: rgba(0, 0, 20, 0.7);  /* 深蓝色半透明背景 */
-        border: 1px solid #1a1a1a;  /* 添加暗色边框 */
+        background-color: rgba(0, 0, 20, 0.7); /* 深蓝色半透明背景 */
+        border: 1px solid #1a1a1a; /* 添加暗色边框 */
       }
       .channel-label {
         position: absolute;
         left: 10px;
         top: 5px;
-        color: rgba(255, 255, 255, 0.7);  /* 更明显的标签颜色 */
+        color: rgba(255, 255, 255, 0.7); /* 更明显的标签颜色 */
         font-size: 0.8em;
         z-index: 1;
       }
@@ -126,7 +126,7 @@
       chart.setOption(option)
 
       // 加载脑电数据
-      fetch('sub1_channel0.json')
+      fetch('SEED-DV/single-channel/sub1_channel0.json')
         .then((response) => response.json())
         .then((data) => {
           // const numChannels = data.length // 获取通道数
@@ -146,14 +146,14 @@
               data: [],
               lineStyle: {
                 color: [
-                '#00ffff',  // Ch1 青色
-                '#4169e1',  // Ch2 蓝色
-                '#ff69b4',  // Ch3 粉色
-                '#9370db',  // Ch4 紫色
-                '#32cd32'   // Ch5 绿色
-            ][i],
-            width: 1.5,
-        },
+                  '#00ffff', // Ch1 青色
+                  '#4169e1', // Ch2 蓝色
+                  '#ff69b4', // Ch3 粉色
+                  '#9370db', // Ch4 紫色
+                  '#32cd32', // Ch5 绿色
+                ][i],
+                width: 1.5,
+              },
               showSymbol: false, // 不显示数据点
               smooth: true, // 平滑曲线
             })
@@ -209,63 +209,65 @@
       // 更新颜色配置
       function createChartConfig(channelIndex) {
         const colors = [
-          '#00ffff',  // Ch1 青色
-          '#4169e1',  // Ch2 蓝色
-          '#ff69b4',  // Ch3 粉色
-          '#9370db',  // Ch4 紫色
-          '#32cd32'   // Ch5 绿色
-        ];
-        
-        const frequencies = [8, 2, 4, 12, 1.5];
-        
+          '#00ffff', // Ch1 青色
+          '#4169e1', // Ch2 蓝色
+          '#ff69b4', // Ch3 粉色
+          '#9370db', // Ch4 紫色
+          '#32cd32', // Ch5 绿色
+        ]
+
+        const frequencies = [8, 2, 4, 12, 1.5]
+
         return {
           type: 'line',
           data: {
-            labels: Array.from({length: 100}, (_, i) => i),
-            datasets: [{
-              data: generateData(frequencies[channelIndex], 1, 0, 100),
-              borderColor: colors[channelIndex],
-              borderWidth: 1.5,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 0
-            }]
+            labels: Array.from({ length: 100 }, (_, i) => i),
+            datasets: [
+              {
+                data: generateData(frequencies[channelIndex], 1, 0, 100),
+                borderColor: colors[channelIndex],
+                borderWidth: 1.5,
+                fill: false,
+                tension: 0.4,
+                pointRadius: 0,
+              },
+            ],
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             animation: {
-              duration: 0
+              duration: 0,
             },
             plugins: {
               legend: {
-                display: false
-              }
+                display: false,
+              },
             },
             scales: {
               x: {
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'  // 略微可见的网格线
+                  color: 'rgba(255, 255, 255, 0.1)', // 略微可见的网格线
                 },
                 ticks: {
                   display: channelIndex === 4,
-                  color: 'rgba(255, 255, 255, 0.5)'
-                }
+                  color: 'rgba(255, 255, 255, 0.5)',
+                },
               },
               y: {
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: 'rgba(255, 255, 255, 0.1)',
                 },
                 ticks: {
                   color: 'rgba(255, 255, 255, 0.5)',
-                  display: true
+                  display: true,
                 },
                 min: -1.5,
-                max: 1.5
-              }
-            }
-          }
-        };
+                max: 1.5,
+              },
+            },
+          },
+        }
       }
     </script>
   </body>

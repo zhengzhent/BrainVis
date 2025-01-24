@@ -5,6 +5,7 @@ body {
       rgb(44, 114, 251, 1)
     );
   }
+  /* 顶部 */
   .top-container{
     display: flex;
     gap: 20px;
@@ -46,7 +47,7 @@ body {
   }
   .eeg-image {
     width: 100%;
-    height: 190px;
+    height: 340px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -57,7 +58,7 @@ body {
   }
   #chart {
     width:95%;
-    height: 190px;
+    height: 100%;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -66,7 +67,7 @@ body {
   }
   .controls {
     width: 5%;
-    height: 190px;
+    height: 100%;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -102,6 +103,7 @@ body {
     display: flex;
     justify-content: center; /* 水平居中 */
     gap: 20px; /* 两个元素之间的间距 */
+    height: 40%;
   }
 
   .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c, #playButton, #pauseButton{
