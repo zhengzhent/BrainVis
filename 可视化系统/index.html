@@ -39,14 +39,17 @@
       <div class="eeg-3d"></div>
       <!-- EEG 五个频段 -->
       <div class="eeg-5">
-        <div class="left-bottom">
-          <button class="btn1">Delta</button>
-          <button class="btn2">Theta</button>
-          <button class="btn3">Alpha</button>
-          <button class="btn4">Beta</button>
-          <button class="btn5">Gamma</button>
-        </div>
         <div class="right-5EEG">
+          <div class="controls_5">
+            <button class="band-btn" data-band="Beta">Beta</button>
+            <button class="band-btn" data-band="Alpha">Alpha</button>
+            <button class="band-btn" data-band="Theta">Theta</button>
+            <button class="band-btn" data-band="Delta">Delta</button>
+            <button class="band-btn" data-band="Gamma">Gamma</button>
+            <button id="playButton_5">播放</button>
+            <button id="pauseButton_5">暂停</button>
+          </div>
+          <div class="chart_5"></div>
           <!-- 存放五个不同频段的脑电图 -->
         </div>
       </div>
@@ -56,6 +59,6 @@
     <script src="js/video-clip.js"></script>
     <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
     <script src="../可视化系统/js/echarts.min.js"></script>
-    <!-- <script src="js/main.js"></script> -->
+    <script src="js/main.js"></script>
   </body>
 </html>
