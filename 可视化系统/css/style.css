@@ -5,7 +5,6 @@ body {
       rgb(44, 114, 251, 1)
     );
   }
-  /* 顶部 */
   .top-container{
     display: flex;
     gap: 20px;
@@ -47,7 +46,7 @@ body {
   }
   .eeg-image {
     width: 100%;
-    height: 340px;
+    height: 190px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -58,7 +57,7 @@ body {
   }
   #chart {
     width:95%;
-    height: 100%;
+    height: 190px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -67,7 +66,7 @@ body {
   }
   .controls {
     width: 5%;
-    height: 100%;
+    height: 190px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
@@ -103,7 +102,6 @@ body {
     display: flex;
     justify-content: center; /* 水平居中 */
     gap: 20px; /* 两个元素之间的间距 */
-    height: 40%;
   }
 
   .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c, #playButton, #pauseButton{
@@ -130,9 +128,8 @@ body {
   }
 
   .right-5EEG {
-    width: 80%;
+    width: 100%;
     height: 100%;
-    border: 2px solid #2196f3; /* 蓝色边框 */
     border-radius: 8px;
     /* padding: 10px; */
     .btn:hover {
@@ -144,3 +141,24 @@ body {
     height: 100vh;
     overflow: hidden;
   }
+/* 不同频段容器样式 */
+  .controls_5 {
+    text-align: center;
+}
+button {
+    padding: 5px 10px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background:  #4c78af;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+/* 添加 #chart_5 的样式 */
+.chart_5 {
+  position: relative;
+  height: auto; 
+  width: auto;
+
+}
