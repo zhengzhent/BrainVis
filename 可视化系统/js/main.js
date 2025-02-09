@@ -1,198 +1,154 @@
-      // 初始化 ECharts 实例
-      const chart = echarts.init(document.getElementById('chart'))
+// 在文件最开始添加
+console.log('123 - JavaScript 文件已加载');
+const chart = echarts.init(document.querySelector('.chart_5')); 
+let currentData = null;
+let timeIndex = 0;
+let intervalId = null;
+let isPlaying = true;
+const numChannels = 21;
+const frameInterval = 10;
 
-      // 初始图表配置
-      const option = {
-        title: {
-          text: '62 通道脑电波',
-          left: 'center',
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: (params) => {
-            let content = `时间: ${params[0].name}<br/>`
-            params.forEach((param) => {
-              content += `${param.seriesName}: ${param.value}<br/>`
-            })
-            return content
-          },
-        },
-        grid: {
-          left: '5%',
-          right: '5%',
-          top: '5%',
-          bottom: '15%', // 为滑块留出空间
-          containLabel: true,
-        },
-        dataZoom: [
-          {
-            type: 'slider', // 滑块类型
-            xAxisIndex: 0, // 控制 X 轴
-            start: 0, // 起始位置（0%）
-            end: 100, // 结束位置（100%）
-          },
-          {
-            type: 'inside', // 支持滚轮缩放
-            xAxisIndex: 0,
-          },
-        ],
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          name: '时间 (ms)',
-          data: [], // 时间轴数据
-        },
-        yAxis: {
-          type: 'value',
-          name: '电压 (μV)',
-          splitLine: {
-            show: false, // 隐藏网格线
-          },
-        },
-        series: [], // 动态添加每个通道的数据
-      }
+// 定义21种优雅的颜色
+const colors = [
+    '#FF6B6B', // 玫瑰红
+    '#4ECDC4', // 青色
+    '#45B7D1', // 天蓝色
+    '#96CEB4', // 淡绿色
+    '#FFEEAD', // 淡黄色
+    '#D39BCA', // 紫色
+    '#8C8C8C', // 灰色
+    '#FFD93D', // 柠檬黄
+    '#85C1E9', // 蓝绿色
+    '#9B9B9B', // 中灰
+    '#E67E22', // 橙色
+    '#B34747', // 深红色
+    '#8E44AD', // 紫罗兰
+    '#2980B9', // 深蓝色
+    '#27AE60', // 深绿色
+    '#F39C12', // 橙红色
+    '#E74C3C', // 红色
+    '#3498DB', // 蓝色
+    '#1ABC9C', // 鲜绿色
+    '#F1C40F', // 黄色
+    '#95A5A6'  // 烟灰色
+];
 
-      chart.setOption(option)
+// 初始配置
+const option = {
+    title: { text: '选择频段查看数据', left: 'center' },
+    tooltip: {
+        trigger: 'axis',
+        formatter: (params) => {
+            let content = `时间: ${params[0].name}<br/>`;
+            params.forEach((param)  => {
+                content += `${param.seriesName}:  ${param.value}<br/>`; 
+            });
+            return content;
+        },
+    },
+    grid: {
+        left: '4%',
+        right: '5%',
+        top: '15%',
+        bottom: '15%',
+        containLabel: true,
+    },
+    dataZoom: [
+        { type: 'slider', xAxisIndex: 0, start: 0, end: 100 },
+        { type: 'inside', xAxisIndex: 0 },
+    ],
+    xAxis: {
+        type: 'category',
+        name: '时间 (ms)',
+        nameLocation: 'middle',     // 标题位置：'start'（左）, 'middle'（中）, 'end'（右）
+        nameGap: 10,               // 标题与轴线之间的距离，可以调整这个值
+        nameTextStyle: {           // 标题文字样式
+            padding: [10, 0, 0, 0]  // 上右下左的内边距
+        },
+        data: []
+    },
+    yAxis: { type: 'value', name: '电压 (μV)', splitLine: { show: false } },
+    series: [],
+};
 
-      // 加载脑电数据
-      fetch('sub1_channel0.json')
+chart.setOption(option); 
+
+// 加载数据并初始化图表
+function loadData(band) {
+    clearInterval(intervalId);
+    isPlaying = false;
+    timeIndex = 0;
+
+    option.title.text = `${band} 频段脑电波`;
+    option.xAxis.data = [];
+    option.series = [];
+    chart.clear();
+
+    for (let i = 0; i < numChannels; i++) {
+        option.series.push({
+            name: `通道 ${i + 1}`,
+            type: 'line',
+            data: [],
+            lineStyle: {
+                color: colors[i],
+                width: 1.5,
+            },
+            showSymbol: false,
+            smooth: true,
+        });
+    }
+
+    fetch(`data/${band}.json`)
         .then((response) => response.json())
         .then((data) => {
-          // const numChannels = data.length // 获取通道数
-          const numChannels = 3 // 获取通道数
-          const frameInterval = 10 // 每次增加 1 点的时间间隔（毫秒）
-          let timeIndex = 0 // 当前时间索引
-          let isPlaying = true // 播放状态
-
-          // 初始化时间轴
-          const timeData = Array.from({ length: data[0].length }, (_, i) => i)
-
-          // 配置每个通道的数据
-          for (let i = 0; i < numChannels; i++) {
-            option.series.push({
-              name: `通道 ${i + 1}`,
-              type: 'line',
-              data: [],
-              lineStyle: {
-                color: [
-                '#00ffff',  // Ch1 青色
-                '#4169e1',  // Ch2 蓝色
-                '#ff69b4',  // Ch3 粉色
-                '#9370db',  // Ch4 紫色
-                '#32cd32'   // Ch5 绿色
-            ][i],
-            width: 1.5,
-        },
-              showSymbol: false, // 不显示数据点
-              smooth: true, // 平滑曲线
-            })
-          }
-
-          chart.setOption(option)
-
-          // 动态更新图表的函数
-          function updateChart() {
-            if (timeIndex < timeData.length && isPlaying) {
-              const nextTime = timeData[timeIndex]
-
-              // 添加每个通道的下一个点
-              for (let i = 0; i < numChannels; i++) {
-                const nextValue = data[i][timeIndex]
-                option.series[i].data.push(nextValue)
-              }
-
-              // 更新时间轴
-              option.xAxis.data.push(nextTime)
-
-              // 更新图表
-              chart.setOption(option)
-              timeIndex++ // 移动到下一个时间点
-            }
-          }
-
-          // 定时器 ID
-          let intervalId = setInterval(updateChart, frameInterval)
-
-          // 播放按钮功能
-          document
-            .getElementById('playButton')
-            .addEventListener('click', () => {
-              if (!isPlaying) {
-                isPlaying = true
-                intervalId = setInterval(updateChart, frameInterval)
-              }
-            })
-
-          // 暂停按钮功能
-          document
-            .getElementById('pauseButton')
-            .addEventListener('click', () => {
-              isPlaying = false
-              clearInterval(intervalId)
-            })
+            currentData = data;
+            chart.setOption(option);
+            document.querySelectorAll('.band-btn').forEach(btn =>
+                btn.classList.remove('active'));
+            document.querySelector(`[data-band="${band}"]`).classList.add('active');
         })
         .catch((error) => {
-          console.error('Error loading brain signal data:', error)
-        })
+            console.error('加载数据失败:', error);
+            console.error(`尝试加载的文件路径: data/${band}.json`);
+        });
+}
 
-      // 更新颜色配置
-      function createChartConfig(channelIndex) {
-        const colors = [
-          '#00ffff',  // Ch1 青色
-          '#4169e1',  // Ch2 蓝色
-          '#ff69b4',  // Ch3 粉色
-          '#9370db',  // Ch4 紫色
-          '#32cd32'   // Ch5 绿色
-        ];
-        
-        const frequencies = [8, 2, 4, 12, 1.5];
-        
-        return {
-          type: 'line',
-          data: {
-            labels: Array.from({length: 100}, (_, i) => i),
-            datasets: [{
-              data: generateData(frequencies[channelIndex], 1, 0, 100),
-              borderColor: colors[channelIndex],
-              borderWidth: 1.5,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 0
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-              duration: 0
-            },
-            plugins: {
-              legend: {
-                display: false
-              }
-            },
-            scales: {
-              x: {
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'  // 略微可见的网格线
-                },
-                ticks: {
-                  display: channelIndex === 4,
-                  color: 'rgba(255, 255, 255, 0.5)'
-                }
-              },
-              y: {
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
-                },
-                ticks: {
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  display: true
-                },
-                min: -1.5,
-                max: 1.5
-              }
-            }
-          }
-        };
-      }
+// 动态更新图表
+function updateChart() {
+    if (!currentData || timeIndex >= currentData[0].length) return;
+
+    if (isPlaying) {
+        const timeData = Array.from({  length: currentData[0].length }, (_, i) => i);
+        const nextTime = timeData[timeIndex];
+
+        option.xAxis.data.push(nextTime); 
+        for (let i = 0; i < numChannels; i++) {
+            option.series[i].data.push(currentData[i][timeIndex]); 
+        }
+
+        chart.setOption(option); 
+        timeIndex++;
+    }
+}
+
+// 按钮事件绑定
+document.querySelectorAll('.band-btn').forEach(button  => {
+    button.addEventListener('click',  () => {
+        loadData(button.dataset.band); 
+    });
+});
+
+document.getElementById('playButton_5').addEventListener('click',  () => {
+    if (!isPlaying) {
+        isPlaying = true;
+        intervalId = setInterval(updateChart, frameInterval);
+    }
+});
+
+document.getElementById('pauseButton_5').addEventListener('click',  () => {
+    isPlaying = false;
+    clearInterval(intervalId);
+});
+
+// 默认加载Beta数据
+loadData('Beta');
