@@ -29,8 +29,11 @@
     <div class="eeg-image">
       <div id="chart"></div>
       <div class="controls">
-        <button id="playButton">播放</button>
-        <button id="pauseButton">暂停</button>
+        <!-- <button id="playButton">播放</button> -->
+        <button id="playPauseButton" class="control-button">暂停</button>
+        <select id="groupSelector" class="group-select">
+          <!-- 动态填充选项 -->
+        </select>
       </div>
     </div>
 
@@ -60,6 +63,6 @@
     <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
     <script src="../可视化系统/js/echarts.min.js"></script>
     <script src="js/main.js"></script>
-   
+    <script src="js/dynamic-EEG.js"></script>
   </body>
 </html>
