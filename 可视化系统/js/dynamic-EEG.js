@@ -56,7 +56,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       // 配置 ECharts
       const option = {
         title: {
-          text: `脑电波组别展示: ${group}`,
+          text: `脑区脑电展示: ${group}`,
           left: 'center',
         },
         tooltip: {
@@ -76,6 +76,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
             opacity: 0,
             emphasis: { opacity: 1 },
             blur: { opacity: 0 }, // 失去焦点时回归透明
+            backgroundColor: 'rgba(0,0,0,0)',
           },
         ],
         grid: [],
@@ -87,8 +88,8 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       // 动态设置各组别
       filteredChannels.forEach((channel, idx) => {
         option.grid.push({
-          top: `${idx * (100 / filteredChannels.length) + 10}%`,
-          height: `${100 / filteredChannels.length - 17}%`,
+          top: `${idx * (100 / filteredChannels.length) + 7}%`,
+          height: `${100 / filteredChannels.length - 12}%`,
           left: '3%',
           right: '3%',
         })
@@ -140,7 +141,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
     // 分组选择事件
     groupSelector.addEventListener('change', (event) => {
       const selectedGroup = event.target.value
-      timeIndex = 0 // 重置时间索引以便重新播放
+      // timeIndex = 0 // 重置时间索引以便重新播放
       renderChart(selectedGroup)
     })
 
