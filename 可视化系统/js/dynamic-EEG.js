@@ -43,7 +43,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
-    const frameInterval = 10 // 帧间隔
+    const frameInterval = 5 // 帧间隔
     let timeIndex = 0 // 当前时间索引
     let isPlaying = true // 播放状态
 
