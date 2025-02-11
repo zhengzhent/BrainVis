@@ -11,18 +11,17 @@
   <body>
     <div class="top-container">
       <!-- 原始视频 -->
-      <video id="origin-video" controls>
+      <video id="origin-video" autoplay muted>
         <source src="SEED-DV/Video/1st_10min.mp4" type="video/mp4" />
         您的浏览器不支持 video 标签。
       </video>
       <!-- 逐帧视频 -->
       <div id="video-clip"></div>
       <!-- 视频按钮 -->
-      <div class="video-button">
+      <!-- <div class="video-button">
         <button class="btn_p">Play</button>
         <button class="btn_s">Stop</button>
-        <button class="btn_c">Choose</button>
-      </div>
+      </div> -->
     </div>
 
     <!-- EEG 图像 -->
@@ -31,6 +30,7 @@
       <div class="controls">
         <!-- <button id="playButton">播放</button> -->
         <button id="playPauseButton" class="control-button">暂停</button>
+        <button class="btn_c">Choose</button>
         <select id="groupSelector" class="group-select">
           <!-- 动态填充选项 -->
         </select>

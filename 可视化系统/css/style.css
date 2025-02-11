@@ -18,19 +18,19 @@ body {
   }
   #video-clip{
     display: flex;
-    width: 75%;
-    gap: 10px;
+    width: 79%;
+    gap: 2px;
     height: 190px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px; /* 添加底部间距 */
   }
   #video-clip img {
-    width: 200px;
+    width: 250px;
     height: 180px;
     border: 1px solid #ccc;
     margin-top: 3px;
-    margin-left: 22px
+    margin-left: 10px
   }
   .video-button {
     width: 5%;

@@ -90,8 +90,8 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
         option.grid.push({
           top: `${idx * (100 / filteredChannels.length) + 7}%`,
           height: `${100 / filteredChannels.length - 12}%`,
-          left: '3%',
-          right: '3%',
+          left: '2%',
+          right: '2%',
         })
 
         option.xAxis.push({
@@ -147,9 +147,15 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
     // 暂停/播放按钮事件
     const playPauseButton = document.getElementById('playPauseButton')
+    const video = document.getElementById('origin-video')
     playPauseButton.addEventListener('click', () => {
       isPlaying = !isPlaying
       playPauseButton.textContent = isPlaying ? '暂停' : '播放'
+      if (isPlaying) {
+        video.play()
+      } else {
+        video.pause()
+      }
     })
 
     // 动态更新图表
