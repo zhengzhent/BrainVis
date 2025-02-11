@@ -38,6 +38,31 @@ groups.forEach((group) => {
   groupSelector.appendChild(option)
 })
 
+// 添加颜色数组
+const colors = [
+    '#FF6B6B', // 玫瑰红
+    '#4ECDC4', // 青色
+    '#45B7D1', // 天蓝色
+    '#96CEB4', // 淡绿色
+    '#FFEEAD', // 淡黄色
+    '#D39BCA', // 紫色
+    '#8C8C8C', // 灰色
+    '#FFD93D', // 柠檬黄
+    '#85C1E9', // 蓝绿色
+    '#9B9B9B', // 中灰
+    '#E67E22', // 橙色
+    '#B34747', // 深红色
+    '#8E44AD', // 紫罗兰
+    '#2980B9', // 深蓝色
+    '#27AE60', // 深绿色
+    '#F39C12', // 橙红色
+    '#E74C3C', // 红色
+    '#3498DB', // 蓝色
+    '#1ABC9C', // 鲜绿色
+    '#F1C40F', // 黄色
+    '#95A5A6'  // 烟灰色
+];
+
 // 加载脑电数据
 fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
@@ -124,7 +149,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
           xAxisIndex: idx,
           yAxisIndex: idx,
           lineStyle: {
-            color: 'black',
+            color: colors[channel.index % colors.length], // 使用颜色数组
             width: 1,
           },
           showSymbol: false,
