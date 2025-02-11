@@ -45,7 +45,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
     const frameInterval = 5 // 帧间隔
     let timeIndex = 0 // 当前时间索引
-    let isPlaying = true // 播放状态
+    let isPlaying = false // 播放状态
 
     // 渲染特定组别
     function renderChart(group) {
