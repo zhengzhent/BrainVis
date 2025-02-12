@@ -4,7 +4,7 @@ let timeIndex = 0
 let intervalId = null
 let isPlaying = true
 const numChannels = 21
-const frameInterval = 10
+const frameInterval = 5
 
 // 定义21种优雅的颜色
 const colors = [
