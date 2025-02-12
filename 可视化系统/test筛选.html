@@ -78,13 +78,18 @@
       })
 
       // 加载脑电数据
-      fetch('SEED-DV/single-channel/sub1_channel0.json')
+      fetch('SEED-DV/single-channel/testData/testEEG.json')
         .then((response) => response.json())
         .then((data) => {
           const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
-          const frameInterval = 10 // 帧间隔
+          const frameInterval = 25 // 帧间隔
+          const pointsPerFrame = 5 // 每帧显示的点数
           let timeIndex = 0 // 当前时间索引
           let isPlaying = true // 播放状态
+
+          const totalDuration = 13000 // 13 秒播放完毕
+          const totalPoints = 2600 // 总数据点数
+          let startTime = performance.now()
 
           // 渲染特定组别
           function renderChart(group) {
@@ -186,16 +191,28 @@
             isPlaying = !isPlaying
             playPauseButton.textContent = isPlaying ? '暂停' : '播放'
           })
-
-          // 动态更新图表
           function updateChart() {
-            if (timeIndex < timeData.length && isPlaying) {
-              timeIndex++
-              const selectedGroup = groupSelector.value
-              renderChart(selectedGroup)
+            if (isPlaying) {
+              const currentTime = performance.now()
+              const elapsedTime = currentTime - startTime // 从播放开始到现在的总时间
+
+              // 根据总时间计算当前应显示的数据点
+              timeIndex = Math.floor(
+                (elapsedTime / totalDuration) * totalPoints,
+              )
+
+              // 确保不超过数据长度
+              if (timeIndex > totalPoints) {
+                timeIndex = totalPoints
+              }
+
+              // 更新图表
+              const selectedGroup =
+                document.getElementById('groupSelector').value
+              renderChart(selectedGroup, 0, timeIndex)
             }
 
-            setTimeout(updateChart, frameInterval)
+            requestAnimationFrame(updateChart)
           }
 
           // 启动更新
