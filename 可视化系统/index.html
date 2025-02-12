@@ -12,7 +12,7 @@
     <div class="top-container">
       <!-- 原始视频 -->
       <video id="origin-video" controls muted>
-        <source src="SEED-DV/Video/1st_10min.mp4" type="video/mp4" />
+        <!-- <source src="SEED-DV/Video/1st_10min.mp4" type="video/mp4" /> -->
         您的浏览器不支持 video 标签。
       </video>
       <!-- 逐帧视频 -->
@@ -51,13 +51,26 @@
             <button class="band-btn" data-band="Gamma">Gamma</button>
             <button id="playButton_5">播放</button>
             <button id="pauseButton_5">暂停</button>
+            <select id="regionSelect" class="region-select">
+              <option value="all">所有脑区</option>
+              <option value="前额">前额区</option>
+              <option value="额叶">额叶区</option>
+              <option value="颞叶">颞叶区</option>
+              <option value="中心部">中心部</option>
+              <option value="顶叶">顶叶区</option>
+              <option value="枕叶">枕叶区</option>
+            </select>
+        
           </div>
-          <div class="chart_5"></div>
+          <div class="chart_5">
+            
+          </div>
           <!-- 存放五个不同频段的脑电图 -->
         </div>
       </div>
       <div class="zanding"></div>
     </div>
+
 
     <script src="js/video-clip.js"></script>
     <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
