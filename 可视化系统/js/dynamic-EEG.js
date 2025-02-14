@@ -77,7 +77,6 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
     let startTime = null // 延迟初始化
     let accumulatedTime = 0 // 累积的播放时间
 
-    // 渲染特定组别
     function renderChart(group) {
       const filteredChannels = EEGchannelInfo.filter(
         (channel) => channel.group === group,
@@ -98,14 +97,16 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
         dataZoom: [
           {
             type: 'slider',
-            xAxisIndex: 0,
-            xAxisIndex: Array.from({ length: 62 }, (_, i) => i), // 应用于所有 x 轴
+            xAxisIndex: Array.from(
+              { length: filteredChannels.length },
+              (_, i) => i,
+            ),
             start: 0,
-            end: 100, // 可调整初始范围
+            end: 100,
             show: true,
             opacity: 0,
             emphasis: { opacity: 1 },
-            blur: { opacity: 0 }, // 失去焦点时回归透明
+            blur: { opacity: 0 },
             backgroundColor: 'rgba(0,0,0,0)',
           },
         ],
@@ -115,7 +116,6 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
         series: [],
       }
 
-      // 动态设置各组别
       filteredChannels.forEach((channel, idx) => {
         option.grid.push({
           top: `${idx * (100 / filteredChannels.length) + 7}%`,
@@ -154,7 +154,7 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
           xAxisIndex: idx,
           yAxisIndex: idx,
           lineStyle: {
-            color: EEGcolors[channel.index % EEGcolors.length], // 使用颜色数组
+            color: EEGcolors[channel.index % EEGcolors.length],
             width: 2,
           },
           showSymbol: false,
@@ -163,6 +163,34 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
       })
 
       EEGchart.setOption(option, { notMerge: true })
+
+      // 添加点击事件：跳转到对应视频时间并暂停
+      EEGchart.getZr().off('click')
+      EEGchart.getZr().on('click', function (event) {
+        const pointInPixel = [event.offsetX, event.offsetY]
+        const pointInGrid = EEGchart.convertFromPixel(
+          { seriesIndex: 0 },
+          pointInPixel,
+        )
+
+        if (pointInGrid) {
+          const clickedIndex = Math.round(pointInGrid[0])
+          const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
+
+          // 跳转到对应视频时间并暂停
+          video.currentTime = clickedTime
+          accumulatedTime = clickedTime * 1000
+          timeIndex = clickedIndex
+
+          // 停止播放，保持 EEG 图静止
+          isPlaying = false
+          playPauseButton.textContent = '播放'
+          video.pause()
+
+          // **调用 displayFiveFramesAtTime() 显示前中后五帧**
+          displayFiveFramesAtTime(clickedTime)
+        }
+      })
     }
 
     // 默认加载第一个组别
@@ -202,7 +230,6 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
     function updateChart() {
       if (isPlaying) {
         const currentTime = performance.now()
-        // 累加已播放时间
         const elapsedTime = accumulatedTime + (currentTime - startTime)
 
         // 根据总时间计算当前应显示的数据点
@@ -218,13 +245,12 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
 
         // 更新图表
         const selectedGroup = document.getElementById('groupSelector').value
-        renderChart(selectedGroup, 0, timeIndex)
+        renderChart(selectedGroup)
       }
 
       requestAnimationFrame(updateChart)
     }
-
-    // 启动更新
+    //更新
     updateChart()
   })
   .catch((error) => {
