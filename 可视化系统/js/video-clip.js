@@ -5,8 +5,8 @@ const ctx = canvas.getContext('2d')
 
 // 每隔一段时间提取帧
 video.addEventListener('play', () => {
-  const frameInterval = 200 // 每隔 200ms 提取一帧
-  const maxFrames = 5 // 最多显示 5 帧
+  const frameInterval = 41 // 每隔 41ms 提取一帧
+  const maxFrames = 8 // 最多显示 8 帧
 
   const extractFrames = () => {
     if (video.paused || video.ended) {
@@ -24,12 +24,12 @@ video.addEventListener('play', () => {
     const img = document.createElement('img')
     img.src = canvas.toDataURL('image/png')
 
-    // **从左侧插入新帧**
-    videoClip.insertBefore(img, videoClip.firstChild)
+    // **从右侧插入新帧**
+    videoClip.appendChild(img) // 新帧追加到右侧
 
-    // **保持最多 5 帧，移除最右侧的旧帧**
+    // **保持最多 8 帧，移除最左侧的旧帧**
     if (videoClip.childNodes.length > maxFrames) {
-      videoClip.removeChild(videoClip.lastChild)
+      videoClip.removeChild(videoClip.firstChild) // 移除最左侧的帧
     }
 
     setTimeout(extractFrames, frameInterval)
@@ -38,23 +38,10 @@ video.addEventListener('play', () => {
   extractFrames()
 })
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   const video = document.getElementById('origin-video')
-//   const btn = document.getElementById('playPauseButton')
-//   video.play().catch((error) => {
-//     console.warn('自动播放被浏览器阻止:', error)
-//   })
-
-//   btn.addEventListener('click', function () {
-
-//   })
-// })
-
 // 交互展示前后帧
-// 显示指定时间的前中后三帧
 // 显示指定时间的前两帧、中间帧、后两帧
-function displayFiveFramesAtTime(clickedTime) {
-  const frameInterval = 0.2 // 每隔 200ms 提取一帧
+async function displayFiveFramesAtTime(clickedTime) {
+  const frameInterval = 0.2 // 200ms
   const targetTimes = [
     clickedTime - 2 * frameInterval, // 前两帧
     clickedTime - frameInterval,
@@ -62,45 +49,113 @@ function displayFiveFramesAtTime(clickedTime) {
     clickedTime + frameInterval, // 后两帧
     clickedTime + 2 * frameInterval,
   ]
-
+  console.log('1:', targetTimes[0]) // 打印 clickedIndex 的值
+  console.log('2:', targetTimes[1]) // 打印 clickedIndex 的值
+  console.log('3:', targetTimes[2]) // 打印 clickedIndex 的值
+  console.log('4:', targetTimes[3]) // 打印 clickedIndex 的值
   // 清空之前的帧
   videoClip.innerHTML = ''
 
-  // 遍历目标时间点，依次提取并插入帧
-  targetTimes.forEach((time) => {
-    // 如果时间小于 0 或大于视频总时长，则跳过
+  for (let i = 0; i < targetTimes.length; i++) {
+    const time = targetTimes[i]
+
+    // 跳过无效时间点
     if (time < 0 || time > video.duration) {
       const placeholder = document.createElement('div')
-      placeholder.style.width = '100px' // 占位宽度
+      placeholder.style.width = '100px'
       placeholder.style.height = '100px'
       placeholder.style.display = 'inline-block'
+      placeholder.style.background = 'rgba(0, 0, 0, 0.1)' // 透明占位
       videoClip.appendChild(placeholder)
-      return
+      continue
     }
 
-    // 临时暂停视频，跳转到目标时间
+    // **等待视频跳转到目标时间**
     video.currentTime = time
+    await new Promise((resolve) =>
+      video.addEventListener('seeked', resolve, { once: true }),
+    )
 
-    // 等待视频 seek 完成后提取帧
-    video.addEventListener('seeked', function extractFrame() {
-      // 设置 canvas 尺寸
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
+    // **提取帧**
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
 
-      // 绘制当前帧到 canvas
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+    // **创建帧图片**
+    const img = document.createElement('img')
+    img.src = canvas.toDataURL('image/png')
+    img.style.margin = '0 5px'
+    img.style.borderRadius = '8px'
+    img.style.transition = 'transform 0.3s ease'
 
-      // 创建新的帧图片
-      const img = document.createElement('img')
-      img.src = canvas.toDataURL('image/png')
-      img.style.margin = '0 5px' // 间隔
-      img.style.borderRadius = '8px' // 圆角效果
+    // **中间帧高亮**
+    if (i === 2) {
+      img.style.border = '3px solid red'
+      img.style.transform = 'scale(1.1)'
+    }
 
-      // **顺序插入视频帧**
-      videoClip.appendChild(img)
-
-      // 移除事件监听，防止重复执行
-      video.removeEventListener('seeked', extractFrame)
-    })
-  })
+    videoClip.appendChild(img)
+  }
 }
+
+// function displayFiveFramesAtTime(clickedTime) {
+//   const targetTimes = [
+//     clickedTime - 2 * frameInterval, // 前两帧
+//     clickedTime - frameInterval,
+//     clickedTime, // 中间帧
+//     clickedTime + frameInterval, // 后两帧
+//     clickedTime + 2 * frameInterval,
+//   ]
+// console.log('1:', targetTimes[0]) // 打印 clickedIndex 的值
+//   console.log('2:', targetTimes[1]) // 打印 clickedIndex 的值
+//   console.log('3:', targetTimes[2]) // 打印 clickedIndex 的值
+//   console.log('4:', targetTimes[3]) // 打印 clickedIndex 的值
+//   // 清空之前的帧
+//   const videoClip = document.getElementById('video-clip')
+//   videoClip.innerHTML = ''
+
+//   // 遍历目标时间点，依次提取并插入帧
+//   targetTimes.forEach((time) => {
+//     // 如果时间小于 0 或大于视频总时长，则跳过
+//     if (time < 0 || time > video.duration) {
+//       const placeholder = document.createElement('div')
+//       placeholder.style.width = '100px' // 占位宽度
+//       placeholder.style.height = '100px'
+//       placeholder.style.display = 'inline-block'
+//       videoClip.appendChild(placeholder)
+//       return
+//     }
+
+//     // 为每个帧创建一个新的 canvas 和 context
+//     const canvas = document.createElement('canvas')
+//     const ctx = canvas.getContext('2d')
+
+//     // 设置 canvas 尺寸
+//     canvas.width = video.videoWidth
+//     canvas.height = video.videoHeight
+
+//     // 临时暂停视频，跳转到目标时间
+//     video.currentTime = time
+
+//     // 等待视频 seek 完成后提取帧
+//     const onSeeked = () => {
+//       // 绘制当前帧到 canvas
+//       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+
+//       // 创建新的帧图片
+//       const img = document.createElement('img')
+//       img.src = canvas.toDataURL('image/png')
+//       img.style.margin = '0 5px' // 间隔
+//       img.style.borderRadius = '8px' // 圆角效果
+
+//       // 顺序插入视频帧
+//       videoClip.appendChild(img)
+
+//       // 移除事件监听，防止重复执行
+//       video.removeEventListener('seeked', onSeeked)
+//     }
+
+//     // 绑定 seeked 事件
+//     video.addEventListener('seeked', onSeeked, { once: true })
+//   })
+// }

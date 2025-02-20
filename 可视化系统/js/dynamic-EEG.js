@@ -65,6 +65,7 @@ const EEGcolors = [
 
 // 加载脑电数据
 fetch('SEED-DV/single-channel/testData/testEEG.json')
+  // fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
@@ -72,8 +73,8 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
     // const pointsPerFrame = 10 // 每帧显示的点数  每次刷新10个点 1s刷新200个点 和采样频率一致
     let timeIndex = 0 // 当前时间索引
     let isPlaying = false // 播放状态
-    const totalDuration = 13000 // 13 秒播放完毕
-    const totalPoints = 2600 // 总数据点数
+    const totalDuration = 130000 // 13 秒播放完毕
+    const totalPoints = 26000 // 总数据点数
     let startTime = null // 延迟初始化
     let accumulatedTime = 0 // 累积的播放时间
 
@@ -163,9 +164,47 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
       })
 
       EEGchart.setOption(option, { notMerge: true })
+      const videoFrameRate = 24 // 假设视频帧率为 24fps
+      const frameInterval = 1 / videoFrameRate // 每帧的时间间隔
 
       // 添加点击事件：跳转到对应视频时间并暂停
       EEGchart.getZr().off('click')
+      // EEGchart.getZr().on('click', function (event) {
+      //   const pointInPixel = [event.offsetX, event.offsetY]
+      //   const pointInGrid = EEGchart.convertFromPixel(
+      //     { seriesIndex: 0 },
+      //     pointInPixel,
+      //   )
+
+      //   console.log('pointInGrid:', pointInGrid) // 打印 pointInGrid 的值
+
+      //   if (pointInGrid) {
+      //     const clickedIndex = Math.round(pointInGrid[0])
+      //     console.log('clickedIndex:', clickedIndex) // 打印 clickedIndex 的值
+
+      //     const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
+      //     console.log('clickedTime:', clickedTime) // 打印 clickedTime 的值
+
+      //     // 将 clickedTime 对齐到视频的帧时间
+      //     const alignedTime =
+      //       Math.round(clickedTime / frameInterval) * frameInterval
+      //     console.log('alignedTime:', alignedTime) // 打印 alignedTime 的值
+
+      //     // 跳转到对应视频时间并暂停
+      //     video.currentTime = alignedTime
+      //     accumulatedTime = alignedTime * 1000
+      //     console.log('accumulatedTime:', accumulatedTime) // 打印 accumulatedTime 的值
+      //     timeIndex = clickedIndex
+
+      //     // 停止播放，保持 EEG 图静止
+      //     isPlaying = false
+      //     playPauseButton.textContent = '播放'
+      //     video.pause()
+
+      //     // 调用 displayFiveFramesAtTime() 显示前中后五帧
+      //     displayFiveFramesAtTime(alignedTime)
+      //   }
+      // })
       EEGchart.getZr().on('click', function (event) {
         const pointInPixel = [event.offsetX, event.offsetY]
         const pointInGrid = EEGchart.convertFromPixel(
@@ -176,10 +215,13 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
         if (pointInGrid) {
           const clickedIndex = Math.round(pointInGrid[0])
           const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
+          console.log('clickedIndex:', clickedIndex) // 打印 clickedIndex 的值
+          console.log('clickedTime:', clickedTime) // 打印 clickedTime 的值
 
           // 跳转到对应视频时间并暂停
           video.currentTime = clickedTime
           accumulatedTime = clickedTime * 1000
+          console.log('accumulatedTime:', accumulatedTime) // 打印 accumulatedTime 的值
           timeIndex = clickedIndex
 
           // 停止播放，保持 EEG 图静止
