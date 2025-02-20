@@ -3,6 +3,28 @@ const EEGchart = echarts.init(document.getElementById('chart'))
 
 // 通道与分组信息
 const EEGchannelInfo = [
+  { index: 0, name: 'FP1', group: '所有通道' },
+  { index: 1, name: 'FPZ', group: '所有通道' },
+  { index: 2, name: 'FP2', group: '所有通道' },
+  { index: 5, name: 'F7', group: '所有通道' },
+  { index: 7, name: 'F3', group: '所有通道' },
+  { index: 9, name: 'FZ', group: '所有通道' },
+  { index: 11, name: 'F4', group: '所有通道' },
+  { index: 13, name: 'F8', group: '所有通道' },
+  { index: 23, name: 'T7', group: '所有通道' },
+  { index: 31, name: 'T8', group: '所有通道' },
+  { index: 25, name: 'C3', group: '所有通道' },
+  { index: 27, name: 'CZ', group: '所有通道' },
+  { index: 29, name: 'C4', group: '所有通道' },
+  { index: 41, name: 'P7', group: '所有通道' },
+  { index: 43, name: 'P3', group: '所有通道' },
+  { index: 45, name: 'PZ', group: '所有通道' },
+  { index: 47, name: 'P4', group: '所有通道' },
+  { index: 49, name: 'P8', group: '所有通道' },
+  { index: 58, name: 'O1', group: '所有通道' },
+  { index: 59, name: 'O2', group: '所有通道' },
+  { index: 60, name: 'O3', group: '所有通道' },
+  // -------------------------------------
   { index: 0, name: 'FP1', group: '前额' },
   { index: 1, name: 'FPZ', group: '前额' },
   { index: 2, name: 'FP2', group: '前额' },
@@ -47,7 +69,6 @@ const EEGcolors = [
   '#FFEEAD', // 淡黄色
   '#D39BCA', // 紫色
   '#8C8C8C', // 灰色
-  '#FFD93D', // 柠檬黄
   '#85C1E9', // 蓝绿色
   '#9B9B9B', // 中灰
   '#E67E22', // 橙色
@@ -73,8 +94,8 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
     // const pointsPerFrame = 10 // 每帧显示的点数  每次刷新10个点 1s刷新200个点 和采样频率一致
     let timeIndex = 0 // 当前时间索引
     let isPlaying = false // 播放状态
-    const totalDuration = 130000 // 13 秒播放完毕
-    const totalPoints = 26000 // 总数据点数
+    const totalDuration = 13000 // 13 秒播放完毕
+    const totalPoints = 2600 // 总数据点数
     let startTime = null // 延迟初始化
     let accumulatedTime = 0 // 累积的播放时间
 
@@ -121,6 +142,8 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
         option.grid.push({
           top: `${idx * (100 / filteredChannels.length) + 7}%`,
           height: `${100 / filteredChannels.length - 12}%`,
+          // top: `${idx * (100 / filteredChannels.length) + 10}%`,
+          // height: `${100 / filteredChannels.length - 20}%`,
           left: '2%',
           right: '2%',
         })
@@ -164,9 +187,6 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
       })
 
       EEGchart.setOption(option, { notMerge: true })
-      const videoFrameRate = 24 // 假设视频帧率为 24fps
-      const frameInterval = 1 / videoFrameRate // 每帧的时间间隔
-
       // 添加点击事件：跳转到对应视频时间并暂停
       EEGchart.getZr().off('click')
       // EEGchart.getZr().on('click', function (event) {

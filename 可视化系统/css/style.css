@@ -53,22 +53,31 @@ body {
   .eeg-image {
     width: 100%;
     height: 500px;
-    background-color: #fff;
+    /* background-color: #fff; */
     border-radius: 10px;
     margin-bottom: 10px;  
     /* 修改flex布局，从顶部开始 */
     display: flex;
     justify-content: center; /* 水平居中 */
-    /* gap: 20px;  两个元素之间的间距 */
+    gap: 5px;  /*两个元素之间的间距 */
   }
-  #chart {
-    width:95%;
+  #all-channel{
+    width:35%;
     height: 500px;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;  
     display: flex;
-    border: 2px solid ;
+    border: 1px solid ;
+  }
+  #chart {
+    width:60%;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;  
+    display: flex;
+    border: 1px solid ;
   }
   .controls {
     width: 5%;
@@ -107,7 +116,7 @@ body {
   .bottom-container {
     display: flex;
     justify-content: center; /* 水平居中 */
-    gap: 20px; /* 两个元素之间的间距 */
+    gap: 5px; /* 两个元素之间的间距 */
   }
 
   .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c, #playButton, #playPauseButton{

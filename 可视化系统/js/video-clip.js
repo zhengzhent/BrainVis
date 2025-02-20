@@ -41,18 +41,21 @@ video.addEventListener('play', () => {
 // 交互展示前后帧
 // 显示指定时间的前两帧、中间帧、后两帧
 async function displayFiveFramesAtTime(clickedTime) {
-  const frameInterval = 0.2 // 200ms
+  const frameInterval = 0.041
   const targetTimes = [
-    clickedTime - 2 * frameInterval, // 前两帧
+    clickedTime - 4 * frameInterval,
+    clickedTime - 3 * frameInterval,
+    clickedTime - 2 * frameInterval,
     clickedTime - frameInterval,
     clickedTime, // 中间帧
     clickedTime + frameInterval, // 后两帧
     clickedTime + 2 * frameInterval,
+    clickedTime + 3 * frameInterval,
   ]
-  console.log('1:', targetTimes[0]) // 打印 clickedIndex 的值
-  console.log('2:', targetTimes[1]) // 打印 clickedIndex 的值
-  console.log('3:', targetTimes[2]) // 打印 clickedIndex 的值
-  console.log('4:', targetTimes[3]) // 打印 clickedIndex 的值
+  // console.log('1:', targetTimes[0]) // 打印 clickedIndex 的值
+  // console.log('2:', targetTimes[1]) // 打印 clickedIndex 的值
+  // console.log('3:', targetTimes[2]) // 打印 clickedIndex 的值
+  // console.log('4:', targetTimes[3]) // 打印 clickedIndex 的值
   // 清空之前的帧
   videoClip.innerHTML = ''
 
@@ -84,14 +87,14 @@ async function displayFiveFramesAtTime(clickedTime) {
     // **创建帧图片**
     const img = document.createElement('img')
     img.src = canvas.toDataURL('image/png')
-    img.style.margin = '0 5px'
-    img.style.borderRadius = '8px'
+    img.style.margin = '0 3px'
+    img.style.borderRadius = '6px'
     img.style.transition = 'transform 0.3s ease'
 
     // **中间帧高亮**
-    if (i === 2) {
-      img.style.border = '3px solid red'
-      img.style.transform = 'scale(1.1)'
+    if (i === 4) {
+      img.style.border = '2px solid red'
+      img.style.transform = 'scale(1.0)'
     }
 
     videoClip.appendChild(img)
