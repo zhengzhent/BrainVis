@@ -23,6 +23,28 @@ const EEGchannelInfo = [
   { index: 58, name: 'O1', group: '枕叶' },
   { index: 59, name: 'O2', group: '枕叶' },
   { index: 60, name: 'O3', group: '枕叶' },
+  { index: 0, name: 'FP1', group: '所有通道' },
+  { index: 1, name: 'FPZ', group: '所有通道' },
+  { index: 2, name: 'FP2', group: '所有通道' },
+  { index: 5, name: 'F7', group: '所有通道' },
+  { index: 7, name: 'F3', group: '所有通道' },
+  { index: 9, name: 'FZ', group: '所有通道' },
+  { index: 11, name: 'F4', group: '所有通道' },
+  { index: 13, name: 'F8', group: '所有通道' },
+  { index: 23, name: 'T7', group: '所有通道' },
+  { index: 31, name: 'T8', group: '所有通道' },
+  { index: 25, name: 'C3', group: '所有通道' },
+  { index: 27, name: 'CZ', group: '所有通道' },
+  { index: 29, name: 'C4', group: '所有通道' },
+  { index: 41, name: 'P7', group: '所有通道' },
+  { index: 43, name: 'P3', group: '所有通道' },
+  { index: 45, name: 'PZ', group: '所有通道' },
+  { index: 47, name: 'P4', group: '所有通道' },
+  { index: 49, name: 'P8', group: '所有通道' },
+  { index: 58, name: 'O1', group: '所有通道' },
+  { index: 59, name: 'O2', group: '所有通道' },
+  { index: 60, name: 'O3', group: '所有通道' },
+  // -------------------------------------
 ]
 
 // 从分组信息中提取组别
