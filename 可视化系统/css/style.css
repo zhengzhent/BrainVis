@@ -71,7 +71,7 @@ body {
     border: 1px solid ;
   }
   #chart {
-    width:95%;
+    width:88%;
     height: 500px;
     background-color: #fff;
     border-radius: 10px;
@@ -80,7 +80,7 @@ body {
     border: 1px solid ;
   }
   .controls {
-    width: 5%;
+    width: 12%;
     height: 500px;
     background-color: #fff;
     border-radius: 10px;
