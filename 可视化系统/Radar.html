@@ -1,0 +1,390 @@
+<!-- <!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EEG 雷达图 + 光流柱状图</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      /* 雷达线 */
+      .radar-line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1;
+        opacity: 0.7;
+      }
+      /* 柱状线 */
+      .bar {
+        fill: orange;
+        stroke: black;
+        stroke-width: 1px;
+      }
+      /* 坐标轴线 */
+      .grid-line {
+        stroke: rgba(200, 200, 200, 0.5);
+        stroke-width: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="1000" height="1000"></svg>
+
+    <script>
+      // 画布大小
+      const width = 1000,
+        height = 1000
+      const svg = d3.select('svg').attr('width', width).attr('height', height)
+
+      const radius = 300 // 雷达图基本半径
+      const barBaseRadius = 350 // 柱状图起始半径
+      const barMaxHeight = 100 // 柱状图最大高度
+      const centerX = width / 2,
+        centerY = height / 2
+      const numSegments = 40 // 40个时间段
+      const totalTime = 520 // 520秒时间轴
+      const totalPoints = 104000 // 总数据点
+      const samplingRate = 200 // 采样率 (Hz)
+      const pointsPerSegment = 5 // 每个时间段5个光流数据点
+
+      // 每段 13 秒，其中前 3 秒不计算光流，光流数据从 (3/13) 处开始
+      const offsetRatio = 3 / 13 // 光流数据在每段中的起点（前3秒不显示）
+
+      // **调整角度映射，使第一个 EEG 数据点从 12 点钟方向 (-90°) 开始**
+      const angleScale = d3
+        .scaleLinear()
+        .domain([0, totalTime])
+        .range([-Math.PI / 2, (3 * Math.PI) / 2]) // 12点钟方向开始
+
+      // 绘制网格线（40个分割段）
+      for (let i = 0; i < numSegments; i++) {
+        const angle = i * ((2 * Math.PI) / numSegments) - Math.PI / 2
+        const x1 = centerX,
+          y1 = centerY // 从中心点开始延展
+        const x2 = centerX + Math.cos(angle) * (barBaseRadius + barMaxHeight)
+        const y2 = centerY + Math.sin(angle) * (barBaseRadius + barMaxHeight)
+
+        svg
+          .append('line')
+          .attr('class', 'grid-line')
+          .attr('x1', x1)
+          .attr('y1', y1)
+          .attr('x2', x2)
+          .attr('y2', y2)
+      }
+
+      // 读取 EEG 数据并绘制雷达图
+      d3.json('SEED-DV/single-channel/testData/c0.json')
+        .then((eegData) => {
+          console.log('原始EEG数据:', eegData)
+
+          if (!Array.isArray(eegData) || eegData.length !== totalPoints) {
+            console.error('数据格式错误: 期望 104000 个 EEG 数据点')
+            return
+          }
+
+          // EEG 值范围归一化
+          const minEEG = d3.min(eegData)
+          const maxEEG = d3.max(eegData)
+
+          // EEG 值归一化到半径
+          const radialScale = d3
+            .scaleLinear()
+            .domain([minEEG, maxEEG])
+            .range([0, radius])
+
+          // 计算所有 EEG 数据点的极坐标位置
+          let eegPoints = eegData.map((value, index) => {
+            let time = index / samplingRate
+            return {
+              angle: angleScale(time),
+              radius: radialScale(value),
+            }
+          })
+
+          console.log('转换后的EEG数据:', eegPoints)
+
+          // 绘制 EEG 雷达图
+          const lineGenerator = d3
+            .lineRadial()
+            .angle((d) => d.angle)
+            .radius((d) => d.radius)
+            .curve(d3.curveCatmullRom.alpha(0.5))
+
+          svg
+            .append('path')
+            .datum(eegPoints)
+            .attr('class', 'radar-line')
+            .attr('d', lineGenerator)
+            .attr('transform', `translate(${centerX}, ${centerY})`)
+
+          // 读取光流数据并绘制径向柱状图
+          d3.json('SEED-DV/single-channel/OF_Processed/OF1.json')
+            .then((flowData) => {
+              console.log('原始光流数据:', flowData)
+
+              if (
+                !Array.isArray(flowData) ||
+                flowData.length !== numSegments * pointsPerSegment
+              ) {
+                console.error('光流数据格式错误: 期望 200 个光流数据点')
+                return
+              }
+
+              // 归一化光流数据（映射柱状图高度）
+              const flowScale = d3
+                .scaleLinear()
+                .domain([d3.min(flowData), d3.max(flowData)])
+                .range([10, barMaxHeight])
+
+              // 绘制沿径向延伸的柱状图
+              flowData.forEach((value, index) => {
+                const segmentIndex = Math.floor(index / pointsPerSegment) // 计算属于哪个时间段
+                const subIndex = index % pointsPerSegment // 计算属于该时间段的第几个柱子
+
+                // **调整光流数据起点**
+                const segmentStartAngle = angleScale(
+                  segmentIndex * (totalTime / numSegments),
+                ) // 时间段起始角度
+                const barStartAngle =
+                  segmentStartAngle +
+                  offsetRatio * ((2 * Math.PI) / numSegments) // 柱子起始角度
+
+                // 计算柱子的角度宽度和偏移量
+                const barAngleWidth =
+                  ((10 / 13) * ((2 * Math.PI) / numSegments)) / pointsPerSegment // 每个柱子的角度宽度
+                const angleOffset = subIndex * barAngleWidth // 均匀分布偏移
+                const angle = barStartAngle + angleOffset + 0.018 // 当前柱子的中心角度
+
+                // 计算柱子的起点和终点坐标
+                const height = flowScale(value) // 柱子高度
+                const x1 = centerX + Math.cos(angle) * barBaseRadius
+                const y1 = centerY + Math.sin(angle) * barBaseRadius
+                const x2 = centerX + Math.cos(angle) * (barBaseRadius + height)
+                const y2 = centerY + Math.sin(angle) * (barBaseRadius + height)
+
+                // 绘制柱子
+                svg
+                  .append('line')
+                  .attr('x1', x1)
+                  .attr('y1', y1)
+                  .attr('x2', x2)
+                  .attr('y2', y2)
+                  .attr('stroke', 'orange')
+                  .attr('stroke-width', 5)
+              })
+            })
+            .catch((error) => {
+              console.error('加载光流数据错误:', error)
+            })
+        })
+        .catch((error) => {
+          console.error('加载EEG数据错误:', error)
+        })
+    </script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EEG 雷达图 + 光流柱状图 + RGB像素流</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      /* 雷达线 */
+      .radar-line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1;
+        opacity: 0.7;
+      }
+      /* 光流柱状线 */
+      .bar {
+        fill: orange;
+        stroke: black;
+        stroke-width: 1px;
+      }
+      /* RGB像素流红点 */
+      .rgb-dot {
+        fill: red;
+        opacity: 0.6;
+      }
+      /* 坐标轴线 */
+      .grid-line {
+        stroke: rgba(200, 200, 200, 0.5);
+        stroke-width: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="1000" height="1000"></svg>
+
+    <script>
+      // 画布大小
+      const width = 1000,
+        height = 1000
+      const svg = d3.select('svg').attr('width', width).attr('height', height)
+
+      const radius = 300 // 雷达图基本半径
+      const barBaseRadius = 350 // 光流柱状图起始半径
+      const rgbBaseRadius = 325 // RGB像素流圆点起始半径（在雷达图和光流之间）
+      const barMaxHeight = 100 // 光流柱最大高度
+      const centerX = width / 2,
+        centerY = height / 2
+      const numSegments = 40 // 40个时间段
+      const totalTime = 520 // 520秒时间轴
+      const totalPoints = 104000 // 总数据点
+      const samplingRate = 200 // 采样率 (Hz)
+      const pointsPerSegment = 5 // 每个时间段5个光流数据点
+
+      // **角度计算**
+      const segmentAngle = (2 * Math.PI) / numSegments // 每个时间段的总角度（9°）
+      const flowAngleSpan = segmentAngle * (10 / 13) // 光流柱状图占据 10/13 时间段的角度（6.92°）
+      const barWidth = flowAngleSpan / pointsPerSegment // 让每个柱子更宽
+
+      // **调整角度映射，使 EEG 数据从 12 点钟方向 (-90°) 开始**
+      const angleScale = d3
+        .scaleLinear()
+        .domain([0, totalTime])
+        .range([-Math.PI / 2, (3 * Math.PI) / 2]) // 12点钟方向开始
+
+      // 绘制网格线（40个分割段）
+      for (let i = 0; i < numSegments; i++) {
+        const angle = i * segmentAngle - Math.PI / 2
+        const x1 = centerX,
+          y1 = centerY // 从中心点开始延展
+        const x2 = centerX + Math.cos(angle) * (barBaseRadius + barMaxHeight)
+        const y2 = centerY + Math.sin(angle) * (barBaseRadius + barMaxHeight)
+
+        svg
+          .append('line')
+          .attr('class', 'grid-line')
+          .attr('x1', x1)
+          .attr('y1', y1)
+          .attr('x2', x2)
+          .attr('y2', y2)
+      }
+
+      // 读取 EEG 数据并绘制雷达图
+      d3.json('SEED-DV/single-channel/testData/c0.json').then((eegData) => {
+        console.log('原始EEG数据:', eegData)
+
+        if (!Array.isArray(eegData) || eegData.length !== totalPoints) {
+          console.error('数据格式错误: 期望 104000 个 EEG 数据点')
+          return
+        }
+
+        // EEG 值范围归一化
+        const minEEG = d3.min(eegData)
+        const maxEEG = d3.max(eegData)
+
+        // EEG 值归一化到半径
+        const radialScale = d3
+          .scaleLinear()
+          .domain([minEEG, maxEEG])
+          .range([0, radius])
+
+        // 计算所有 EEG 数据点的极坐标位置
+        let eegPoints = eegData.map((value, index) => {
+          let time = index / samplingRate
+          return {
+            angle: angleScale(time),
+            radius: radialScale(value),
+          }
+        })
+
+        console.log('转换后的EEG数据:', eegPoints)
+
+        // 绘制 EEG 雷达图
+        const lineGenerator = d3
+          .lineRadial()
+          .angle((d) => d.angle)
+          .radius((d) => d.radius)
+          .curve(d3.curveCatmullRom.alpha(0.5))
+
+        svg
+          .append('path')
+          .datum(eegPoints)
+          .attr('class', 'radar-line')
+          .attr('d', lineGenerator)
+          .attr('transform', `translate(${centerX}, ${centerY})`)
+
+        // 读取光流数据并绘制柱状图
+        d3.json('SEED-DV/single-channel/OF_Processed/OF1.json').then(
+          (flowData) => {
+            console.log('光流数据:', flowData)
+
+            if (
+              !Array.isArray(flowData) ||
+              flowData.length !== numSegments * pointsPerSegment
+            ) {
+              console.error('光流数据格式错误')
+              return
+            }
+
+            const flowScale = d3
+              .scaleLinear()
+              .domain([d3.min(flowData), d3.max(flowData)])
+              .range([10, barMaxHeight])
+
+            flowData.forEach((value, index) => {
+              const segmentIndex = Math.floor(index / pointsPerSegment)
+              const subIndex = index % pointsPerSegment
+
+              const baseAngle = angleScale(
+                (segmentIndex + 3 / 13) * (totalTime / numSegments),
+              )
+              const angle = baseAngle + subIndex * barWidth + 0.018
+
+              const height = flowScale(value)
+              const x1 = centerX + Math.cos(angle) * barBaseRadius
+              const y1 = centerY + Math.sin(angle) * barBaseRadius
+              const x2 = centerX + Math.cos(angle) * (barBaseRadius + height)
+              const y2 = centerY + Math.sin(angle) * (barBaseRadius + height)
+
+              svg
+                .append('line')
+                .attr('x1', x1)
+                .attr('y1', y1)
+                .attr('x2', x2)
+                .attr('y2', y2)
+                .attr('stroke', 'orange')
+                .attr('stroke-width', 5)
+            })
+          },
+        )
+
+        // 读取 RGB 数据并绘制红色小圆点
+        d3.json('SEED-DV/single-channel/RGB_Processed/rgb_mean_200.json').then(
+          (rgbData) => {
+            console.log('RGB数据:', rgbData)
+
+            const rgbScale = d3.scaleLinear().domain([0, 1]).range([0.3, 1])
+
+            rgbData.forEach((value, index) => {
+              const segmentIndex = Math.floor(index / pointsPerSegment)
+              const subIndex = index % pointsPerSegment
+
+              const baseAngle = angleScale(
+                (segmentIndex + 3 / 13) * (totalTime / numSegments),
+              )
+              const angle = baseAngle + subIndex * barWidth + 0.015
+
+              const x = centerX + Math.cos(angle) * rgbBaseRadius
+              const y = centerY + Math.sin(angle) * rgbBaseRadius
+
+              svg
+                .append('circle')
+                .attr('cx', x)
+                .attr('cy', y)
+                .attr('r', 4)
+                .attr('fill', 'red')
+                .attr('opacity', rgbScale(value))
+            })
+          },
+        )
+      })
+    </script>
+  </body>
+</html>

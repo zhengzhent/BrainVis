@@ -84,8 +84,8 @@ const EEGcolors = [
 ]
 
 // 加载脑电数据
-fetch('SEED-DV/single-channel/testData/testEEG.json')
-  // fetch('SEED-DV/single-channel/sub1_channel0.json')
+// fetch('SEED-DV/single-channel/testData/testEEG.json') //13s测试数据
+fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
@@ -93,8 +93,8 @@ fetch('SEED-DV/single-channel/testData/testEEG.json')
     // const pointsPerFrame = 10 // 每帧显示的点数  每次刷新10个点 1s刷新200个点 和采样频率一致
     let timeIndex = 0 // 当前时间索引
     let isPlaying = false // 播放状态
-    const totalDuration = 13000 // 13 秒播放完毕
-    const totalPoints = 2600 // 总数据点数
+    const totalDuration = 130000 // 13 秒播放完毕
+    const totalPoints = 26000 // 总数据点数
     let startTime = null // 延迟初始化
     let accumulatedTime = 0 // 累积的播放时间
 
