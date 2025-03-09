@@ -76,22 +76,23 @@ const option = {
     bottom: '15%',
     containLabel: true,
   },
-  dataZoom: [
-    { type: 'slider', xAxisIndex: 0, start: 0, end: 100 },
-    { type: 'inside', xAxisIndex: 0 },
-  ],
   xAxis: {
     type: 'category',
     name: '时间 (ms)',
-    nameLocation: 'middle', // 标题位置：'start'（左）, 'middle'（中）, 'end'（右）
-    nameGap: 10, // 标题与轴线之间的距离，可以调整这个值
+    nameLocation: 'middle',
+    nameGap: 10,
     nameTextStyle: {
-      // 标题文字样式
-      padding: [10, 0, 0, 0], // 上右下左的内边距
+      padding: [10, 0, 0, 0],
     },
     data: [],
+    show: false,
   },
-  yAxis: { type: 'value', name: '电压 (μV)', splitLine: { show: false } },
+  yAxis: { 
+    type: 'value', 
+    name: '电压 (μV)', 
+    splitLine: { show: false },
+    show: false,
+  },
   series: [],
 }
 

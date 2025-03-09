@@ -30,13 +30,29 @@
 
       <div class="controls">
         <!-- <button id="playButton">播放</button> -->
-        <button id="playPauseButton" class="control-button">播放</button>
-        <button class="btn_c">Choose</button>
-        <select id="groupSelector" class="group-select">
+         <div id="part1">
+          <button id="playPauseButton" class="control-button">播放</button>
+          <button class="btn_c">Choose</button>
+         </div>
+
+        <!-- <select id="groupSelector" class="group-select"> -->
           <!-- 动态填充选项 -->
-        </select>
+        <!-- </select> -->
+         <div id="part2">
+          <div id="buttonGroup" class="button-group">
+            <button class="group-button" data-group="前额">前额</button>
+            <button class="group-button" data-group="额叶">额叶</button>
+            <button class="group-button" data-group="颞叶">颞叶</button>
+            <button class="group-button" data-group="中心部">中心部</button>
+            <button class="group-button" data-group="顶叶">顶叶</button>
+            <button class="group-button" data-group="枕叶">枕叶</button>
+            <button class="group-button" data-group="所有通道">所有通道</button>
+          </div>
+         </div>
+
       </div>
       <div id="chart"></div>
+
     </div>
 
     <div class="bottom-container">

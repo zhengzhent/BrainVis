@@ -47,18 +47,6 @@ const EEGchannelInfo = [
   // -------------------------------------
 ]
 
-// 从分组信息中提取组别
-const groups = [...new Set(EEGchannelInfo.map((channel) => channel.group))]
-
-// 动态填充下拉框选项
-const groupSelector = document.getElementById('groupSelector')
-groups.forEach((group) => {
-  const option = document.createElement('option')
-  option.value = group
-  option.textContent = group
-  groupSelector.appendChild(option)
-})
-
 // 添加颜色数组
 const EEGcolors = [
   '#FF6B6B', // 玫瑰红
@@ -84,13 +72,10 @@ const EEGcolors = [
 ]
 
 // 加载脑电数据
-// fetch('SEED-DV/single-channel/testData/testEEG.json') //13s测试数据
-fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
+fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
-    // const frameInterval = 50 // 帧间隔 50ms刷新一次 即1s刷新20次
-    // const pointsPerFrame = 10 // 每帧显示的点数  每次刷新10个点 1s刷新200个点 和采样频率一致
     let timeIndex = 0 // 当前时间索引
     let isPlaying = false // 播放状态
     const totalDuration = 130000 // 13 秒播放完毕
@@ -141,8 +126,6 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
         option.grid.push({
           top: `${idx * (100 / filteredChannels.length) + 7}%`,
           height: `${100 / filteredChannels.length - 12}%`,
-          // top: `${idx * (100 / filteredChannels.length) + 10}%`,
-          // height: `${100 / filteredChannels.length - 20}%`,
           left: '2%',
           right: '2%',
         })
@@ -186,44 +169,9 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
       })
 
       EEGchart.setOption(option, { notMerge: true })
+      
       // 添加点击事件：跳转到对应视频时间并暂停
       EEGchart.getZr().off('click')
-      // EEGchart.getZr().on('click', function (event) {
-      //   const pointInPixel = [event.offsetX, event.offsetY]
-      //   const pointInGrid = EEGchart.convertFromPixel(
-      //     { seriesIndex: 0 },
-      //     pointInPixel,
-      //   )
-
-      //   console.log('pointInGrid:', pointInGrid) // 打印 pointInGrid 的值
-
-      //   if (pointInGrid) {
-      //     const clickedIndex = Math.round(pointInGrid[0])
-      //     console.log('clickedIndex:', clickedIndex) // 打印 clickedIndex 的值
-
-      //     const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
-      //     console.log('clickedTime:', clickedTime) // 打印 clickedTime 的值
-
-      //     // 将 clickedTime 对齐到视频的帧时间
-      //     const alignedTime =
-      //       Math.round(clickedTime / frameInterval) * frameInterval
-      //     console.log('alignedTime:', alignedTime) // 打印 alignedTime 的值
-
-      //     // 跳转到对应视频时间并暂停
-      //     video.currentTime = alignedTime
-      //     accumulatedTime = alignedTime * 1000
-      //     console.log('accumulatedTime:', accumulatedTime) // 打印 accumulatedTime 的值
-      //     timeIndex = clickedIndex
-
-      //     // 停止播放，保持 EEG 图静止
-      //     isPlaying = false
-      //     playPauseButton.textContent = '播放'
-      //     video.pause()
-
-      //     // 调用 displayFiveFramesAtTime() 显示前中后五帧
-      //     displayFiveFramesAtTime(alignedTime)
-      //   }
-      // })
       EEGchart.getZr().on('click', function (event) {
         const pointInPixel = [event.offsetX, event.offsetY]
         const pointInGrid = EEGchart.convertFromPixel(
@@ -234,13 +182,13 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
         if (pointInGrid) {
           const clickedIndex = Math.round(pointInGrid[0])
           const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
-          console.log('clickedIndex:', clickedIndex) // 打印 clickedIndex 的值
-          console.log('clickedTime:', clickedTime) // 打印 clickedTime 的值
+          console.log('clickedIndex:', clickedIndex)
+          console.log('clickedTime:', clickedTime)
 
           // 跳转到对应视频时间并暂停
           video.currentTime = clickedTime
           accumulatedTime = clickedTime * 1000
-          console.log('accumulatedTime:', accumulatedTime) // 打印 accumulatedTime 的值
+          console.log('accumulatedTime:', accumulatedTime)
           timeIndex = clickedIndex
 
           // 停止播放，保持 EEG 图静止
@@ -248,20 +196,21 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
           playPauseButton.textContent = '播放'
           video.pause()
 
-          // **调用 displayFiveFramesAtTime() 显示前中后五帧**
           displayFiveFramesAtTime(clickedTime)
         }
       })
     }
 
-    // 默认加载第一个组别
-    renderChart(groups[0])
+    // 默认加载第一个组别 - 前额
+    renderChart('前额')
 
-    // 分组选择事件
-    groupSelector.addEventListener('change', (event) => {
-      const selectedGroup = event.target.value
-      // timeIndex = 0 // 重置时间索引以便重新播放
-      renderChart(selectedGroup)
+    // 组别按钮点击事件
+    const buttons = document.querySelectorAll('.group-button')
+    buttons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        const selectedGroup = event.target.dataset.group
+        renderChart(selectedGroup)
+      })
     })
 
     // 暂停/播放按钮事件
@@ -278,20 +227,16 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
 
       if (isPlaying) {
         video.play()
-        // 继续播放时，不重置 startTime，而是从当前时间继续
-        startTime = performance.now()
+        startTime = performance.now() - accumulatedTime // 从当前累积时间开始播放
       } else {
         video.pause()
-        // 暂停时，累积已播放的时间
-        accumulatedTime += performance.now() - startTime
-        startTime = null
       }
     })
 
     function updateChart() {
       if (isPlaying) {
         const currentTime = performance.now()
-        const elapsedTime = accumulatedTime + (currentTime - startTime)
+        const elapsedTime = currentTime - startTime
 
         // 根据总时间计算当前应显示的数据点
         timeIndex = Math.floor((elapsedTime / totalDuration) * totalPoints)
@@ -299,19 +244,20 @@ fetch('SEED-DV/single-channel/sub1_channel0.json') //完整
         // 确保不超过数据长度
         if (timeIndex >= totalPoints) {
           timeIndex = totalPoints
-          isPlaying = false // 播放结束后停止动画
-          playPauseButton.textContent = '播放' // 按钮文字更新
-          video.pause() // 同步暂停视频
+          isPlaying = false
+          playPauseButton.textContent = '播放'
+          video.pause()
         }
 
         // 更新图表
-        const selectedGroup = document.getElementById('groupSelector').value
+        const activeButton = document.querySelector('.group-button.active')
+        const selectedGroup = activeButton ? activeButton.dataset.group : '前额'
         renderChart(selectedGroup)
       }
 
       requestAnimationFrame(updateChart)
     }
-    //更新
+    
     updateChart()
   })
   .catch((error) => {
