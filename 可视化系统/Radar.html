@@ -10,8 +10,8 @@
       .radar-line {
         fill: none;
         stroke: steelblue;
-        stroke-width: 1;
-        opacity: 0.7;
+        stroke-width: 1.5;
+        opacity: 1;
       }
       /* 光流柱状线 */
       .bar {
@@ -26,7 +26,7 @@
       }
       /* 坐标轴线 */
       .grid-line {
-        stroke: rgba(200, 200, 200, 0.5);
+        stroke: rgba(200, 200, 200, 0.3);
         stroke-width: 1;
       }
       /* Tooltip 样式 */
@@ -53,7 +53,7 @@
       const svg = d3.select('svg').attr('width', width).attr('height', height)
       const tooltip = d3.select('.tooltip') // 获取 tooltip 元素
 
-      const radius = 300 // 雷达图基本半径
+      const radius = 240 // 雷达图基本半径
       const barBaseRadius = 350 // 光流柱状图起始半径
       const rgbBaseRadius = 325 // RGB像素流圆点起始半径（在雷达图和光流之间）
       const barMaxHeight = 100 // 光流柱最大高度
@@ -65,7 +65,12 @@
       const totalPoints = 200 // 总数据点
       const samplingRate = 0.5 // 采样率 (Hz)
       const pointsPerSegment = 5 // 每个时间段5个光流数据点
-      const eegPointsPerBar = 2 // 每个光流柱代表 2 个 EEG 数据点
+      const eegPointsPerBar = 1 // 每个光流柱代表 2 个 EEG 数据点
+
+      const deBaseRadius = 270 // 在 EEG 数据点（最大240） 和 RGB 点（325）之间
+      const deMaxHeight = 40 // DE 数据条的最大高度
+      // 设定 DE 数据的显示阈值（可调整）
+      const deThreshold = -21.6624 // 只有 DE 值大于 0.5 时，才绘制条形
 
       // **角度计算**
       const segmentAngle = (2 * Math.PI) / numSegments // 每个时间段的总角度（9°）
@@ -102,12 +107,12 @@
 
       // 读取 EEG 数据并绘制雷达图
       d3.json(
-        'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ.json',
+        'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ_Gamma.json',
       ).then((eegData) => {
         console.log('原始EEG数据:', eegData)
 
         if (!Array.isArray(eegData) || eegData.length !== totalPoints) {
-          console.error('数据格式错误: 期望 800 个 EEG 数据点')
+          console.error('数据格式错误: 期望 200 个 EEG 数据点')
           return
         }
 
@@ -119,7 +124,7 @@
         const radialScale = d3
           .scaleLinear()
           .domain([minEEG, maxEEG])
-          .range([200, radius])
+          .range([130, radius])
 
         // EEG 值归一化到 [0,1] 范围
         const eegNormalizeScale = d3
@@ -158,39 +163,42 @@
           .attr('stroke-width', 1)
           .attr('opacity', 0.7)
 
-        // **绘制 EEG 数据点**
-        eegPoints.forEach((point, index) => {
-          const x = centerX + Math.cos(point.angle) * point.radius
-          const y = centerY + Math.sin(point.angle) * point.radius
+        // // **绘制 EEG 数据点**
+        // eegPoints.forEach((point, index) => {
+        //   const x = centerX + Math.cos(point.angle) * point.radius
+        //   const y = centerY + Math.sin(point.angle) * point.radius
 
-          svg
-            .append('circle')
-            .attr('cx', x)
-            .attr('cy', y)
-            .attr('r', 2) // EEG 数据点大小
-            .attr('fill', 'blue') // EEG 数据点颜色
-            .on('mouseover', () => {
-              tooltip.style('visibility', 'visible').html(`
-        <b>时间点:</b> ${index + 1} <br>
-        <b>EEG 值:</b> ${point.rawValue.toExponential(3)} <br>
-        <b>EEG 归一化:</b> ${point.normValue.toFixed(3)}
-      `)
-            })
-            .on('mousemove', (event) => {
-              tooltip
-                .style('top', `${event.pageY + 10}px`)
-                .style('left', `${event.pageX + 10}px`)
-            })
-            .on('mouseout', () => {
-              tooltip.style('visibility', 'hidden')
-            })
-        })
+        //   svg
+        //     .append('circle')
+        //     .attr('cx', x)
+        //     .attr('cy', y)
+        //     .attr('r', 2) // EEG 数据点大小
+        //     .attr('fill', 'blue') // EEG 数据点颜色
+        //     .on('mouseover', () => {
+        //       tooltip.style('visibility', 'visible').html(`
+        //         <b>时间点:</b> ${index + 1} <br>
+        //         <b>EEG 值:</b> ${point.rawValue.toExponential(3)} <br>
+        //         <b>EEG 归一化:</b> ${point.normValue.toFixed(3)}
+        //       `)
+        //     })
+        //     .on('mousemove', (event) => {
+        //       tooltip
+        //         .style('top', `${event.pageY + 10}px`)
+        //         .style('left', `${event.pageX + 10}px`)
+        //     })
+        //     .on('mouseout', () => {
+        //       tooltip.style('visibility', 'hidden')
+        //     })
+        // })
 
         // 读取光流数据 & RGB 数据，并绘制交互效果
         Promise.all([
-          d3.json('SEED-DV/single-channel/OF_Processed/OF1.json'),
-          d3.json('SEED-DV/single-channel/RGB_Processed/rgb_mean_200.json'),
-        ]).then(([flowData, rgbData]) => {
+          d3.json('SEED-DV/single-channel/OF_Processed/OF1.json'), //读取 光流 特征数据
+          d3.json('SEED-DV/single-channel/RGB_Processed/rgb_mean_200.json'), //读取 RGB 特征数据
+          d3.json(
+            'SEED-DV/single-channel/EEG_Feature/sub5_block1_DE_2s_OZ_Gamma.json',
+          ), // 读取 DE 特征数据
+        ]).then(([flowData, rgbData, deData]) => {
           if (
             !Array.isArray(flowData) ||
             flowData.length !== numSegments * pointsPerSegment
@@ -205,29 +213,53 @@
             console.error('RGB 数据格式错误')
             return
           }
+          if (
+            !Array.isArray(deData) ||
+            deData.length !== numSegments * pointsPerSegment
+          ) {
+            console.error('DE 数据格式错误')
+            return
+          }
 
+          //光流数据映射到[10, barMaxHeight]
           const flowScale = d3
             .scaleLinear()
             .domain([d3.min(flowData), d3.max(flowData)])
             .range([10, barMaxHeight])
 
+          //rgb数据映射到0.1 - 1 颜色深度
           const rgbScale = d3.scaleLinear().domain([0, 1]).range([0.1, 1])
+
+          //Flow数据 0-1归一化
+          const flowNormalizationScale = d3
+            .scaleLinear()
+            .domain([d3.min(flowData), d3.max(flowData)])
+            .range([0, 1])
+
+          //DE数据 0-1归一化
+          const deNormalizationScale = d3
+            .scaleLinear()
+            .domain([d3.min(deData), d3.max(deData)])
+            .range([0, 1])
 
           // 遍历所有时间段的5个数据点
           flowData.forEach((flowValue, index) => {
             const segmentIndex = Math.floor(index / pointsPerSegment) //第几个时间区
             const subIndex = index % pointsPerSegment //第几个时间区的子区
             const rgbValue = rgbData[index] // 获取对应的 RGB 值
+            const deValue = deData[index] //获取对应的de值
 
             // 获取当前柱子对应的 EEG 数据点/
-            const eegIndex1 = segmentIndex * 10 + subIndex * eegPointsPerBar
+            const eegIndex1 = segmentIndex * 5 + subIndex * eegPointsPerBar
             const eegIndex2 = eegIndex1 + 1
+            // 若窗口1s则要采用两个数据点index
             // // console.log('eegIndex1:', eegIndex1)
             // const eegValue1 =
             //   eegIndex1 < totalPoints ? eegData[eegIndex1] : null
             // const eegValue2 =
             //   eegIndex2 < totalPoints ? eegData[eegIndex2] : null
-
+            console.log('Index1：', eegIndex1)
+            console.log('Index2：', eegIndex2)
             const eegValue1 =
               eegIndex1 < totalPoints
                 ? eegNormalizeScale(eegData[eegIndex1])
@@ -239,6 +271,14 @@
             const baseAngle = angleScale(
               segmentIndex * (totalTime / numSegments) + 1.5,
             )
+
+            //DE数据0-1归一化
+            const deNormalizationValue = deNormalizationScale(deData[index])
+            //flow数据0-1归一化
+            const flowNormalizationValue = flowNormalizationScale(
+              flowData[index],
+            )
+
             const angle = baseAngle + subIndex * barWidth
 
             const height = flowScale(flowValue)
@@ -255,7 +295,7 @@
               .startAngle(angle - barWidth / 2 + Math.PI / 2) // 修正角度偏移
               .endAngle(angle + barWidth / 2 + Math.PI / 2)
 
-            // 绘制光流柱
+            // 绘制光流柱---------------------------------------------------------------------------------------------------------------
             svg
               .append('line')
               .attr('x1', x1)
@@ -271,17 +311,15 @@
                   .attr('visibility', 'visible')
 
                 tooltip.style('visibility', 'visible').html(`
-            <b>时间段:</b> ${segmentIndex + 1} <br>
-            <b>切片:</b> ${subIndex + 1} <br>
-            <b>光流值:</b> ${flowValue.toFixed(3)} <br>
-            <b>RGB 值:</b> ${rgbValue.toFixed(3)} <br>
-            <b>EEG 数据 1:</b> ${
-              eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
-            } <br>
-            <b>EEG 数据 2:</b> ${
-              eegValue2 !== null ? eegValue2.toFixed(3) : 'N/A'
-            }
-          `)
+                  <b>Class: </b> ${segmentIndex + 1} <br>
+                  <b>Clip: </b> ${subIndex + 1} <br>
+                  <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(3)} <br>
+                  <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                  <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                  <b>EEG PSD: </b> ${
+                    eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                  } <br>
+                `)
               })
               .on('mousemove', (event) => {
                 tooltip
@@ -293,7 +331,7 @@
                 tooltip.style('visibility', 'hidden')
               })
 
-            // 绘制 RGB 圆点
+            // 绘制 RGB 圆点-------------------------------------------------------------------------------------
             const rgbX = centerX + Math.cos(angle) * rgbBaseRadius
             const rgbY = centerY + Math.sin(angle) * rgbBaseRadius
 
@@ -316,22 +354,70 @@
                   .attr('d', arcGenerator())
                   .attr('transform', `translate(${centerX}, ${centerY})`)
                   .attr('visibility', 'visible')
+
                 tooltip.style('visibility', 'visible').html(`
-            <b>时间段:</b> ${segmentIndex + 1} <br>
-            <b>切片:</b> ${subIndex + 1} <br>
-            <b>光流值:</b> ${flowValue.toFixed(3)} <br>
-            <b>RGB 值:</b> ${rgbValue.toFixed(3)} <br>
-            <b>EEG 数据 1:</b> ${
-              eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
-            } <br>
-            <b>EEG 数据 2:</b> ${
-              eegValue2 !== null ? eegValue2.toFixed(3) : 'N/A'
-            }
-          `)
+                  <b>Class: </b> ${segmentIndex + 1} <br>
+                  <b>Clip: </b> ${subIndex + 1} <br>
+                  <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(3)} <br>
+                  <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                  <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                  <b>EEG PSD: </b> ${
+                    eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                  } <br>
+                `)
               })
               .on('mouseout', () => {
                 tooltip.style('visibility', 'hidden')
               })
+
+            //DE阈值---------------------------------------------------------------------------------
+            // DE 数据归一化
+            const deScale = d3
+              .scaleLinear()
+              .domain([d3.min(deData), d3.max(deData)])
+              .range([0, deMaxHeight])
+
+            // 计算 DE 条形的高度
+            const deHeight = deScale(deValue)
+
+            // 只有 DE 值大于阈值才绘制条形
+            if (deValue > deThreshold) {
+              const x1 = centerX + Math.cos(angle) * deBaseRadius
+              const y1 = centerY + Math.sin(angle) * deBaseRadius
+              const x2 = centerX + Math.cos(angle) * (deBaseRadius + deHeight)
+              const y2 = centerY + Math.sin(angle) * (deBaseRadius + deHeight)
+
+              svg
+                .append('line')
+                .attr('x1', x1)
+                .attr('y1', y1)
+                .attr('x2', x2)
+                .attr('y2', y2)
+                .attr('stroke', 'purple') // DE 数据条颜色
+                .attr('stroke-width', 3)
+                .on('mouseover', () => {
+                  tooltip.style('visibility', 'visible').html(`
+                    <b>Class: </b> ${segmentIndex + 1} <br>
+                    <b>Clip: </b> ${subIndex + 1} <br>
+                    <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(
+                      3,
+                    )} <br>
+                    <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                    <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                    <b>EEG PSD: </b> ${
+                      eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                    } <br>
+                  `)
+                })
+                .on('mousemove', (event) => {
+                  tooltip
+                    .style('top', `${event.pageY + 10}px`)
+                    .style('left', `${event.pageX + 10}px`)
+                })
+                .on('mouseout', () => {
+                  tooltip.style('visibility', 'hidden')
+                })
+            }
           })
         })
       })
