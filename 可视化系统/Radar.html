@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EEG 雷达图 + 光流柱状图 + RGB像素流</title>
+    <title>脑电特征&视频特征</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
       /* 雷达线 */
@@ -62,8 +62,8 @@
       const numSegments = 40 // 40个时间段
 
       const totalTime = 400 // 400秒时间轴
-      const totalPoints = 400 // 总数据点
-      const samplingRate = 1 // 采样率 (Hz)
+      const totalPoints = 200 // 总数据点
+      const samplingRate = 0.5 // 采样率 (Hz)
       const pointsPerSegment = 5 // 每个时间段5个光流数据点
       const eegPointsPerBar = 2 // 每个光流柱代表 2 个 EEG 数据点
 
@@ -102,7 +102,7 @@
 
       // 读取 EEG 数据并绘制雷达图
       d3.json(
-        'SEED-DV/single-channel/EEG_Feature/sub1_block1_PSD_1s_OZ.json',
+        'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ.json',
       ).then((eegData) => {
         console.log('原始EEG数据:', eegData)
 
@@ -312,6 +312,10 @@
               .attr('fill', 'red')
               .attr('opacity', rgbScale(rgbValue))
               .on('mouseover', () => {
+                highlightArc
+                  .attr('d', arcGenerator())
+                  .attr('transform', `translate(${centerX}, ${centerY})`)
+                  .attr('visibility', 'visible')
                 tooltip.style('visibility', 'visible').html(`
             <b>时间段:</b> ${segmentIndex + 1} <br>
             <b>切片:</b> ${subIndex + 1} <br>
