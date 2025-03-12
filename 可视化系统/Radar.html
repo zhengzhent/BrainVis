@@ -10,15 +10,10 @@
       .radar-line {
         fill: none;
         stroke: steelblue;
-        stroke-width: 1.5;
-        opacity: 1;
+        stroke-width: 1.2;
+        opacity: 0.6;
       }
-      /* 光流柱状线 */
-      .bar {
-        fill: orange;
-        stroke: black;
-        stroke-width: 1px;
-      }
+
       /* RGB像素流红点 */
       .rgb-dot {
         fill: red;
@@ -28,6 +23,7 @@
       .grid-line {
         stroke: rgba(200, 200, 200, 0.3);
         stroke-width: 1;
+        opacity: 0.6;
       }
       /* Tooltip 样式 */
       .tooltip {
@@ -93,8 +89,10 @@
         const angle = i * segmentAngle - Math.PI / 2
         const x1 = centerX,
           y1 = centerY // 从中心点开始延展
-        const x2 = centerX + Math.cos(angle) * (barBaseRadius + barMaxHeight)
-        const y2 = centerY + Math.sin(angle) * (barBaseRadius + barMaxHeight)
+        const x2 =
+          centerX + Math.cos(angle) * (barBaseRadius + barMaxHeight - 80)
+        const y2 =
+          centerY + Math.sin(angle) * (barBaseRadius + barMaxHeight - 80)
 
         svg
           .append('line')
@@ -124,7 +122,7 @@
         const radialScale = d3
           .scaleLinear()
           .domain([minEEG, maxEEG])
-          .range([130, radius])
+          .range([160, radius])
 
         // EEG 值归一化到 [0,1] 范围
         const eegNormalizeScale = d3
@@ -151,6 +149,38 @@
           .angle((d) => d.angle + Math.PI / 2) // **额外顺时针旋转 90°**
           .radius((d) => d.radius)
           .curve(d3.curveCatmullRom.alpha(0.5)) // **平滑曲线**
+        const defs = svg.append('defs')
+
+        const gradient = defs
+          .append('radialGradient')
+          .attr('id', 'eegGradient')
+          .attr('cx', '50%')
+          .attr('cy', '50%')
+          .attr('r', '50%') // 让渐变覆盖整个 EEG 区域
+
+        // 定义渐变颜色（从浅蓝到深蓝）
+        gradient
+          .append('stop')
+          .attr('offset', '0%')
+          .attr('stop-color', '#ADD8E6') // 浅蓝色
+          .attr('stop-opacity', 0.6)
+
+        gradient
+          .append('stop')
+          .attr('offset', '100%')
+          .attr('stop-color', '#0072B2') // 深蓝色
+          .attr('stop-opacity', 0.9)
+
+        // **绘制填充区域**
+        svg
+          .append('path')
+          .datum(eegPoints)
+          .attr('class', 'eeg-fill')
+          .attr('d', lineGenerator)
+          .attr('transform', `translate(${centerX}, ${centerY})`)
+          .attr('fill', 'url(#eegGradient)') // **填充渐变色**
+          .attr('stroke', 'none')
+          .attr('opacity', 0.8)
 
         svg
           .append('path')
@@ -160,8 +190,8 @@
           .attr('transform', `translate(${centerX}, ${centerY})`)
           .attr('fill', 'none')
           .attr('stroke', 'steelblue')
-          .attr('stroke-width', 1)
-          .attr('opacity', 0.7)
+          .attr('stroke-width', 1.2)
+          .attr('opacity', 0.9)
 
         // // **绘制 EEG 数据点**
         // eegPoints.forEach((point, index) => {
@@ -221,6 +251,412 @@
             return
           }
 
+          // 手动指定不同Clip的颜色
+          const categoryColors = [
+            '#FF8C00',
+            '#666666',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#0072B2',
+            '#0072B2',
+            '#FCEC52',
+            '#0072B2',
+            '#FF8C00',
+            '#FCEC52',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#E0E0E0',
+            '#E0E0E0',
+            '#E0E0E0',
+            '#E0E0E0',
+            '#E0E0E0',
+            '#009E73',
+            '#009E73',
+            '#009E73',
+            '#009E73',
+            '#009E73',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FCEC52',
+            '#FF8C00',
+            '#FCEC52',
+            '#FCEC52',
+            '#FCEC52',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#009E73',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#E0E0E0',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#0072B2',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FCEC52',
+            '#FCEC52',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#666666',
+            '#FF8C00',
+            '#FF8C00',
+            '#FCEC52',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#E74C3C',
+            '#E74C3C',
+            '#009E73',
+            '#009E73',
+            '#009E73',
+            '#FF8C00',
+            '#0072B2',
+            '#E0E0E0',
+            '#666666',
+            '#666666',
+            '#FF8C00',
+            '#666666',
+            '#FF8C00',
+            '#FCEC52',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#0072B2',
+            '#FF8C00',
+            '#FF8C00',
+            '#E74C3C',
+            '#E74C3C',
+            '#E74C3C',
+            '#E74C3C',
+            '#E0E0E0',
+            '#FCEC52',
+            '#E74C3C',
+            '#FF8C00',
+            '#E0E0E0',
+            '#E74C3C',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#E0E0E0',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#FF8C00',
+            '#0072B2',
+            '#0072B2',
+            '#0072B2',
+            '#0072B2',
+            '#0072B2',
+          ]
+          const categoryColorsName = [
+            'Colorful',
+            'Grey',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Blue',
+            'Blue',
+            'Yellow',
+            'Blue',
+            'Colorful',
+            'Yellow',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'White',
+            'White',
+            'White',
+            'White',
+            'White',
+            'Green',
+            'Green',
+            'Green',
+            'Green',
+            'Green',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Yellow',
+            'Colorful',
+            'Yellow',
+            'Yellow',
+            'Yellow',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Green',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'White',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Blue',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Yellow',
+            'Yellow',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Grey',
+            'Colorful',
+            'Colorful',
+            'Yellow',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Red',
+            'Red',
+            'Green',
+            'Green',
+            'Green',
+            'Colorful',
+            'Blue',
+            'White',
+            'Grey',
+            'Grey',
+            'Colorful',
+            'Grey',
+            'Colorful',
+            'Yellow',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Blue',
+            'Colorful',
+            'Colorful',
+            'Red',
+            'Red',
+            'Red',
+            'Red',
+            'White',
+            'Yellow',
+            'Red',
+            'Colorful',
+            'White',
+            'Red',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'White',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Colorful',
+            'Blue',
+            'Blue',
+            'Blue',
+            'Blue',
+            'Blue',
+          ]
+
           //光流数据映射到[10, barMaxHeight]
           const flowScale = d3
             .scaleLinear()
@@ -248,6 +684,8 @@
             const subIndex = index % pointsPerSegment //第几个时间区的子区
             const rgbValue = rgbData[index] // 获取对应的 RGB 值
             const deValue = deData[index] //获取对应的de值
+
+            const color = categoryColors[index]
 
             // 获取当前柱子对应的 EEG 数据点/
             const eegIndex1 = segmentIndex * 5 + subIndex * eegPointsPerBar
@@ -302,7 +740,7 @@
               .attr('y1', y1)
               .attr('x2', x2)
               .attr('y2', y2)
-              .attr('stroke', 'orange')
+              .attr('stroke', color)
               .attr('stroke-width', 5)
               .on('mouseover', () => {
                 highlightArc
@@ -319,6 +757,7 @@
                   <b>EEG PSD: </b> ${
                     eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
                   } <br>
+                  <b>Color: <b>${categoryColorsName[index]}<br>
                 `)
               })
               .on('mousemove', (event) => {
@@ -364,6 +803,7 @@
                   <b>EEG PSD: </b> ${
                     eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
                   } <br>
+                  <b>Color: <b>${categoryColorsName[index]}<br>
                 `)
               })
               .on('mouseout', () => {
@@ -407,6 +847,7 @@
                     <b>EEG PSD: </b> ${
                       eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
                     } <br>
+                    <b>Color: <b>${categoryColorsName[index]}<br>
                   `)
                 })
                 .on('mousemove', (event) => {
