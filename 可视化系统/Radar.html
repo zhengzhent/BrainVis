@@ -11,7 +11,7 @@
         fill: none;
         stroke: steelblue;
         stroke-width: 1.2;
-        opacity: 0.6;
+        opacity: 0;
       }
 
       /* RGB像素流红点 */
@@ -65,6 +65,7 @@
 
       const deBaseRadius = 270 // 在 EEG 数据点（最大240） 和 RGB 点（325）之间
       const deMaxHeight = 40 // DE 数据条的最大高度
+
       // 设定 DE 数据的显示阈值（可调整）
       const deThreshold = -21.6624 // 只有 DE 值大于 0.5 时，才绘制条形
 
@@ -81,7 +82,7 @@
       // **添加高亮的扇形路径**
       const highlightArc = svg
         .append('path')
-        .attr('fill', 'rgba(255, 165, 0, 0.3)')
+        .attr('fill', 'rgba(211, 211, 211, 0.5)')
         .attr('visibility', 'hidden')
 
       // 绘制网格线（40个分割段）
@@ -122,7 +123,7 @@
         const radialScale = d3
           .scaleLinear()
           .domain([minEEG, maxEEG])
-          .range([160, radius])
+          .range([150, radius])
 
         // EEG 值归一化到 [0,1] 范围
         const eegNormalizeScale = d3
@@ -151,25 +152,51 @@
           .curve(d3.curveCatmullRom.alpha(0.5)) // **平滑曲线**
         const defs = svg.append('defs')
 
+        // const gradient = defs
+        //   .append('radialGradient')
+        //   .attr('id', 'eegGradient')
+        //   .attr('cx', '50%')
+        //   .attr('cy', '50%')
+        //   .attr('r', '100%') // 让渐变覆盖整个 EEG 区域
+
+        // // 定义渐变颜色（从浅蓝到深蓝）
+        // gradient
+        //   .append('stop')
+        //   .attr('offset', '0%')
+        //   .attr('stop-color', '#E0F7FF') // 浅蓝色
+        //   .attr('stop-opacity', 0.6)
+
+        // gradient
+        //   .append('stop')
+        //   .attr('offset', '100%')
+        //   .attr('stop-color', '#0072B2') // 深蓝色
+        //   .attr('stop-opacity', 1)
+
         const gradient = defs
           .append('radialGradient')
           .attr('id', 'eegGradient')
-          .attr('cx', '50%')
+          .attr('cx', '50%') // 确保渐变中心点在圆心
           .attr('cy', '50%')
-          .attr('r', '50%') // 让渐变覆盖整个 EEG 区域
+          .attr('r', '100%') // 让渐变更集中在 EEG 数据区域内
 
-        // 定义渐变颜色（从浅蓝到深蓝）
+        // 定义渐变颜色（增强对比度）
         gradient
           .append('stop')
-          .attr('offset', '0%')
-          .attr('stop-color', '#ADD8E6') // 浅蓝色
+          .attr('offset', '10%') // **更小的白色区域**
+          .attr('stop-color', '#E0F7FF') // **更亮的浅蓝**
+          .attr('stop-opacity', 1)
+
+        gradient
+          .append('stop')
+          .attr('offset', '40%') // **让过渡更快变深**
+          .attr('stop-color', '#0072B2') // **中间蓝色**
+          .attr('stop-opacity', 1)
+
+        gradient
+          .append('stop')
+          .attr('offset', '100%') // **最大数据点处**
+          .attr('stop-color', '#001F4D') // **更深的深蓝**
           .attr('stop-opacity', 0.6)
-
-        gradient
-          .append('stop')
-          .attr('offset', '100%')
-          .attr('stop-color', '#0072B2') // 深蓝色
-          .attr('stop-opacity', 0.9)
 
         // **绘制填充区域**
         svg
@@ -180,7 +207,7 @@
           .attr('transform', `translate(${centerX}, ${centerY})`)
           .attr('fill', 'url(#eegGradient)') // **填充渐变色**
           .attr('stroke', 'none')
-          .attr('opacity', 0.8)
+          .attr('opacity', 1)
 
         svg
           .append('path')
@@ -190,36 +217,8 @@
           .attr('transform', `translate(${centerX}, ${centerY})`)
           .attr('fill', 'none')
           .attr('stroke', 'steelblue')
-          .attr('stroke-width', 1.2)
-          .attr('opacity', 0.9)
-
-        // // **绘制 EEG 数据点**
-        // eegPoints.forEach((point, index) => {
-        //   const x = centerX + Math.cos(point.angle) * point.radius
-        //   const y = centerY + Math.sin(point.angle) * point.radius
-
-        //   svg
-        //     .append('circle')
-        //     .attr('cx', x)
-        //     .attr('cy', y)
-        //     .attr('r', 2) // EEG 数据点大小
-        //     .attr('fill', 'blue') // EEG 数据点颜色
-        //     .on('mouseover', () => {
-        //       tooltip.style('visibility', 'visible').html(`
-        //         <b>时间点:</b> ${index + 1} <br>
-        //         <b>EEG 值:</b> ${point.rawValue.toExponential(3)} <br>
-        //         <b>EEG 归一化:</b> ${point.normValue.toFixed(3)}
-        //       `)
-        //     })
-        //     .on('mousemove', (event) => {
-        //       tooltip
-        //         .style('top', `${event.pageY + 10}px`)
-        //         .style('left', `${event.pageX + 10}px`)
-        //     })
-        //     .on('mouseout', () => {
-        //       tooltip.style('visibility', 'hidden')
-        //     })
-        // })
+          .attr('stroke-width', 1.5)
+          .attr('opacity', 1)
 
         // 读取光流数据 & RGB 数据，并绘制交互效果
         Promise.all([
@@ -861,6 +860,35 @@
             }
           })
         })
+      })
+      // ----------------------------------------------------其他样式
+      // **标注数字的位置（12点、3点、6点、9点方向）**
+      const labels = [
+        { angle: -Math.PI / 2, text: '0' }, // 12点钟方向
+        { angle: 0, text: '10' }, // 3点钟方向
+        { angle: Math.PI / 2, text: '20' }, // 6点钟方向
+        { angle: Math.PI, text: '30' }, // 9点钟方向
+        { angle: -Math.PI / 4, text: '5' }, // 2点钟方向
+        { angle: Math.PI / 4, text: '15' }, // 5点钟方向
+        { angle: (Math.PI * 3) / 4, text: '25' }, // 7点钟方向
+        { angle: (Math.PI * 5) / 4, text: '35' }, // 10点钟方向
+      ]
+
+      // **添加四个数字标签**
+      labels.forEach((label) => {
+        const x = centerX + Math.cos(label.angle) * (radius + 200) // 半径外 20px
+        const y = centerY + Math.sin(label.angle) * (radius + 200)
+
+        svg
+          .append('text')
+          .attr('x', x)
+          .attr('y', y)
+          .attr('text-anchor', 'middle')
+          .attr('dominant-baseline', 'middle')
+          .attr('fill', 'black')
+          .attr('font-size', '16px')
+          .attr('font-weight', 'bold')
+          .text(label.text)
       })
     </script>
   </body>
