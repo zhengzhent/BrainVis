@@ -36,10 +36,36 @@
         visibility: hidden;
         pointer-events: none;
       }
+      body {
+        text-align: center;
+      }
+      .clock-hand {
+        stroke: black;
+        stroke-width: 4;
+        stroke-linecap: round;
+      }
+      .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <svg width="1000" height="1000"></svg>
+    <svg width="1000" height="1000">
+      <circle cx="500" cy="500" r="5" fill="white"></circle>
+      <!-- 中心点 -->
+      <line
+        id="clockHand"
+        class="clock-hand"
+        x1="500"
+        y1="500"
+        x2="500"
+        y2="200"></line>
+      <!-- 指针 -->
+    </svg>
+    <button class="button" id="controlButton">Start</button>
     <div class="tooltip"></div>
     <!-- 交互信息框 -->
     <script>
@@ -152,51 +178,31 @@
           .curve(d3.curveCatmullRom.alpha(0.5)) // **平滑曲线**
         const defs = svg.append('defs')
 
-        // const gradient = defs
-        //   .append('radialGradient')
-        //   .attr('id', 'eegGradient')
-        //   .attr('cx', '50%')
-        //   .attr('cy', '50%')
-        //   .attr('r', '100%') // 让渐变覆盖整个 EEG 区域
-
-        // // 定义渐变颜色（从浅蓝到深蓝）
-        // gradient
-        //   .append('stop')
-        //   .attr('offset', '0%')
-        //   .attr('stop-color', '#E0F7FF') // 浅蓝色
-        //   .attr('stop-opacity', 0.6)
-
-        // gradient
-        //   .append('stop')
-        //   .attr('offset', '100%')
-        //   .attr('stop-color', '#0072B2') // 深蓝色
-        //   .attr('stop-opacity', 1)
-
         const gradient = defs
           .append('radialGradient')
           .attr('id', 'eegGradient')
-          .attr('cx', '50%') // 确保渐变中心点在圆心
-          .attr('cy', '50%')
+          .attr('cx', '59%') // 确保渐变中心点在圆心
+          .attr('cy', '47%')
           .attr('r', '100%') // 让渐变更集中在 EEG 数据区域内
 
         // 定义渐变颜色（增强对比度）
         gradient
           .append('stop')
-          .attr('offset', '10%') // **更小的白色区域**
+          .attr('offset', '3%') // **更小的白色区域**
           .attr('stop-color', '#E0F7FF') // **更亮的浅蓝**
-          .attr('stop-opacity', 1)
+          .attr('stop-opacity', 0.8)
 
         gradient
           .append('stop')
-          .attr('offset', '40%') // **让过渡更快变深**
+          .attr('offset', '32%') // **让过渡更快变深**
           .attr('stop-color', '#0072B2') // **中间蓝色**
-          .attr('stop-opacity', 1)
+          .attr('stop-opacity', 0.8)
 
         gradient
           .append('stop')
-          .attr('offset', '100%') // **最大数据点处**
-          .attr('stop-color', '#001F4D') // **更深的深蓝**
-          .attr('stop-opacity', 0.6)
+          .attr('offset', '50%') // **最大数据点处**
+          .attr('stop-color', '#08285AFF') // **更深的深蓝**
+          .attr('stop-opacity', 0.8)
 
         // **绘制填充区域**
         svg
@@ -218,7 +224,7 @@
           .attr('fill', 'none')
           .attr('stroke', 'steelblue')
           .attr('stroke-width', 1.5)
-          .attr('opacity', 1)
+          .attr('opacity', 0.3)
 
         // 读取光流数据 & RGB 数据，并绘制交互效果
         Promise.all([
@@ -695,8 +701,8 @@
             //   eegIndex1 < totalPoints ? eegData[eegIndex1] : null
             // const eegValue2 =
             //   eegIndex2 < totalPoints ? eegData[eegIndex2] : null
-            console.log('Index1：', eegIndex1)
-            console.log('Index2：', eegIndex2)
+            // console.log('Index1：', eegIndex1)
+            // console.log('Index2：', eegIndex2)
             const eegValue1 =
               eegIndex1 < totalPoints
                 ? eegNormalizeScale(eegData[eegIndex1])
@@ -862,9 +868,9 @@
         })
       })
       // ----------------------------------------------------其他样式
-      // **标注数字的位置（12点、3点、6点、9点方向）**
+      // **标注数字的位置**
       const labels = [
-        { angle: -Math.PI / 2, text: '0' }, // 12点钟方向
+        { angle: -Math.PI / 2, text: '1' }, // 12点钟方向
         { angle: 0, text: '10' }, // 3点钟方向
         { angle: Math.PI / 2, text: '20' }, // 6点钟方向
         { angle: Math.PI, text: '30' }, // 9点钟方向
@@ -889,6 +895,199 @@
           .attr('font-size', '16px')
           .attr('font-weight', 'bold')
           .text(label.text)
+      })
+      // -----------------------------------------------------指针移动
+      // const pointerRadius = 300
+      // const totalSegments = 40 // 40 个时间段
+      // const segmentTime = 13 // 每个时间段 13s
+      // const totalTime2 = 520 // 总时间 520s
+      // const segmentAngle2 = 360 / totalSegments // 每个时间段 9°（角度制）
+
+      // // 变量定义
+      // let isPaused = true
+      // let wasPaused = false // **标记是否是暂停后继续**
+      // let currentAngle = -90 // **指针的实时角度，从12点方向开始**
+      // let animationTimer
+
+      // const clockHand = d3.select('#clockHand')
+      // const controlButton = document.getElementById('controlButton')
+
+      // // **指针运动逻辑**
+      // function moveClockHand() {
+      //   if (isPaused) return // **如果暂停，直接返回，不执行动画**
+
+      //   let targetAngle = currentAngle + segmentAngle2 // **计算目标角度**
+
+      //   // **如果是暂停后继续，则不等待 3 秒，直接播放**
+      //   if (wasPaused) {
+      //     wasPaused = false // **重置暂停标志**
+      //     clockHand
+      //       .transition()
+      //       .duration(10000) // **10s 运动**
+      //       .ease(d3.easeLinear)
+      //       .attr(
+      //         'x2',
+      //         centerX + Math.cos((targetAngle * Math.PI) / 180) * pointerRadius,
+      //       )
+      //       .attr(
+      //         'y2',
+      //         centerY + Math.sin((targetAngle * Math.PI) / 180) * pointerRadius,
+      //       )
+      //       .on('end', function () {
+      //         if (!isPaused) {
+      //           // **如果暂停，停止递归调用**
+      //           currentAngle = targetAngle // **更新当前角度**
+      //           moveClockHand() // **继续下一步**
+      //         }
+      //       })
+      //   } else {
+      //     // **正常逻辑，先暂停 3 秒后再运动**
+      //     animationTimer = setTimeout(() => {
+      //       if (!isPaused) {
+      //         clockHand
+      //           .transition()
+      //           .duration(10000) // **10s 运动**
+      //           .ease(d3.easeLinear)
+      //           .attr(
+      //             'x2',
+      //             centerX +
+      //               Math.cos((targetAngle * Math.PI) / 180) * pointerRadius,
+      //           )
+      //           .attr(
+      //             'y2',
+      //             centerY +
+      //               Math.sin((targetAngle * Math.PI) / 180) * pointerRadius,
+      //           )
+      //           .on('end', function () {
+      //             if (!isPaused) {
+      //               // **如果暂停，停止递归调用**
+      //               currentAngle = targetAngle // **更新当前角度**
+      //               moveClockHand() // **继续下一步**
+      //             }
+      //           })
+      //       }
+      //     }, 3000) // **先暂停 3s**
+      //   }
+      // }
+
+      // // **按钮控制逻辑**
+      // controlButton.addEventListener('click', function () {
+      //   if (isPaused) {
+      //     isPaused = false
+      //     wasPaused = true // **标记为暂停后继续**
+      //     controlButton.textContent = '暂停'
+      //     moveClockHand() // **继续运动**
+      //   } else {
+      //     isPaused = true
+      //     controlButton.textContent = '继续'
+
+      //     // **清除等待中的 `setTimeout`，防止指针继续**
+      //     clearTimeout(animationTimer)
+
+      //     // **立即终止指针的当前运动**
+      //     clockHand.transition().duration(0)
+      //   }
+      // })
+      const pointerRadius = 300
+      const totalSegments = 40 // 40 个时间段
+      const segmentTime = 13 // 每个时间段 13s
+      const totalTime2 = 520 // 总时间 520s
+      const segmentAngle2 = 360 / totalSegments // 每个时间段 9°（角度制）
+
+      // 变量定义
+      let isPaused = true
+      let wasPaused = false // **标记是否是暂停后继续**
+      let isFirstStart = true // **标记是否是第一次启动**
+      let currentAngle = -90 // **指针的实时角度，从12点方向开始**
+      let animationTimer
+
+      const clockHand = d3.select('#clockHand')
+      const controlButton = document.getElementById('controlButton')
+
+      // **指针运动逻辑**
+      function moveClockHand() {
+        if (isPaused) return // **如果暂停，直接返回，不执行动画**
+
+        let targetAngle = currentAngle + segmentAngle2 // **计算目标角度**
+
+        // **如果是首次启动，则先等待 3 秒**
+        if (isFirstStart) {
+          isFirstStart = false // **标记不再是第一次启动**
+          setTimeout(() => {
+            if (!isPaused) {
+              moveClockHand() // **开始正常运动**
+            }
+          }, 3000) // **初次启动暂停 3 秒**
+          return
+        }
+
+        // **如果是暂停后继续，则不等待 3 秒，直接播放**
+        if (wasPaused) {
+          wasPaused = false // **重置暂停标志**
+          clockHand
+            .transition()
+            .duration(10000) // **10s 运动**
+            .ease(d3.easeLinear)
+            .attr(
+              'x2',
+              centerX + Math.cos((targetAngle * Math.PI) / 180) * pointerRadius,
+            )
+            .attr(
+              'y2',
+              centerY + Math.sin((targetAngle * Math.PI) / 180) * pointerRadius,
+            )
+            .on('end', function () {
+              if (!isPaused) {
+                // **如果暂停，停止递归调用**
+                currentAngle = targetAngle // **更新当前角度**
+                moveClockHand() // **继续下一步**
+              }
+            })
+        } else {
+          // **正常逻辑，先暂停 3 秒后再运动**
+          animationTimer = setTimeout(() => {
+            if (!isPaused) {
+              clockHand
+                .transition()
+                .duration(10000) // **10s 运动**
+                .ease(d3.easeLinear)
+                .attr(
+                  'x2',
+                  centerX +
+                    Math.cos((targetAngle * Math.PI) / 180) * pointerRadius,
+                )
+                .attr(
+                  'y2',
+                  centerY +
+                    Math.sin((targetAngle * Math.PI) / 180) * pointerRadius,
+                )
+                .on('end', function () {
+                  if (!isPaused) {
+                    // **如果暂停，停止递归调用**
+                    currentAngle = targetAngle // **更新当前角度**
+                    moveClockHand() // **继续下一步**
+                  }
+                })
+            }
+          }, 3000) // **先暂停 3s**
+        }
+      }
+
+      controlButton.addEventListener('click', function (event) {
+        event.preventDefault() // **防止按钮的默认提交行为**
+
+        if (isPaused) {
+          isPaused = false
+          wasPaused = true
+          controlButton.textContent = 'Stop'
+          moveClockHand()
+        } else {
+          isPaused = true
+          controlButton.textContent = 'Start'
+
+          clearTimeout(animationTimer)
+          clockHand.transition().duration(0)
+        }
       })
     </script>
   </body>
