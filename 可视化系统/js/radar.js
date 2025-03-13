@@ -53,7 +53,7 @@
 
    // 读取 EEG 数据并绘制雷达图
    d3.json(
-     'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ.json',
+     'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ_Gamma.json',
    ).then((eegData) => {
      console.log('原始EEG数据:', eegData)
 
