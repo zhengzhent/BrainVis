@@ -36,11 +36,19 @@
         visibility: hidden;
         pointer-events: none;
       }
+      /* 添加框选效果的样式 */
+      .highlighted-frame {
+        border: 2px solid red;
+      }
     </style>
   </head>
   <body>
     <svg width="1000" height="1000"></svg>
     <div class="tooltip"></div>
+    <!-- 添加数字框 -->
+    <div id="time-display" style="position: absolute; right: 20px; top: 20px; background: #f0f0f0; padding: 10px; border-radius: 5px; font-size: 16px;">
+      时间点: <span id="time-value">N/A</span>
+    </div>
     <!-- 交互信息框 -->
     <script>
       // 画布大小
@@ -217,8 +225,49 @@
           .attr('transform', `translate(${centerX}, ${centerY})`)
           .attr('fill', 'none')
           .attr('stroke', 'steelblue')
-          .attr('stroke-width', 1.5)
-          .attr('opacity', 1)
+          .attr('stroke-width', 1)
+          .attr('opacity', 0.7)
+
+        // **绘制 EEG 数据点**
+        eegPoints.forEach((point, index) => {
+          const x = centerX + Math.cos(point.angle) * point.radius
+          const y = centerY + Math.sin(point.angle) * point.radius
+
+          svg
+            .append('circle')
+            .attr('cx', x)
+            .attr('cy', y)
+            .attr('r', 2) // EEG 数据点大小
+            .attr('fill', 'blue') // EEG 数据点颜色
+            .on('mouseover', () => {
+              tooltip.style('visibility', 'visible').html(`
+        <b>时间点:</b> ${index + 1} <br>
+        <b>EEG 值:</b> ${point.rawValue.toExponential(3)} <br>
+        <b>EEG 归一化:</b> ${point.normValue.toFixed(3)}
+      `)
+            })
+            .on('mousemove', (event) => {
+              tooltip
+                .style('top', `${event.pageY + 10}px`)
+                .style('left', `${event.pageX + 10}px`)
+            })
+            .on('mouseout', () => {
+              tooltip.style('visibility', 'hidden')
+            })
+            .on('click', () => {
+              // 更新数字框中的时间点
+              d3.select('#time-value').text(index + 1);
+
+              // 框选第一个图片
+              document.querySelectorAll('.frame').forEach(frame => {
+                frame.classList.remove('highlighted-frame');
+              });
+              const firstFrame = document.querySelector('.frame');
+              if (firstFrame) {
+                firstFrame.classList.add('highlighted-frame');
+              }
+            })
+        })
 
         // 读取光流数据 & RGB 数据，并绘制交互效果
         Promise.all([
