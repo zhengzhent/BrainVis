@@ -23,6 +23,8 @@ video.addEventListener('play', () => {
     // 创建新的帧图片
     const img = document.createElement('img')
     img.src = canvas.toDataURL('image/png')
+    img.classList.add('frame') // 添加类名 'frame'
+
 
     // **从右侧插入新帧**
     videoClip.appendChild(img) // 新帧追加到右侧
@@ -101,64 +103,3 @@ async function displayFiveFramesAtTime(clickedTime) {
   }
 }
 
-// function displayFiveFramesAtTime(clickedTime) {
-//   const targetTimes = [
-//     clickedTime - 2 * frameInterval, // 前两帧
-//     clickedTime - frameInterval,
-//     clickedTime, // 中间帧
-//     clickedTime + frameInterval, // 后两帧
-//     clickedTime + 2 * frameInterval,
-//   ]
-// console.log('1:', targetTimes[0]) // 打印 clickedIndex 的值
-//   console.log('2:', targetTimes[1]) // 打印 clickedIndex 的值
-//   console.log('3:', targetTimes[2]) // 打印 clickedIndex 的值
-//   console.log('4:', targetTimes[3]) // 打印 clickedIndex 的值
-//   // 清空之前的帧
-//   const videoClip = document.getElementById('video-clip')
-//   videoClip.innerHTML = ''
-
-//   // 遍历目标时间点，依次提取并插入帧
-//   targetTimes.forEach((time) => {
-//     // 如果时间小于 0 或大于视频总时长，则跳过
-//     if (time < 0 || time > video.duration) {
-//       const placeholder = document.createElement('div')
-//       placeholder.style.width = '100px' // 占位宽度
-//       placeholder.style.height = '100px'
-//       placeholder.style.display = 'inline-block'
-//       videoClip.appendChild(placeholder)
-//       return
-//     }
-
-//     // 为每个帧创建一个新的 canvas 和 context
-//     const canvas = document.createElement('canvas')
-//     const ctx = canvas.getContext('2d')
-
-//     // 设置 canvas 尺寸
-//     canvas.width = video.videoWidth
-//     canvas.height = video.videoHeight
-
-//     // 临时暂停视频，跳转到目标时间
-//     video.currentTime = time
-
-//     // 等待视频 seek 完成后提取帧
-//     const onSeeked = () => {
-//       // 绘制当前帧到 canvas
-//       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-
-//       // 创建新的帧图片
-//       const img = document.createElement('img')
-//       img.src = canvas.toDataURL('image/png')
-//       img.style.margin = '0 5px' // 间隔
-//       img.style.borderRadius = '8px' // 圆角效果
-
-//       // 顺序插入视频帧
-//       videoClip.appendChild(img)
-
-//       // 移除事件监听，防止重复执行
-//       video.removeEventListener('seeked', onSeeked)
-//     }
-
-//     // 绑定 seeked 事件
-//     video.addEventListener('seeked', onSeeked, { once: true })
-//   })
-// }

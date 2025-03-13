@@ -6,63 +6,63 @@ let isPlaying = true
 const numChannels = 21
 const frameInterval = 5
 
-// 定义21种优雅的颜色
+// Define 21 elegant colors
 const colors = [
-  '#FF6B6B', // 玫瑰红
-  '#4ECDC4', // 青色
-  '#45B7D1', // 天蓝色
-  '#96CEB4', // 淡绿色
-  '#FFEEAD', // 淡黄色
-  '#D39BCA', // 紫色
-  '#8C8C8C', // 灰色
-  '#FFD93D', // 柠檬黄
-  '#85C1E9', // 蓝绿色
-  '#9B9B9B', // 中灰
-  '#E67E22', // 橙色
-  '#B34747', // 深红色
-  '#8E44AD', // 紫罗兰
-  '#2980B9', // 深蓝色
-  '#27AE60', // 深绿色
-  '#F39C12', // 橙红色
-  '#E74C3C', // 红色
-  '#3498DB', // 蓝色
-  '#1ABC9C', // 鲜绿色
-  '#F1C40F', // 黄色
-  '#95A5A6', // 烟灰色
+  '#FF6B6B', // Rose Red
+  '#4ECDC4', // Cyan
+  '#45B7D1', // Sky Blue
+  '#96CEB4', // Light Green
+  '#FFEEAD', // Light Yellow
+  '#D39BCA', // Purple
+  '#8C8C8C', // Gray
+  '#FFD93D', // Lemon Yellow
+  '#85C1E9', // Turquoise
+  '#9B9B9B', // Medium Gray
+  '#E67E22', // Orange
+  '#B34747', // Dark Red
+  '#8E44AD', // Violet
+  '#2980B9', // Dark Blue
+  '#27AE60', // Dark Green
+  '#F39C12', // Orange Red
+  '#E74C3C', // Red
+  '#3498DB', // Blue
+  '#1ABC9C', // Bright Green
+  '#F1C40F', // Yellow
+  '#95A5A6', // Ash Gray
 ]
 
-// 添加channelInfo数组
+// Add channelInfo array
 const channelInfo = [
-  { index: 0, name: 'FP1', group: '前额' },
-  { index: 1, name: 'FPZ', group: '前额' },
-  { index: 2, name: 'FP2', group: '前额' },
-  { index: 3, name: 'F7', group: '额叶' },
-  { index: 4, name: 'F3', group: '额叶' },
-  { index: 5, name: 'FZ', group: '额叶' },
-  { index: 6, name: 'F4', group: '额叶' },
-  { index: 7, name: 'F8', group: '额叶' },
-  { index: 8, name: 'T7', group: '颞叶' },
-  { index: 9, name: 'T8', group: '颞叶' },
-  { index: 10, name: 'C3', group: '中心部' },
-  { index: 11, name: 'CZ', group: '中心部' },
-  { index: 12, name: 'C4', group: '中心部' },
-  { index: 13, name: 'P7', group: '顶叶' },
-  { index: 14, name: 'P3', group: '顶叶' },
-  { index: 15, name: 'PZ', group: '顶叶' },
-  { index: 16, name: 'P4', group: '顶叶' },
-  { index: 17, name: 'P8', group: '顶叶' },
-  { index: 18, name: 'O1', group: '枕叶' },
-  { index: 19, name: 'O2', group: '枕叶' },
-  { index: 20, name: 'O3', group: '枕叶' },
+  { index: 0, name: 'FP1', group: 'Frontal' },
+  { index: 1, name: 'FPZ', group: 'Frontal' },
+  { index: 2, name: 'FP2', group: 'Frontal' },
+  { index: 3, name: 'F7', group: 'Frontal Lobe' },
+  { index: 4, name: 'F3', group: 'Frontal Lobe' },
+  { index: 5, name: 'FZ', group: 'Frontal Lobe' },
+  { index: 6, name: 'F4', group: 'Frontal Lobe' },
+  { index: 7, name: 'F8', group: 'Frontal Lobe' },
+  { index: 8, name: 'T7', group: 'Temporal Lobe' },
+  { index: 9, name: 'T8', group: 'Temporal Lobe' },
+  { index: 10, name: 'C3', group: 'Central' },
+  { index: 11, name: 'CZ', group: 'Central' },
+  { index: 12, name: 'C4', group: 'Central' },
+  { index: 13, name: 'P7', group: 'Parietal Lobe' },
+  { index: 14, name: 'P3', group: 'Parietal Lobe' },
+  { index: 15, name: 'PZ', group: 'Parietal Lobe' },
+  { index: 16, name: 'P4', group: 'Parietal Lobe' },
+  { index: 17, name: 'P8', group: 'Parietal Lobe' },
+  { index: 18, name: 'O1', group: 'Occipital Lobe' },
+  { index: 19, name: 'O2', group: 'Occipital Lobe' },
+  { index: 20, name: 'O3', group: 'Occipital Lobe' },
 ]
 
-// 初始配置
+// Initial configuration
 const option = {
-  title: { text: '选择频段查看数据', left: 'center' },
+  title: { text: 'Select Frequency Band to View Data', left: 'center' },
   tooltip: {
     trigger: 'axis',
     formatter: (params) => {
-      let content = `时间: ${params[0].name}<br/>`
+      let content = `Time: ${params[0].name}<br/>`
       params.forEach((param) => {
         content += `${param.seriesName}:  ${param.value}<br/>`
       })
@@ -78,7 +78,7 @@ const option = {
   },
   xAxis: {
     type: 'category',
-    name: '时间 (ms)',
+    name: 'Time (ms)',
     nameLocation: 'middle',
     nameGap: 10,
     nameTextStyle: {
@@ -89,36 +89,54 @@ const option = {
   },
   yAxis: { 
     type: 'value', 
-    name: '电压 (μV)', 
+    name: 'Voltage (μV)', 
     splitLine: { show: false },
     show: false,
   },
   series: [],
+  dataZoom: [
+    {
+      type: 'slider',
+      show: true,
+      xAxisIndex: 0,
+      start: 0,
+      end: 100,
+      bottom: '5%', // Adjust to the bottom of the container
+      height: 20, // Set slider height
+      borderColor: '#ccc', // Border color
+      backgroundColor: '#f7f7f7', // Background color
+      fillerColor: 'rgba(144,197,237,0.2)', // Selected area color
+      handleStyle: {
+        color: '#fff',
+        borderColor: '#ACB8D1'
+      }
+    }
+  ],
 }
 
 chart.setOption(option)
 
-// 加载数据并初始化图表
+// Load data and initialize chart
 function loadData(band) {
   clearInterval(intervalId)
   isPlaying = false
   timeIndex = 0
 
-  option.title.text = `${band} 频段脑电波`
+  option.title.text = `${band} Frequency Band EEG`
   option.xAxis.data = []
   option.series = []
   chart.clear()
 
-  // 获取当前选择的脑区
+  // Get the currently selected brain region
   const selectedRegion = document.getElementById('regionSelect').value
 
-  // 筛选需要显示的通道
+  // Filter the channels to display
   const displayChannels =
     selectedRegion === 'all'
       ? channelInfo
       : channelInfo.filter((channel) => channel.group === selectedRegion)
 
-  // 只为选中脑区的通道创建数据系列
+  // Create data series only for the selected brain region channels
   displayChannels.forEach((channel) => {
     option.series.push({
       name: `${channel.name} (${channel.group})`,
@@ -144,12 +162,12 @@ function loadData(band) {
       document.querySelector(`[data-band="${band}"]`).classList.add('active')
     })
     .catch((error) => {
-      console.error('加载数据失败:', error)
-      console.error(`尝试加载的文件路径: data/${band}.json`)
+      console.error('Failed to load data:', error)
+      console.error(`Attempted to load file path: data/${band}.json`)
     })
 }
 
-// 动态更新图表
+// Dynamically update chart
 function updateChart() {
   if (!currentData || timeIndex >= currentData[0].length) return
 
@@ -174,7 +192,7 @@ function updateChart() {
   }
 }
 
-// 按钮事件绑定
+// Button event binding
 document.querySelectorAll('.band-btn').forEach((button) => {
   button.addEventListener('click', () => {
     loadData(button.dataset.band)
@@ -193,11 +211,11 @@ document.getElementById('pauseButton_5').addEventListener('click', () => {
   clearInterval(intervalId)
 })
 
-// 添加区域选择事件监听
+// Add region selection event listener
 document.getElementById('regionSelect').addEventListener('change', () => {
   const currentBand = document.querySelector('.band-btn.active').dataset.band
   loadData(currentBand)
 })
 
-// 默认加载Beta数据
+// Default load Beta data
 loadData('Beta')

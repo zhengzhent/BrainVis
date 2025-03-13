@@ -3,50 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Visualization System</title>
     <!-- CSS 引用 -->
     <!-- <link rel="stylesheet" href="css/normalize.css"> -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="top-container">
-      <!-- 原始视频 -->
+      <!-- Original Video -->
       <video id="origin-video" controls muted>
         <source src="SEED-DV/Video/1st_10min.mp4" type="video/mp4" />
-        您的浏览器不支持 video 标签。
       </video>
-      <!-- 逐帧视频 -->
+      <!-- Frame-by-Frame Video -->
       <div id="video-clip"></div>
-      <!-- 视频按钮 -->
-      <!-- <div class="video-button">
-        <button class="btn_p">Play</button>
-        <button class="btn_s">Stop</button>
-      </div> -->
+
     </div>
 
-    <!-- EEG 图像 -->
+    <!-- EEG Image -->
     <div class="eeg-image">
       <!-- <div id="all-channel"></div> -->
 
       <div class="controls">
-        <!-- <button id="playButton">播放</button> -->
+        <!-- <button id="playButton">Play</button> -->
          <div id="part1">
-          <button id="playPauseButton" class="control-button">播放</button>
+          <button id="playPauseButton" class="control-button">Play</button>
           <button class="btn_c">Choose</button>
          </div>
 
-        <!-- <select id="groupSelector" class="group-select"> -->
-          <!-- 动态填充选项 -->
-        <!-- </select> -->
+
          <div id="part2">
           <div id="buttonGroup" class="button-group">
-            <button class="group-button" data-group="前额">前额</button>
-            <button class="group-button" data-group="额叶">额叶</button>
-            <button class="group-button" data-group="颞叶">颞叶</button>
-            <button class="group-button" data-group="中心部">中心部</button>
-            <button class="group-button" data-group="顶叶">顶叶</button>
-            <button class="group-button" data-group="枕叶">枕叶</button>
-            <button class="group-button" data-group="所有通道">所有通道</button>
+            <button class="group-button" data-group="Frontal">Frontal</button>
+            <button class="group-button" data-group="Parietal">Parietal</button>
+            <button class="group-button" data-group="Temporal">Temporal</button>
+            <button class="group-button" data-group="Central">Central</button>
+            <button class="group-button" data-group="Occipital">Occipital</button>
+            <button class="group-button" data-group="All Channels">All Channels</button>
           </div>
          </div>
 
@@ -57,40 +49,51 @@
 
     <div class="bottom-container">
       <!-- EEG 3D -->
-      <div class="eeg-3d"></div>
-      <!-- EEG 五个频段 -->
+      <div class="zanding">
+        <svg width="1000" height="1000"></svg>
+        <div class="tooltip"></div>
+        <!-- Interactive Information Box -->
+      </div>
+
+      <div class="photo" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <div class="photo-part1" style="flex: 0 0 100%; border: 1px solid #ccc; margin: 5px; overflow: hidden;">
+          <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+        </div>
+
+      </div>
+
+      <!-- EEG Five Bands -->
       <div class="eeg-5">
-        <div class="right-5EEG">
           <div class="controls_5">
             <button class="band-btn" data-band="Beta">Beta</button>
             <button class="band-btn" data-band="Alpha">Alpha</button>
             <button class="band-btn" data-band="Theta">Theta</button>
             <button class="band-btn" data-band="Delta">Delta</button>
             <button class="band-btn" data-band="Gamma">Gamma</button>
-            <button id="playButton_5">播放</button>
-            <button id="pauseButton_5">暂停</button>
+            <button id="playButton_5">Play</button>
+            <button id="pauseButton_5">Pause</button>
             <select id="regionSelect" class="region-select">
-              <option value="all">所有脑区</option>
-              <option value="前额">前额区</option>
-              <option value="额叶">额叶区</option>
-              <option value="颞叶">颞叶区</option>
-              <option value="中心部">中心部</option>
-              <option value="顶叶">顶叶区</option>
-              <option value="枕叶">枕叶区</option>
+              <option value="all">All Regions</option>
+              <option value="Frontal">Frontal Area</option>
+              <option value="Parietal">Parietal Area</option>
+              <option value="Temporal">Temporal Area</option>
+              <option value="Central">Central Area</option>
+              <option value="Occipital">Occipital Area</option>
             </select>
           </div>
           <div class="chart_5"></div>
-          <!-- 存放五个不同频段的脑电图 -->
-        </div>
+          <!-- Store EEG of five different bands -->
       </div>
-      <div class="zanding"></div>
+
     </div>
 
-    <script src="js/video-clip.js"></script>
     <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
-    <!-- <script src="../可视化系统/js/echarts.min.js"></script> -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script src="js/video-clip.js"></script>
     <script src="js/main.js"></script>
     <script src="js/dynamic-EEG.js"></script>
     <script src="js/all-channel.js"></script>
+    <script src="js/radar.js"></script>
   </body>
 </html>

@@ -1,34 +1,57 @@
+
+
+/* 设置整体布局比例为1:4.5:4.5 */
+.top-container {
+  height: 10vh;  /* 1/10的视窗高度 */
+}
+
+.eeg-image {
+  height: 45vh;  /* 4.5/10的视窗高度 */
+  margin: 10px 0;
+}
+
+.bottom-container {
+  height: 45vh;  /* 4.5/10的视窗高度 */
+}
+
+/* 确保内容不溢出 */
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
 body {
     background: rgb(78, 78, 240);
   }
   .top-container{
     display: flex;
-    gap: 20px;
-    height: 105px;
+    gap: 10px;
     margin-bottom: 10px;
   }
   #origin-video {
-    width: 11%;
+    width: 11.5%;
     height: 100%;
     background-color: #fff;
     border-radius: 0;
+    object-fit: fill
     /* margin-top: 10px;  */
   }
   #video-clip{
     display: flex;
-    width: 88%;
+    width: 89%;
     gap: 2px;
     height: 100%;
     background-color: #fff;
     border-radius: 0;
-    margin-bottom: 10px; /* 添加底部间距 */
     flex-direction: row; /* 从右到左排列 */
     justify-content: flex-end; /* 内容从右侧开始 */
     overflow: hidden;
   }
   #video-clip img {
-    width: 170px;
-    height: 100px;
+    width: 305px;
+    height: 100%;
     border: 1px solid #ccc;
     margin-top: 3px;
     margin-left: 10px;
@@ -48,7 +71,7 @@ body {
   }
   .eeg-image {
     width: 100%;
-    height: 500px;
+    /* height: 500px; */
     /* background-color: #fff; */
     border-radius: 0;
     margin-bottom: 10px;  
@@ -59,7 +82,7 @@ body {
   }
   #all-channel{
     width:35%;
-    height: 500px;
+    height: 45vh;
     background-color: #fff;
     border-radius: 0;
     margin-bottom: 10px;  
@@ -67,8 +90,8 @@ body {
     border: 1px solid ;
   }
   #chart {
-    width:88%;
-    height: 500px;
+    width:89%;
+    height: 45vh;
     background-color: #fff;
     border-radius: 0;
     margin-bottom: 10px;  
@@ -76,8 +99,8 @@ body {
     border: 1px solid ;
   }
   .controls {
-    width: 12%;
-    height: 500px;
+    width: 11.5%;
+    height: 45vh;
     background-color: #fff;
     border-radius: 0;
     margin-bottom: 10px;  
@@ -94,6 +117,7 @@ body {
     width: 100%;
     align-items: center;
     gap: 10px;
+    justify-content: space-around;
   }
   #part2{
     display: flex;
@@ -102,12 +126,10 @@ body {
     width: 100%;
     align-items: center;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: space-around ;
     border-radius: 4px;
   }
-  /* #groupSelector{
-    width: 100%;
-  } */
+
   .group-button{
     width: 95%;
     padding: 5px 10px;
@@ -120,27 +142,38 @@ body {
     border-radius: 4px;
 
   }
-  .eeg-3d {
-    width: 35%;
-    height: 420px;
-    background-color: #fff;
-    border-radius: 0;
-  }
+ 
   .eeg-5 {
     width: 35%;
-    height: 420px;
+    height: 100%;
     background-color: #fff;
     border-radius: 0;
-    /* 修改flex布局，从顶部开始 */
     display: flex;
-    justify-content: center; /* 水平居中 */
-    /* gap: 20px;  两个元素之间的间距 */
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 水平居中 */
+  }
+  .controls_5{
+    width: 100%;
+    height: 15%;
+  }
+  .chart_5{
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .zanding {
-    width: 30%;
-    height: 420px;
+    width: 35%;
+    height: 100%;
     background-color: #fff;
     border-radius: 0;
+    display: flex;
+  }
+  .photo{
+    width: 30%; 
+    height: 100%; 
+    background-color: white;
   }
   .bottom-container {
     display: flex;
@@ -211,10 +244,46 @@ body {
 .chart_5 {
   position: relative;
   width: 100%;
-  height: 454px;  /* 给一个具体的高度 */
+  height: 500px;  /* 给一个具体的高度 */
   /* margin: 10px auto; */
   /* border: 1px solid #ccc; */
   border-radius: 8px;
 
 }
 
+、
+
+/* 雷达图样式如下 */
+      /* 雷达线 */
+      .radar-line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1;
+        opacity: 0.7;
+      }
+      /* 光流柱状线 */
+      .bar {
+        fill: orange;
+        stroke: black;
+        stroke-width: 1px;
+      }
+      /* RGB像素流红点 */
+      .rgb-dot {
+        fill: red;
+        opacity: 0.6;
+      }
+      /* 坐标轴线 */
+      .grid-line {
+        stroke: rgba(200, 200, 200, 0.5);
+        stroke-width: 1;
+      }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        visibility: hidden;
+        pointer-events: none;
+      }
