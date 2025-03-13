@@ -1,97 +1,97 @@
-// 初始化 ECharts 实例
+// Initialize ECharts instance
 const EEGchart = echarts.init(document.getElementById('chart'))
-// 通道与分组信息
+// Channel and group information
 const EEGchannelInfo = [
-  { index: 0, name: 'FP1', group: '前额' },
-  { index: 1, name: 'FPZ', group: '前额' },
-  { index: 2, name: 'FP2', group: '前额' },
-  { index: 5, name: 'F7', group: '额叶' },
-  { index: 7, name: 'F3', group: '额叶' },
-  { index: 9, name: 'FZ', group: '额叶' },
-  { index: 11, name: 'F4', group: '额叶' },
-  { index: 13, name: 'F8', group: '额叶' },
-  { index: 23, name: 'T7', group: '颞叶' },
-  { index: 31, name: 'T8', group: '颞叶' },
-  { index: 25, name: 'C3', group: '中心部' },
-  { index: 27, name: 'CZ', group: '中心部' },
-  { index: 29, name: 'C4', group: '中心部' },
-  { index: 41, name: 'P7', group: '顶叶' },
-  { index: 43, name: 'P3', group: '顶叶' },
-  { index: 45, name: 'PZ', group: '顶叶' },
-  { index: 47, name: 'P4', group: '顶叶' },
-  { index: 49, name: 'P8', group: '顶叶' },
-  { index: 58, name: 'O1', group: '枕叶' },
-  { index: 59, name: 'O2', group: '枕叶' },
-  { index: 60, name: 'O3', group: '枕叶' },
-  { index: 0, name: 'FP1', group: '所有通道' },
-  { index: 1, name: 'FPZ', group: '所有通道' },
-  { index: 2, name: 'FP2', group: '所有通道' },
-  { index: 5, name: 'F7', group: '所有通道' },
-  { index: 7, name: 'F3', group: '所有通道' },
-  { index: 9, name: 'FZ', group: '所有通道' },
-  { index: 11, name: 'F4', group: '所有通道' },
-  { index: 13, name: 'F8', group: '所有通道' },
-  { index: 23, name: 'T7', group: '所有通道' },
-  { index: 31, name: 'T8', group: '所有通道' },
-  { index: 25, name: 'C3', group: '所有通道' },
-  { index: 27, name: 'CZ', group: '所有通道' },
-  { index: 29, name: 'C4', group: '所有通道' },
-  { index: 41, name: 'P7', group: '所有通道' },
-  { index: 43, name: 'P3', group: '所有通道' },
-  { index: 45, name: 'PZ', group: '所有通道' },
-  { index: 47, name: 'P4', group: '所有通道' },
-  { index: 49, name: 'P8', group: '所有通道' },
-  { index: 58, name: 'O1', group: '所有通道' },
-  { index: 59, name: 'O2', group: '所有通道' },
-  { index: 60, name: 'O3', group: '所有通道' },
+  { index: 0, name: 'FP1', group: 'Frontal' },
+  { index: 1, name: 'FPZ', group: 'Frontal' },
+  { index: 2, name: 'FP2', group: 'Frontal' },
+  { index: 5, name: 'F7', group: 'Frontal Lobe' },
+  { index: 7, name: 'F3', group: 'Frontal Lobe' },
+  { index: 9, name: 'FZ', group: 'Frontal Lobe' },
+  { index: 11, name: 'F4', group: 'Frontal Lobe' },
+  { index: 13, name: 'F8', group: 'Frontal Lobe' },
+  { index: 23, name: 'T7', group: 'Temporal Lobe' },
+  { index: 31, name: 'T8', group: 'Temporal Lobe' },
+  { index: 25, name: 'C3', group: 'Central' },
+  { index: 27, name: 'CZ', group: 'Central' },
+  { index: 29, name: 'C4', group: 'Central' },
+  { index: 41, name: 'P7', group: 'Parietal' },
+  { index: 43, name: 'P3', group: 'Parietal' },
+  { index: 45, name: 'PZ', group: 'Parietal' },
+  { index: 47, name: 'P4', group: 'Parietal' },
+  { index: 49, name: 'P8', group: 'Parietal' },
+  { index: 58, name: 'O1', group: 'Occipital' },
+  { index: 59, name: 'O2', group: 'Occipital' },
+  { index: 60, name: 'O3', group: 'Occipital' },
+  { index: 0, name: 'FP1', group: 'All Channels' },
+  { index: 1, name: 'FPZ', group: 'All Channels' },
+  { index: 2, name: 'FP2', group: 'All Channels' },
+  { index: 5, name: 'F7', group: 'All Channels' },
+  { index: 7, name: 'F3', group: 'All Channels' },
+  { index: 9, name: 'FZ', group: 'All Channels' },
+  { index: 11, name: 'F4', group: 'All Channels' },
+  { index: 13, name: 'F8', group: 'All Channels' },
+  { index: 23, name: 'T7', group: 'All Channels' },
+  { index: 31, name: 'T8', group: 'All Channels' },
+  { index: 25, name: 'C3', group: 'All Channels' },
+  { index: 27, name: 'CZ', group: 'All Channels' },
+  { index: 29, name: 'C4', group: 'All Channels' },
+  { index: 41, name: 'P7', group: 'All Channels' },
+  { index: 43, name: 'P3', group: 'All Channels' },
+  { index: 45, name: 'PZ', group: 'All Channels' },
+  { index: 47, name: 'P4', group: 'All Channels' },
+  { index: 49, name: 'P8', group: 'All Channels' },
+  { index: 58, name: 'O1', group: 'All Channels' },
+  { index: 59, name: 'O2', group: 'All Channels' },
+  { index: 60, name: 'O3', group: 'All Channels' },
   // -------------------------------------
 ]
 
-// 添加颜色数组
+// Add color array
 const EEGcolors = [
-  '#FF6B6B', // 玫瑰红
-  '#4ECDC4', // 青色
-  '#45B7D1', // 天蓝色
-  '#96CEB4', // 淡绿色
-  '#FFEEAD', // 淡黄色
-  '#D39BCA', // 紫色
-  '#8C8C8C', // 灰色
-  '#85C1E9', // 蓝绿色
-  '#9B9B9B', // 中灰
-  '#E67E22', // 橙色
-  '#B34747', // 深红色
-  '#8E44AD', // 紫罗兰
-  '#2980B9', // 深蓝色
-  '#27AE60', // 深绿色
-  '#F39C12', // 橙红色
-  '#E74C3C', // 红色
-  '#3498DB', // 蓝色
-  '#1ABC9C', // 鲜绿色
-  '#F1C40F', // 黄色
-  '#95A5A6', // 烟灰色
+  '#FF6B6B', // Rose Red
+  '#4ECDC4', // Cyan
+  '#45B7D1', // Sky Blue
+  '#96CEB4', // Light Green
+  '#FFEEAD', // Light Yellow
+  '#D39BCA', // Purple
+  '#8C8C8C', // Gray
+  '#85C1E9', // Teal
+  '#9B9B9B', // Medium Gray
+  '#E67E22', // Orange
+  '#B34747', // Dark Red
+  '#8E44AD', // Violet
+  '#2980B9', // Dark Blue
+  '#27AE60', // Dark Green
+  '#F39C12', // Orange Red
+  '#E74C3C', // Red
+  '#3498DB', // Blue
+  '#1ABC9C', // Bright Green
+  '#F1C40F', // Yellow
+  '#95A5A6', // Ash Gray
 ]
 
-// 加载脑电数据
+// Load EEG data
 fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
   .then((data) => {
-    const timeData = Array.from({ length: data[0].length }, (_, i) => i) // 时间轴
-    let timeIndex = 0 // 当前时间索引
-    let isPlaying = false // 播放状态
-    const totalDuration = 130000 // 13 秒播放完毕
-    const totalPoints = 26000 // 总数据点数
-    let startTime = null // 延迟初始化
-    let accumulatedTime = 0 // 累积的播放时间
+    const timeData = Array.from({ length: data[0].length }, (_, i) => i) // Time axis
+    let timeIndex = 0 // Current time index
+    let isPlaying = false // Play state
+    const totalDuration = 130000 // 13 seconds to complete playback
+    const totalPoints = 26000 // Total data points
+    let startTime = null // Delay initialization
+    let accumulatedTime = 0 // Accumulated playback time
 
     function renderChart(group) {
       const filteredChannels = EEGchannelInfo.filter(
         (channel) => channel.group === group,
       )
 
-      // 配置 ECharts
+      // Configure ECharts
       const option = {
         title: {
-          text: `脑区脑电展示: ${group}`,
+          text: `EEG Display: ${group}`,
           left: 'center',
         },
         tooltip: {
@@ -170,7 +170,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
       EEGchart.setOption(option, { notMerge: true })
       
-      // 添加点击事件：跳转到对应视频时间并暂停
+      // Add click event: jump to corresponding video time and pause
       EEGchart.getZr().off('click')
       EEGchart.getZr().on('click', function (event) {
         const pointInPixel = [event.offsetX, event.offsetY]
@@ -181,19 +181,19 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
         if (pointInGrid) {
           const clickedIndex = Math.round(pointInGrid[0])
-          const clickedTime = clickedIndex / 200 // 根据采样频率 200Hz 计算时间
+          const clickedTime = clickedIndex / 200 // Calculate time based on sampling frequency 200Hz
           console.log('clickedIndex:', clickedIndex)
           console.log('clickedTime:', clickedTime)
 
-          // 跳转到对应视频时间并暂停
+          // Jump to corresponding video time and pause
           video.currentTime = clickedTime
           accumulatedTime = clickedTime * 1000
           console.log('accumulatedTime:', accumulatedTime)
           timeIndex = clickedIndex
 
-          // 停止播放，保持 EEG 图静止
+          // Stop playback, keep EEG chart static
           isPlaying = false
-          playPauseButton.textContent = '播放'
+          playPauseButton.textContent = 'Play'
           video.pause()
 
           displayFiveFramesAtTime(clickedTime)
@@ -201,10 +201,10 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       })
     }
 
-    // 默认加载第一个组别 - 前额
-    renderChart('前额')
+    // Default load first group - Frontal
+    renderChart('Frontal')
 
-    // 组别按钮点击事件
+    // Group button click event
     const buttons = document.querySelectorAll('.group-button')
     buttons.forEach(button => {
       button.addEventListener('click', (event) => {
@@ -213,21 +213,21 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       })
     })
 
-    // 暂停/播放按钮事件
+    // Pause/Play button event
     const playPauseButton = document.getElementById('playPauseButton')
     const video = document.getElementById('origin-video')
     playPauseButton.addEventListener('click', () => {
-      // 如果已经播放完毕，再次点击时不重新播放
+      // If already finished playing, do not replay on next click
       if (timeIndex >= totalPoints) {
         return
       }
 
       isPlaying = !isPlaying
-      playPauseButton.textContent = isPlaying ? '暂停' : '播放'
+      playPauseButton.textContent = isPlaying ? 'Pause' : 'Play'
 
       if (isPlaying) {
         video.play()
-        startTime = performance.now() - accumulatedTime // 从当前累积时间开始播放
+        startTime = performance.now() - accumulatedTime // Start playing from current accumulated time
       } else {
         video.pause()
       }
@@ -238,20 +238,20 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
         const currentTime = performance.now()
         const elapsedTime = currentTime - startTime
 
-        // 根据总时间计算当前应显示的数据点
+        // Calculate current data points to display based on total time
         timeIndex = Math.floor((elapsedTime / totalDuration) * totalPoints)
 
-        // 确保不超过数据长度
+        // Ensure not to exceed data length
         if (timeIndex >= totalPoints) {
           timeIndex = totalPoints
           isPlaying = false
-          playPauseButton.textContent = '播放'
+          playPauseButton.textContent = 'Play'
           video.pause()
         }
 
-        // 更新图表
+        // Update chart
         const activeButton = document.querySelector('.group-button.active')
-        const selectedGroup = activeButton ? activeButton.dataset.group : '前额'
+        const selectedGroup = activeButton ? activeButton.dataset.group : 'Frontal'
         renderChart(selectedGroup)
       }
 
