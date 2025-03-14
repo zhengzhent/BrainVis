@@ -74,6 +74,7 @@
       const width = 1000,
         height = 1000
       const svg = d3.select('svg').attr('width', width).attr('height', height)
+      // .attr('transform', 'scale(0.5)')
       const tooltip = d3.select('.tooltip') // 获取 tooltip 元素
 
       const radius = 240 // 雷达图基本半径
@@ -617,15 +618,16 @@
         .append('marker')
         .attr('id', 'arrowHead')
         .attr('viewBox', '0 0 10 10')
-        .attr('refX', 9) // **箭头尖端对齐指针末端**
+        .attr('refX', 7) // **箭头尖端对齐指针末端**
         .attr('refY', 5)
-        .attr('markerWidth', 6)
-        .attr('markerHeight', 6)
+        .attr('markerWidth', 4)
+        .attr('markerHeight', 4)
         .attr('orient', 'auto')
         .append('path')
         .attr('d', 'M 0 0 L 10 5 L 0 10 z') // **绘制三角形箭头**
         .attr('fill', 'black') // **箭头颜色**
 
+      d3.select('clockHand').remove()
       const clockHand = svg
         .append('line')
         .attr('id', 'clockHand')
@@ -639,6 +641,7 @@
         .attr('marker-end', 'url(#arrowHead)') // **添加箭头**
 
       clockHand.raise() // **将指针提升到最高层**
+      svg.node().appendChild(clockHand.node())
 
       const controlButton = document.getElementById('controlButton')
 
