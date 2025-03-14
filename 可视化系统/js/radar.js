@@ -424,7 +424,7 @@
               const frameImageUrl = canvas.toDataURL('image/png');
         
               // 将图像放入 .photo-part1 容器中
-              const photoPart1 = document.querySelector('.photo-part1');
+              const photoPart1 = document.querySelector('.small-box');
               photoPart1.innerHTML = `<img src="${frameImageUrl}" alt="Frame" style="width: 100%; height: 100%; object-fit: cover;">`;
             });
         

@@ -48,23 +48,27 @@
     </div>
 
     <div class="bottom-container">
-      <!-- EEG 3D -->
+      <!-- EEG radars -->
+      <div class="photo" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+
+      </div>
+
       <div class="zanding">
-        <div id = "Visualization-container"> 
-          <svg width="1000" height="1000">
+        <div id="Visualization-container"> 
+          <svg width="500" height="500">
             <circle cx="500" cy="500" r="5" fill="white"></circle>
           </svg>
+          <div class="small-box">
+                      <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+
+          </div>
         </div>
         <div class="tooltip"></div>
         <!-- Interactive Information Box -->
       </div>
 
-      <div class="photo" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-        <div class="photo-part1" style="flex: 0 0 100%; border: 1px solid #ccc; margin: 5px; overflow: hidden;">
-          <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
-        </div>
 
-      </div>
 
       <!-- EEG Five Bands -->
       <div class="eeg-5">

@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d')
 // 每隔一段时间提取帧
 video.addEventListener('play', () => {
   const frameInterval = 41 // 每隔 41ms 提取一帧
-  const maxFrames = 8 // 最多显示 8 帧
+  const maxFrames = 10 // 最多显示 8 帧
 
   const extractFrames = () => {
     if (video.paused || video.ended) {
@@ -23,6 +23,8 @@ video.addEventListener('play', () => {
     // 创建新的帧图片
     const img = document.createElement('img')
     img.src = canvas.toDataURL('image/png')
+    img.style.width = '207px' // 设置宽度
+    img.style.height = '100%' // 设置高度
     img.classList.add('frame') // 添加类名 'frame'
 
 
@@ -89,7 +91,9 @@ async function displayFiveFramesAtTime(clickedTime) {
     // **创建帧图片**
     const img = document.createElement('img')
     img.src = canvas.toDataURL('image/png')
-    img.style.margin = '0 3px'
+    img.style.width = '200px' // 设置宽度
+    img.style.height = '150px' // 设置高度
+    img.style.margin = '0 10px'
     img.style.borderRadius = '6px'
     img.style.transition = 'transform 0.3s ease'
 

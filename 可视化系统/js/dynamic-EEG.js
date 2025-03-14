@@ -72,7 +72,7 @@ const EEGcolors = [
 ]
 
 // Load EEG data
-fetch('SEED-DV/single-channel/sub1_channel0.json')
+fetch('SEED-DV/single-channel/sub5_channel0.json')
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // Time axis
