@@ -56,32 +56,19 @@
     <svg width="1000" height="1000">
       <circle cx="500" cy="500" r="5" fill="white"></circle>
       <!-- 中心点 -->
-      <line
+      <!-- <line
         id="clockHand"
         class="clock-hand"
         x1="500"
         y1="500"
         x2="500"
-        y2="200"></line>
+        y2="200"></line> -->
       <!-- 指针 -->
     </svg>
     <button class="button" id="controlButton">Start</button>
     <div class="tooltip"></div>
     <!-- 添加数字框 -->
-    <div
-      id="time-display"
-      style="
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        background: #f0f0f0;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 16px;
-      ">
-      时间点: <span id="time-value">N/A</span>
-    </div>
-    <!-- 交互信息框 -->
+
     <script>
       // 画布大小
       const width = 1000,
@@ -204,7 +191,7 @@
           .append('stop')
           .attr('offset', '3%') // **更小的白色区域**
           .attr('stop-color', '#E0F7FF') // **更亮的浅蓝**
-          .attr('stop-opacity', 0.8)
+          .attr('stop-opacity', 0.7)
 
         gradient
           .append('stop')
@@ -216,7 +203,7 @@
           .append('stop')
           .attr('offset', '50%') // **最大数据点处**
           .attr('stop-color', '#08285AFF') // **更深的深蓝**
-          .attr('stop-opacity', 0.8)
+          .attr('stop-opacity', 1)
 
         // **绘制填充区域**
         svg
@@ -270,410 +257,90 @@
             return
           }
 
-          // 手动指定不同Clip的颜色
+          // // 手动指定不同Clip的颜色
           const categoryColors = [
+            '#FFD700',
+            '#FFD700',
+            '#1E90FF',
+            '#D2691E',
             '#FF8C00',
+            '#2E8B57',
+            '#D2691E',
+            '#FF4500',
+            '#FFD700',
+            '#F4A460',
+            '#8B4513',
             '#666666',
+            '#D2691E',
             '#FF8C00',
+            '#FFD700',
+            '#FF4500',
             '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#0072B2',
-            '#0072B2',
-            '#FCEC52',
-            '#0072B2',
-            '#FF8C00',
-            '#FCEC52',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#E0E0E0',
-            '#E0E0E0',
-            '#E0E0E0',
-            '#E0E0E0',
-            '#E0E0E0',
-            '#009E73',
-            '#009E73',
-            '#009E73',
-            '#009E73',
-            '#009E73',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FCEC52',
-            '#FF8C00',
-            '#FCEC52',
-            '#FCEC52',
-            '#FCEC52',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#009E73',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#E0E0E0',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#0072B2',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FCEC52',
-            '#FCEC52',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#666666',
-            '#FF8C00',
-            '#FF8C00',
-            '#FCEC52',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#E74C3C',
-            '#E74C3C',
-            '#009E73',
-            '#009E73',
-            '#009E73',
-            '#FF8C00',
-            '#0072B2',
-            '#E0E0E0',
+            '#FFD700',
+            '#FF4500',
             '#666666',
             '#666666',
+            '#D2691E',
+            '#FF4500',
             '#FF8C00',
-            '#666666',
-            '#FF8C00',
-            '#FCEC52',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#0072B2',
-            '#FF8C00',
-            '#FF8C00',
-            '#E74C3C',
-            '#E74C3C',
-            '#E74C3C',
-            '#E74C3C',
-            '#E0E0E0',
-            '#FCEC52',
-            '#E74C3C',
-            '#FF8C00',
-            '#E0E0E0',
-            '#E74C3C',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#E0E0E0',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#FF8C00',
-            '#0072B2',
-            '#0072B2',
-            '#0072B2',
-            '#0072B2',
-            '#0072B2',
+            '#D2691E',
+            '#FFD700',
+            '#F4A460',
+            '#8B4513',
+            '#2E8B57',
+            '#8B4513',
+            '#FF4500',
+            '#D2691E',
+            '#1E90FF',
+            '#2E8B57',
+            '#8B4513',
+            '#8B4513',
+            '#1E90FF',
+            '#F4A460',
+            '#D2691E',
+            '#1E90FF',
           ]
           const categoryColorsName = [
-            'Colorful',
-            'Grey',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Blue',
-            'Blue',
-            'Yellow',
-            'Blue',
-            'Colorful',
-            'Yellow',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'White',
-            'White',
-            'White',
-            'White',
-            'White',
-            'Green',
-            'Green',
-            'Green',
-            'Green',
-            'Green',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Yellow',
-            'Colorful',
-            'Yellow',
-            'Yellow',
-            'Yellow',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Green',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'White',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Blue',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Yellow',
-            'Yellow',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Grey',
-            'Colorful',
-            'Colorful',
-            'Yellow',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Red',
-            'Red',
-            'Green',
-            'Green',
-            'Green',
-            'Colorful',
-            'Blue',
-            'White',
-            'Grey',
-            'Grey',
-            'Colorful',
-            'Grey',
-            'Colorful',
-            'Yellow',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Blue',
-            'Colorful',
-            'Colorful',
-            'Red',
-            'Red',
-            'Red',
-            'Red',
-            'White',
-            'Yellow',
-            'Red',
-            'Colorful',
-            'White',
-            'Red',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'White',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Colorful',
-            'Blue',
-            'Blue',
-            'Blue',
-            'Blue',
-            'Blue',
+            'Natural Scene',
+            'Natural Scene',
+            'Water Animal',
+            'Land Animal',
+            'Exercise',
+            'Plant',
+            'Land Animal',
+            'Transportation',
+            'Natural Scene',
+            'Human',
+            'Food',
+            'Musical',
+            'Land Animal',
+            'Exercise',
+            'Natural Scene',
+            'Transportation',
+            'Exercise',
+            'Natural Scene',
+            'Transportation',
+            'Musical',
+            'Musical',
+            'Land Animal',
+            'Transportation',
+            'Exercise',
+            'Land Animal',
+            'Natural Scene',
+            'Human',
+            'Food',
+            'Plant',
+            'Food',
+            'Transportation',
+            'Land Animal',
+            'Water Animal',
+            'Plant',
+            'Food',
+            'Food',
+            'Water Animal',
+            'Human',
+            'Land Animal',
+            'Water Animal',
           ]
 
           //光流数据映射到[10, barMaxHeight]
@@ -704,7 +371,8 @@
             const rgbValue = rgbData[index] // 获取对应的 RGB 值
             const deValue = deData[index] //获取对应的de值
 
-            const color = categoryColors[index]
+            const color = categoryColors[Math.floor(index / pointsPerSegment)]
+            // console.log('color:', color)
 
             // 获取当前柱子对应的 EEG 数据点/
             const eegIndex1 = segmentIndex * 5 + subIndex * eegPointsPerBar
@@ -768,16 +436,22 @@
                   .attr('visibility', 'visible')
 
                 tooltip.style('visibility', 'visible').html(`
-                  <b>Class: </b> ${segmentIndex + 1} <br>
-                  <b>Clip: </b> ${subIndex + 1} <br>
-                  <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(3)} <br>
-                  <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
-                  <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
-                  <b>EEG PSD: </b> ${
-                    eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
-                  } <br>
-                  <b>Color: <b>${categoryColorsName[index]}<br>
-                `)
+                        <b>Class: </b> ${segmentIndex + 1} <br>
+                        <b>Clip: </b> ${subIndex + 1} <br>
+                        <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(
+                          3,
+                        )} <br>
+                        <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                        <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                        <b>EEG PSD: </b> ${
+                          eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                        } <br>
+                        <b>Class: <b>${
+                          categoryColorsName[
+                            Math.floor(index / pointsPerSegment)
+                          ]
+                        }<br>
+                      `)
               })
               .on('mousemove', (event) => {
                 tooltip
@@ -814,16 +488,22 @@
                   .attr('visibility', 'visible')
 
                 tooltip.style('visibility', 'visible').html(`
-                  <b>Class: </b> ${segmentIndex + 1} <br>
-                  <b>Clip: </b> ${subIndex + 1} <br>
-                  <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(3)} <br>
-                  <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
-                  <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
-                  <b>EEG PSD: </b> ${
-                    eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
-                  } <br>
-                  <b>Color: <b>${categoryColorsName[index]}<br>
-                `)
+                        <b>Class: </b> ${segmentIndex + 1} <br>
+                        <b>Clip: </b> ${subIndex + 1} <br>
+                        <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(
+                          3,
+                        )} <br>
+                        <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                        <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                        <b>EEG PSD: </b> ${
+                          eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                        } <br>
+                        <b>Class: <b>${
+                          categoryColorsName[
+                            Math.floor(index / pointsPerSegment)
+                          ]
+                        }<br>
+                      `)
               })
               .on('mouseout', () => {
                 tooltip.style('visibility', 'hidden')
@@ -856,18 +536,22 @@
                 .attr('stroke-width', 3)
                 .on('mouseover', () => {
                   tooltip.style('visibility', 'visible').html(`
-                    <b>Class: </b> ${segmentIndex + 1} <br>
-                    <b>Clip: </b> ${subIndex + 1} <br>
-                    <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(
-                      3,
-                    )} <br>
-                    <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
-                    <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
-                    <b>EEG PSD: </b> ${
-                      eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
-                    } <br>
-                    <b>Color: <b>${categoryColorsName[index]}<br>
-                  `)
+                          <b>Class: </b> ${segmentIndex + 1} <br>
+                          <b>Clip: </b> ${subIndex + 1} <br>
+                          <b>OpticalFlow: </b> ${flowNormalizationValue.toFixed(
+                            3,
+                          )} <br>
+                          <b>RGB Pixel Stream: </b> ${rgbValue.toFixed(3)} <br>
+                          <b>EEG DE: </b> ${deNormalizationValue.toFixed(3)}<br>
+                          <b>EEG PSD: </b> ${
+                            eegValue1 !== null ? eegValue1.toFixed(3) : 'N/A'
+                          } <br>
+                          <b>Class: <b>${
+                            categoryColorsName[
+                              Math.floor(index / pointsPerSegment)
+                            ]
+                          }<br>
+                        `)
                 })
                 .on('mousemove', (event) => {
                   tooltip
@@ -911,7 +595,7 @@
           .text(label.text)
       })
       // -----------------------------------------------------指针移动
-      const pointerRadius = 300
+      const pointerRadius = 260
       const totalSegments = 40 // 40 个时间段
       const segmentTime = 13 // 每个时间段 13s
       const totalTime2 = 520 // 总时间 520s
@@ -924,7 +608,38 @@
       let currentAngle = -90 // **指针的实时角度，从12点方向开始**
       let animationTimer
 
-      const clockHand = d3.select('#clockHand')
+      // const clockHand = d3.select('#clockHand')
+      d3.select('#clockHand').remove() // **删除旧的指针，避免层级问题**
+
+      // **在 SVG 中定义箭头样式**
+      const defs = svg.append('defs')
+      defs
+        .append('marker')
+        .attr('id', 'arrowHead')
+        .attr('viewBox', '0 0 10 10')
+        .attr('refX', 9) // **箭头尖端对齐指针末端**
+        .attr('refY', 5)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M 0 0 L 10 5 L 0 10 z') // **绘制三角形箭头**
+        .attr('fill', 'black') // **箭头颜色**
+
+      const clockHand = svg
+        .append('line')
+        .attr('id', 'clockHand')
+        .attr('x1', centerX)
+        .attr('y1', centerY)
+        .attr('x2', centerX + Math.cos(-Math.PI / 2) * pointerRadius)
+        .attr('y2', centerY + Math.sin(-Math.PI / 2) * pointerRadius)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 4)
+        .attr('stroke-linecap', 'butt')
+        .attr('marker-end', 'url(#arrowHead)') // **添加箭头**
+
+      clockHand.raise() // **将指针提升到最高层**
+
       const controlButton = document.getElementById('controlButton')
 
       // **指针运动逻辑**
@@ -998,7 +713,6 @@
 
       controlButton.addEventListener('click', function (event) {
         event.preventDefault() // **防止按钮的默认提交行为**
-
         if (isPaused) {
           isPaused = false
           wasPaused = true
