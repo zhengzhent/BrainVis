@@ -258,15 +258,10 @@ body {
       .radar-line {
         fill: none;
         stroke: steelblue;
-        stroke-width: 1;
-        opacity: 0.7;
+        stroke-width: 1.2;
+        opacity: 0;
       }
-      /* 光流柱状线 */
-      .bar {
-        fill: orange;
-        stroke: black;
-        stroke-width: 1px;
-      }
+
       /* RGB像素流红点 */
       .rgb-dot {
         fill: red;
@@ -274,9 +269,11 @@ body {
       }
       /* 坐标轴线 */
       .grid-line {
-        stroke: rgba(200, 200, 200, 0.5);
+        stroke: rgba(200, 200, 200, 0.3);
         stroke-width: 1;
+        opacity: 0.6;
       }
+      /* Tooltip 样式 */
       .tooltip {
         position: absolute;
         background: rgba(0, 0, 0, 0.7);
@@ -286,4 +283,24 @@ body {
         font-size: 12px;
         visibility: hidden;
         pointer-events: none;
+      }
+      body {
+        text-align: center;
+      }
+      .clock-hand {
+        stroke: black;
+        stroke-width: 4;
+        stroke-linecap: round;
+      }
+      .button {
+        position: absolute; /* 绝对定位 */
+        bottom: 10px; /* 距离底部10px */
+        left: 10px; /* 距离左侧10px */
+        padding: 5px 10px; /* 减小内边距 */
+        font-size: 14px; /* 减小字体大小 */
+        cursor: pointer;
+      }
+      #Visualization-container{
+        transform:scale(0.6) translateX(165px);/***整体缩小 50%并向右偏移10像素***/
+        transform-origin:top left;/***保持放中心***/
       }
