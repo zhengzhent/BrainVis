@@ -550,8 +550,8 @@
 
    // **添加四个数字标签**
    labels.forEach((label) => {
-     const x = centerX + Math.cos(label.angle) * (radius + 200) // 半径外 20px
-     const y = centerY + Math.sin(label.angle) * (radius + 200)
+     const x = centerX + Math.cos(label.angle) * (radius + 210) // 半径外 20px
+     const y = centerY + Math.sin(label.angle) * (radius + 210)
 
      svg
        .append('text')
@@ -559,8 +559,8 @@
        .attr('y', y)
        .attr('text-anchor', 'middle')
        .attr('dominant-baseline', 'middle')
-       .attr('fill', 'black')
-       .attr('font-size', '16px')
+       .attr('fill', 'grey')
+       .attr('font-size', '40px')
        .attr('font-weight', 'bold')
        .text(label.text)
    })
