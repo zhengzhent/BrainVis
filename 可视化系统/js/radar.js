@@ -431,7 +431,7 @@
             videoElement.pause(); // 暂停视频
             console.log('显示视频帧图:', segmentIndex * pointsPerSegment + subIndex + 1);
           })
-        
+
 
          // 绘制 RGB 圆点-------------------------------------------------------------------------------------
          const rgbX = centerX + Math.cos(angle) * rgbBaseRadius

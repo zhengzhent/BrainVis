@@ -49,26 +49,46 @@ const EEGchannelInfo = [
 
 // Add color array
 const EEGcolors = [
-  '#FF6B6B', // Rose Red
-  '#4ECDC4', // Cyan
-  '#45B7D1', // Sky Blue
-  '#96CEB4', // Light Green
-  '#FFEEAD', // Light Yellow
-  '#D39BCA', // Purple
-  '#8C8C8C', // Gray
-  '#85C1E9', // Teal
-  '#9B9B9B', // Medium Gray
-  '#E67E22', // Orange
-  '#B34747', // Dark Red
-  '#8E44AD', // Violet
-  '#2980B9', // Dark Blue
-  '#27AE60', // Dark Green
-  '#F39C12', // Orange Red
-  '#E74C3C', // Red
-  '#3498DB', // Blue
-  '#1ABC9C', // Bright Green
-  '#F1C40F', // Yellow
-  '#95A5A6', // Ash Gray
+  // '#FF6B6B', // Rose Red
+  // '#4ECDC4', // Cyan
+  // '#45B7D1', // Sky Blue
+  // '#96CEB4', // Light Green
+  // '#FFEEAD', // Light Yellow
+  // '#D39BCA', // Purple
+  // '#8C8C8C', // Gray
+  // '#85C1E9', // Teal
+  // '#9B9B9B', // Medium Gray
+  // '#E67E22', // Orange
+  // '#B34747', // Dark Red
+  // '#8E44AD', // Violet
+  // '#2980B9', // Dark Blue
+  // '#27AE60', // Dark Green
+  // '#F39C12', // Orange Red
+  // '#E74C3C', // Red
+  // '#3498DB', // Blue
+  // '#1ABC9C', // Bright Green
+  // '#F1C40F', // Yellow
+  // '#95A5A6', // Ash Gray
+
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
+  '#000000', // Black
 ]
 
 // Load EEG data
@@ -161,7 +181,7 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
           yAxisIndex: idx,
           lineStyle: {
             color: EEGcolors[channel.index % EEGcolors.length],
-            width: 2,
+            width: 1,
           },
           showSymbol: false,
           smooth: true,

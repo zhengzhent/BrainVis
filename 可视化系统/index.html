@@ -50,9 +50,10 @@
 
     <div class="bottom-container">
       <!-- EEG radars -->
-      <div class="photo" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-
-
+      <div class="photo">
+        <video id="embedded-video" controls style="width: 100%; height: 100%; object-fit: cover;">
+          <source src="SEED-DV/Video/3d_brain.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <div class="zanding">
@@ -64,7 +65,9 @@
                       <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
 
           </div>
+
         </div>
+
         <div class="tooltip"></div>
         <!-- Interactive Information Box -->
       </div>
@@ -83,10 +86,11 @@
             <button id="pauseButton_5">Pause</button>
             <select id="regionSelect" class="region-select">
               <option value="all">All Regions</option>
-              <option value="Frontal">Frontal Area</option>
-              <option value="Parietal">Parietal Area</option>
+              <option value="Frontal">Frontal</option>
+              <option value="Parietal">Frontal Lobe</option>
               <option value="Temporal">Temporal Area</option>
               <option value="Central">Central Area</option>
+              <option value="Occipital">Occipital Area</option>
               <option value="Occipital">Occipital Area</option>
             </select>
           </div>
@@ -104,5 +108,6 @@
     <script src="js/dynamic-EEG.js"></script>
     <script src="js/all-channel.js"></script>
     <script src="js/radar.js"></script>
+    <script src="js/3d.js"></script>
   </body>
 </html>

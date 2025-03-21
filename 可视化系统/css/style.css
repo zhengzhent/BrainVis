@@ -305,7 +305,8 @@ body {
         width: 450px; /* 添加单位 */
         height: 50%;
         position: absolute; /* 绝对定位 */
-        top: 0; /* 距离顶部0px */
+        top: 380px; /* 距离顶部0px */
         left: 1000px; /* 往右偏移10px */
         border: 2px solid #909097; /* 添加边框 */
-      }
+      }      
+
