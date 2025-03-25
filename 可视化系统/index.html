@@ -16,7 +16,6 @@
       </video>
       <!-- Frame-by-Frame Video -->
       <div id="video-clip"></div>
-
     </div>
 
     <!-- EEG Image -->
@@ -25,35 +24,43 @@
 
       <div class="controls">
         <!-- <button id="playButton">Play</button> -->
-         <div id="part1">
+        <div id="part1">
           <button id="playPauseButton" class="control-button">Play</button>
           <button class="btn_c">Choose</button>
-         </div>
+        </div>
 
-
-         <div id="part2">
+        <div id="part2">
           <div id="buttonGroup" class="button-group">
-            <button class="group-button" data-group="Frontal">Frontal</button>
-            <button class="group-button" data-group="Frontal Lobe">Frontal Lobe</button>
-            <button class="group-button" data-group="Parietal">Parietal</button>
-            <button class="group-button" data-group="Temporal Lobe">Temporal Lobe</button>
+            <button class="group-button" data-group="Frontal Poles">
+              Frontal Poles
+            </button>
+            <button class="group-button" data-group="Frontal Lobes">
+              Frontal Lobes
+            </button>
+            <button class="group-button" data-group="Parietal Lobes">
+              Parietal Lobes
+            </button>
+            <button class="group-button" data-group="Temporal Lobes">
+              Temporal Lobes
+            </button>
             <button class="group-button" data-group="Central">Central</button>
-            <button class="group-button" data-group="Occipital">Occipital</button>
-            <button class="group-button" data-group="All Channels">All Channels</button>
+            <button class="group-button" data-group="Occipital Lobes">
+              Occipital Lobes
+            </button>
+            <button class="group-button" data-group="All Channels">
+              All Channels
+            </button>
           </div>
-         </div>
-
+        </div>
       </div>
       <div id="chart"></div>
-
     </div>
 
     <div class="bottom-container">
       <!-- EEG radars -->
 
-
       <div class="zanding">
-        <div id="Visualization-container"> 
+        <div id="Visualization-container">
           <svg width="500" height="500">
             <circle cx="500" cy="500" r="5" fill="white"></circle>
           </svg>
@@ -62,7 +69,16 @@
             <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
           </div> -->
           <div class="small-box">
-            <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+            <img
+              id="frame-image"
+              src=""
+              alt="Selected Frame"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: none;
+              " />
           </div>
           <!-- <div class="box2">
         <img id="frame-image" src="" alt="Selected Frame" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
@@ -73,11 +89,9 @@
         <!-- Interactive Information Box -->
       </div>
 
-
-
       <!-- EEG Five Bands -->
       <div class="eeg-5">
-          <!-- <div class="controls_5">
+        <!-- <div class="controls_5">
             <button class="band-btn" data-band="Beta">Beta</button>
             <button class="band-btn" data-band="Alpha">Alpha</button>
             <button class="band-btn" data-band="Theta">Theta</button>
@@ -95,31 +109,36 @@
               <option value="Occipital">Occipital Area</option>
             </select>
           </div> -->
-          <!-- <div class="chart_5"></div> -->
+        <!-- <div class="chart_5"></div> -->
 
-          <div id="mountNode"></div>
+        <div id="mountNode"></div>
       </div>
 
-                    <!-- 3d图 -->
+      <!-- 3d图 -->
       <div class="photo">
-        <video id="embedded-video" controls style="width: 100%; height: 100%; object-fit: cover;">
+        <video
+          id="embedded-video"
+          controls
+          style="width: 100%; height: 100%; object-fit: cover">
           <source src="SEED-DV/Video/3d_brain.mp4" type="video/mp4" />
         </video>
       </div>
-
     </div>
 
     <script src="https://registry.npmmirror.com/echarts/5.6.0/files/dist/echarts.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+    <script>
+      /*Fixing iframe window.innerHeight 0 issue in Safari*/ document.body
+        .clientHeight
+    </script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
-    <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script> 
+    <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
 
     <script src="js/video-clip.js"></script>
-    <script src="js/main.js"></script>
+    <!-- <script src="js/main.js"></script> -->
     <script src="js/dynamic-EEG.js"></script>
-    <script src="js/all-channel.js"></script>
+    <!-- <script src="js/all-channel.js"></script> -->
     <script src="js/radar.js"></script>
     <script src="js/3d.js"></script>
     <script src="js/circle_heatmap.js"></script>

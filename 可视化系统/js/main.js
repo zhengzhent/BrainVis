@@ -33,27 +33,27 @@ const colors = [
 
 // Add channelInfo array
 const channelInfo = [
-  { index: 0, name: 'FP1', group: 'Frontal' },
-  { index: 1, name: 'FPZ', group: 'Frontal' },
-  { index: 2, name: 'FP2', group: 'Frontal' },
-  { index: 3, name: 'F7', group: 'Frontal Lobe' },
-  { index: 4, name: 'F3', group: 'Frontal Lobe' },
-  { index: 5, name: 'FZ', group: 'Frontal Lobe' },
-  { index: 6, name: 'F4', group: 'Frontal Lobe' },
-  { index: 7, name: 'F8', group: 'Frontal Lobe' },
-  { index: 8, name: 'T7', group: 'Temporal Lobe' },
-  { index: 9, name: 'T8', group: 'Temporal Lobe' },
-  { index: 10, name: 'C3', group: 'Central' },
-  { index: 11, name: 'CZ', group: 'Central' },
-  { index: 12, name: 'C4', group: 'Central' },
-  { index: 13, name: 'P7', group: 'Parietal Lobe' },
-  { index: 14, name: 'P3', group: 'Parietal Lobe' },
-  { index: 15, name: 'PZ', group: 'Parietal Lobe' },
-  { index: 16, name: 'P4', group: 'Parietal Lobe' },
-  { index: 17, name: 'P8', group: 'Parietal Lobe' },
-  { index: 18, name: 'O1', group: 'Occipital Lobe' },
-  { index: 19, name: 'O2', group: 'Occipital Lobe' },
-  { index: 20, name: 'O3', group: 'Occipital Lobe' },
+  { index: 0, name: 'FP1', group: 'Frontal Poles' },
+  { index: 1, name: 'FPZ', group: 'Frontal Poles' },
+  { index: 2, name: 'FP2', group: 'Frontal Poles' },
+  { index: 5, name: 'F7', group: 'Frontal Lobes' },
+  { index: 7, name: 'F3', group: 'Frontal Lobes' },
+  { index: 9, name: 'FZ', group: 'Frontal Lobes' },
+  { index: 11, name: 'F4', group: 'Frontal Lobes' },
+  { index: 13, name: 'F8', group: 'Frontal Lobes' },
+  { index: 23, name: 'T7', group: 'Temporal Lobes' },
+  { index: 31, name: 'T8', group: 'Temporal Lobes' },
+  { index: 25, name: 'C3', group: 'Central' },
+  { index: 27, name: 'CZ', group: 'Central' },
+  { index: 29, name: 'C4', group: 'Central' },
+  { index: 41, name: 'P7', group: 'Parietal Lobes' },
+  { index: 43, name: 'P3', group: 'Parietal Lobes' },
+  { index: 45, name: 'PZ', group: 'Parietal Lobes' },
+  { index: 47, name: 'P4', group: 'Parietal Lobes' },
+  { index: 49, name: 'P8', group: 'Parietal Lobes' },
+  { index: 58, name: 'O1', group: 'Occipital Lobes' },
+  { index: 59, name: 'O2', group: 'Occipital Lobes' },
+  { index: 60, name: 'O3', group: 'Occipital Lobes' },
 ]
 
 // Initial configuration
@@ -87,9 +87,9 @@ const option = {
     data: [],
     show: false,
   },
-  yAxis: { 
-    type: 'value', 
-    name: 'Voltage (μV)', 
+  yAxis: {
+    type: 'value',
+    name: 'Voltage (μV)',
     splitLine: { show: false },
     show: false,
   },
@@ -108,9 +108,9 @@ const option = {
       fillerColor: 'rgba(144,197,237,0.2)', // Selected area color
       handleStyle: {
         color: '#fff',
-        borderColor: '#ACB8D1'
-      }
-    }
+        borderColor: '#ACB8D1',
+      },
+    },
   ],
 }
 

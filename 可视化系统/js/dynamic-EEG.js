@@ -2,27 +2,6 @@
 const EEGchart = echarts.init(document.getElementById('chart'))
 // Channel and group information
 const EEGchannelInfo = [
-  { index: 0, name: 'FP1', group: 'Frontal' },
-  { index: 1, name: 'FPZ', group: 'Frontal' },
-  { index: 2, name: 'FP2', group: 'Frontal' },
-  { index: 5, name: 'F7', group: 'Frontal Lobe' },
-  { index: 7, name: 'F3', group: 'Frontal Lobe' },
-  { index: 9, name: 'FZ', group: 'Frontal Lobe' },
-  { index: 11, name: 'F4', group: 'Frontal Lobe' },
-  { index: 13, name: 'F8', group: 'Frontal Lobe' },
-  { index: 23, name: 'T7', group: 'Temporal Lobe' },
-  { index: 31, name: 'T8', group: 'Temporal Lobe' },
-  { index: 25, name: 'C3', group: 'Central' },
-  { index: 27, name: 'CZ', group: 'Central' },
-  { index: 29, name: 'C4', group: 'Central' },
-  { index: 41, name: 'P7', group: 'Parietal' },
-  { index: 43, name: 'P3', group: 'Parietal' },
-  { index: 45, name: 'PZ', group: 'Parietal' },
-  { index: 47, name: 'P4', group: 'Parietal' },
-  { index: 49, name: 'P8', group: 'Parietal' },
-  { index: 58, name: 'O1', group: 'Occipital' },
-  { index: 59, name: 'O2', group: 'Occipital' },
-  { index: 60, name: 'O3', group: 'Occipital' },
   { index: 0, name: 'FP1', group: 'All Channels' },
   { index: 1, name: 'FPZ', group: 'All Channels' },
   { index: 2, name: 'FP2', group: 'All Channels' },
@@ -44,6 +23,27 @@ const EEGchannelInfo = [
   { index: 58, name: 'O1', group: 'All Channels' },
   { index: 59, name: 'O2', group: 'All Channels' },
   { index: 60, name: 'O3', group: 'All Channels' },
+  { index: 0, name: 'FP1', group: 'Frontal Poles' },
+  { index: 1, name: 'FPZ', group: 'Frontal Poles' },
+  { index: 2, name: 'FP2', group: 'Frontal Poles' },
+  { index: 5, name: 'F7', group: 'Frontal Lobes' },
+  { index: 7, name: 'F3', group: 'Frontal Lobes' },
+  { index: 9, name: 'FZ', group: 'Frontal Lobes' },
+  { index: 11, name: 'F4', group: 'Frontal Lobes' },
+  { index: 13, name: 'F8', group: 'Frontal Lobes' },
+  { index: 23, name: 'T7', group: 'Temporal Lobes' },
+  { index: 31, name: 'T8', group: 'Temporal Lobes' },
+  { index: 25, name: 'C3', group: 'Central' },
+  { index: 27, name: 'CZ', group: 'Central' },
+  { index: 29, name: 'C4', group: 'Central' },
+  { index: 41, name: 'P7', group: 'Parietal Lobes' },
+  { index: 43, name: 'P3', group: 'Parietal Lobes' },
+  { index: 45, name: 'PZ', group: 'Parietal Lobes' },
+  { index: 47, name: 'P4', group: 'Parietal Lobes' },
+  { index: 49, name: 'P8', group: 'Parietal Lobes' },
+  { index: 58, name: 'O1', group: 'Occipital Lobes' },
+  { index: 59, name: 'O2', group: 'Occipital Lobes' },
+  { index: 60, name: 'O3', group: 'Occipital Lobes' },
   // -------------------------------------
 ]
 
@@ -92,14 +92,14 @@ const EEGcolors = [
 ]
 
 // Load EEG data
-fetch('SEED-DV/single-channel/sub5_channel0.json')
+fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
   .then((data) => {
     const timeData = Array.from({ length: data[0].length }, (_, i) => i) // Time axis
     let timeIndex = 0 // Current time index
     let isPlaying = false // Play state
-    const totalDuration = 130000 // 13 seconds to complete playback
-    const totalPoints = 26000 // Total data points
+    const totalDuration = 520000 // 13 seconds to complete playback
+    const totalPoints = 104000 // Total data points
     let startTime = null // Delay initialization
     let accumulatedTime = 0 // Accumulated playback time
 
@@ -110,10 +110,10 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
 
       // Configure ECharts
       const option = {
-        title: {
-          text: `EEG Display: ${group}`,
-          left: 'center',
-        },
+        // title: {
+        //   text: `${group}`,
+        //   left: 'center',
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -145,7 +145,7 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
       filteredChannels.forEach((channel, idx) => {
         option.grid.push({
           top: `${idx * (100 / filteredChannels.length) + 7}%`,
-          height: `${100 / filteredChannels.length - 12}%`,
+          height: `${100 / filteredChannels.length - 15}%`,
           left: '2%',
           right: '2%',
         })
@@ -189,7 +189,7 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
       })
 
       EEGchart.setOption(option, { notMerge: true })
-      
+
       // Add click event: jump to corresponding video time and pause
       EEGchart.getZr().off('click')
       EEGchart.getZr().on('click', function (event) {
@@ -222,11 +222,11 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
     }
 
     // Default load first group - Frontal
-    renderChart('Frontal')
+    renderChart('All Channels')
 
     // Group button click event
     const buttons = document.querySelectorAll('.group-button')
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       button.addEventListener('click', (event) => {
         const selectedGroup = event.target.dataset.group
         renderChart(selectedGroup)
@@ -271,13 +271,15 @@ fetch('SEED-DV/single-channel/sub5_channel0.json')
 
         // Update chart
         const activeButton = document.querySelector('.group-button.active')
-        const selectedGroup = activeButton ? activeButton.dataset.group : 'Frontal'
+        const selectedGroup = activeButton
+          ? activeButton.dataset.group
+          : 'All Channels'
         renderChart(selectedGroup)
       }
 
       requestAnimationFrame(updateChart)
     }
-    
+
     updateChart()
   })
   .catch((error) => {
