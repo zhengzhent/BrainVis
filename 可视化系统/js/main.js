@@ -1,4 +1,4 @@
-const chart = echarts.init(document.querySelector('.chart_5'))
+// const chart = echarts.init(document.querySelector('.chart_5'))
 let currentData = null
 let timeIndex = 0
 let intervalId = null
