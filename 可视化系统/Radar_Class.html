@@ -95,7 +95,9 @@
       const deMaxHeight = 40 // DE 数据条的最大高度
 
       // 设定 DE 数据的显示阈值（可调整）
-      const deThreshold = -21.6624 // 只有 DE 值大于 0.5 时，才绘制条形
+      // const deThreshold = -20.0823 //Beta sub5
+      const deThreshold = -21.8978 //gamma sub1
+      // const deThreshold = -21.0341 //gamma sub5
 
       // **角度计算**
       const segmentAngle = (2 * Math.PI) / numSegments // 每个时间段的总角度（9°）
@@ -134,7 +136,7 @@
 
       // 读取 EEG 数据并绘制雷达图
       d3.json(
-        'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ_Gamma.json',
+        'SEED-DV/single-channel/EEG_Feature/sub1_block1_PSD_2s_OZ_Gamma.json',
       ).then((eegData) => {
         console.log('原始EEG数据:', eegData)
 
@@ -183,27 +185,40 @@
         const gradient = defs
           .append('radialGradient')
           .attr('id', 'eegGradient')
-          .attr('cx', '59%') // 确保渐变中心点在圆心
-          .attr('cy', '47%')
+          .attr('cx', '45%') // 确保渐变中心点在圆心
+          .attr('cy', '45%')
           .attr('r', '100%') // 让渐变更集中在 EEG 数据区域内
 
-        // 定义渐变颜色（增强对比度）
+        // 定义更丝滑、外侧更深的渐变颜色
+        // 定义更丝滑、外侧更深的渐变颜色
         gradient
           .append('stop')
-          .attr('offset', '3%') // **更小的白色区域**
-          .attr('stop-color', '#E0F7FF') // **更亮的浅蓝**
-          .attr('stop-opacity', 0.7)
+          .attr('offset', '0%') // 起点，最浅
+          .attr('stop-color', '#E0F7FF') // 浅蓝
+          .attr('stop-opacity', 0.3)
 
         gradient
           .append('stop')
-          .attr('offset', '32%') // **让过渡更快变深**
-          .attr('stop-color', '#0072B2') // **中间蓝色**
-          .attr('stop-opacity', 0.8)
+          .attr('offset', '20%')
+          .attr('stop-color', '#66B2D6') // 柔和中浅蓝
+          .attr('stop-opacity', 0.5)
 
         gradient
           .append('stop')
-          .attr('offset', '50%') // **最大数据点处**
-          .attr('stop-color', '#08285AFF') // **更深的深蓝**
+          .attr('offset', '50%')
+          .attr('stop-color', '#0072B2') // 标准中蓝
+          .attr('stop-opacity', 0.9)
+
+        gradient
+          .append('stop')
+          .attr('offset', '80%')
+          .attr('stop-color', '#1B355C') // 深蓝灰
+          .attr('stop-opacity', 0.95)
+
+        gradient
+          .append('stop')
+          .attr('offset', '100%') // 最外圈
+          .attr('stop-color', '#001933') // 极深蓝，几乎黑蓝
           .attr('stop-opacity', 1)
 
         // **绘制填充区域**
@@ -233,7 +248,7 @@
           d3.json('SEED-DV/single-channel/OF_Processed/OF1.json'), //读取 光流 特征数据
           d3.json('SEED-DV/single-channel/RGB_Processed/rgb_mean_200.json'), //读取 RGB 特征数据
           d3.json(
-            'SEED-DV/single-channel/EEG_Feature/sub5_block1_DE_2s_OZ_Gamma.json',
+            'SEED-DV/single-channel/EEG_Feature/sub1_block1_DE_2s_OZ_Gamma.json',
           ), // 读取 DE 特征数据
         ]).then(([flowData, rgbData, deData]) => {
           if (
