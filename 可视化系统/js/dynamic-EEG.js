@@ -102,6 +102,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
     const totalPoints = 104000 // Total data points
     let startTime = null // Delay initialization
     let accumulatedTime = 0 // Accumulated playback time
+    const windowSize = 500
 
     function renderChart(group) {
       const filteredChannels = EEGchannelInfo.filter(
@@ -120,6 +121,22 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
             type: 'line',
           },
         },
+        // dataZoom: [
+        //   {
+        //     type: 'slider',
+        //     xAxisIndex: Array.from(
+        //       { length: filteredChannels.length },
+        //       (_, i) => i,
+        //     ),
+        //     start: 0,
+        //     end: 100,
+        //     show: !isPlaying,
+        //     opacity: 0,
+        //     emphasis: { opacity: 1 },
+        //     blur: { opacity: 0 },
+        //     backgroundColor: 'rgba(0,0,0,0)',
+        //   },
+        // ],
         dataZoom: [
           {
             type: 'slider',
@@ -127,9 +144,9 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
               { length: filteredChannels.length },
               (_, i) => i,
             ),
-            start: 0,
-            end: 100,
             show: !isPlaying,
+            startValue: Math.max(0, timeIndex - windowSize),
+            endValue: timeIndex,
             opacity: 0,
             emphasis: { opacity: 1 },
             blur: { opacity: 0 },
@@ -188,6 +205,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
           },
           showSymbol: false,
           smooth: true,
+          clip: true,
         })
       })
 
