@@ -144,10 +144,10 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
       filteredChannels.forEach((channel, idx) => {
         option.grid.push({
-          top: `${idx * (100 / filteredChannels.length) + 7}%`,
-          height: `${100 / filteredChannels.length - 15}%`,
-          left: '2%',
-          right: '2%',
+          top: `${idx * (100 / filteredChannels.length) + 5}%`,
+          height: `${100 / filteredChannels.length - 10}%`,
+          left: '2.5%',
+          right: '1%',
         })
 
         option.xAxis.push({
@@ -165,6 +165,9 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
           type: 'value',
           gridIndex: idx,
           name: channel.name,
+          nameLocation: 'middle',
+          nameRotate: 0, // 顺时针旋转90°
+          nameGap: 25,
           position: 'left',
           splitLine: {
             show: false,
