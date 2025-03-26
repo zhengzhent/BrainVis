@@ -90,7 +90,7 @@ const EEGcolors = [
   '#000000', // Black
   '#000000', // Black
 ]
-
+let currentGroup = 'All Channels' // 默认选中组
 // Load EEG data
 fetch('SEED-DV/single-channel/sub1_channel0.json')
   .then((response) => response.json())
@@ -129,7 +129,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
             ),
             start: 0,
             end: 100,
-            show: true,
+            show: !isPlaying,
             opacity: 0,
             emphasis: { opacity: 1 },
             blur: { opacity: 0 },
@@ -166,7 +166,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
           gridIndex: idx,
           name: channel.name,
           nameLocation: 'middle',
-          nameRotate: 0, // 顺时针旋转90°
+          nameRotate: 0,
           nameGap: 25,
           position: 'left',
           splitLine: {
@@ -192,6 +192,32 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       })
 
       EEGchart.setOption(option, { notMerge: true })
+
+      EEGchart.getZr().on('mousemove', function (params) {
+        const pointInPixel = [params.offsetX, params.offsetY]
+        const pointInGrid = EEGchart.convertFromPixel(
+          { seriesIndex: 0 },
+          pointInPixel,
+        )
+
+        if (pointInGrid) {
+          // 鼠标在图表区域内，显示 slider
+          const newOption = EEGchart.getOption()
+          if (!newOption.dataZoom[0].show) {
+            newOption.dataZoom[0].show = true
+            EEGchart.setOption(newOption)
+          }
+        }
+      })
+
+      EEGchart.getZr().on('mouseout', function () {
+        // 鼠标离开，隐藏 slider
+        const newOption = EEGchart.getOption()
+        if (newOption.dataZoom[0].show) {
+          newOption.dataZoom[0].show = false
+          EEGchart.setOption(newOption)
+        }
+      })
 
       // Add click event: jump to corresponding video time and pause
       EEGchart.getZr().off('click')
@@ -232,7 +258,12 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
     buttons.forEach((button) => {
       button.addEventListener('click', (event) => {
         const selectedGroup = event.target.dataset.group
-        renderChart(selectedGroup)
+        currentGroup = selectedGroup // ✅ 更新当前组
+        renderChart(currentGroup)
+
+        // ✅ 更新按钮样式（可选）
+        buttons.forEach((btn) => btn.classList.remove('active'))
+        event.target.classList.add('active')
       })
     })
 
@@ -246,20 +277,23 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       }
 
       isPlaying = !isPlaying
-      playPauseButton.textContent = isPlaying ? 'Pause' : 'Play'
+      playPauseButton.textContent = isPlaying ? 'Stop' : 'Execute'
 
       if (isPlaying) {
         video.play()
-        startTime = performance.now() - accumulatedTime // Start playing from current accumulated time
+        startTime = performance.now()
+        // startTime = performance.now() - accumulatedTime // Start playing from current accumulated time
       } else {
         video.pause()
+        accumulatedTime += performance.now() - startTime
+        startTime = null
       }
     })
 
     function updateChart() {
       if (isPlaying) {
         const currentTime = performance.now()
-        const elapsedTime = currentTime - startTime
+        const elapsedTime = currentTime - startTime + accumulatedTime
 
         // Calculate current data points to display based on total time
         timeIndex = Math.floor((elapsedTime / totalDuration) * totalPoints)
@@ -268,7 +302,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
         if (timeIndex >= totalPoints) {
           timeIndex = totalPoints
           isPlaying = false
-          playPauseButton.textContent = 'Play'
+          playPauseButton.textContent = 'Execute'
           video.pause()
         }
 
