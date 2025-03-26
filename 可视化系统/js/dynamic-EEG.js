@@ -167,7 +167,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
           name: channel.name,
           nameLocation: 'middle',
           nameRotate: 0,
-          nameGap: 25,
+          nameGap: 20,
           position: 'left',
           splitLine: {
             show: false,
@@ -242,7 +242,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
           // Stop playback, keep EEG chart static
           isPlaying = false
-          playPauseButton.textContent = 'Play'
+          playPauseButton.textContent = 'Execute'
           video.pause()
 
           displayFiveFramesAtTime(clickedTime)
