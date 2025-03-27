@@ -119,12 +119,12 @@ body {
     align-items: center;
     gap: 10px;
     justify-content: space-around;
-    border-bottom: 1px solid #7988a6; /* 添加黑色下边框 */
+    border-bottom: 5px solid #7988a6; /* 添加黑色下边框 */
   }
   #part2{
     display: flex;
     flex-direction: column;
-    height: 70%;
+    height: 50%;
     width: 100%;
     align-items: center;
     gap: 6px;
@@ -133,7 +133,8 @@ body {
   .part2-title{
     height: 10%;
     margin-top: 5px;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 800;
   }
   .group-button{
     /* 中间按钮 */
@@ -152,7 +153,7 @@ body {
     /* part2按钮部分 */
     height: 90%;
     width: 100%;
-    margin-top: -50px;
+    margin-top: -30px;
     display: flex;
     flex-direction: column;
     gap: 1px;
@@ -163,16 +164,17 @@ body {
     height: 10%;
     width: 100%;
     align-items: center;
-    margin-top: -30px;
+    margin-top: -10px;
     gap: 10px;
     justify-content: space-around;
-    border-top: 1px solid #7988a6; /* 添加黑色下边框 */
+    border-top: 5px solid #7988a6; /* 添加黑色下边框 */
     /* border-bottom: 1px solid #7988a6; 添加黑色下边框 */
   }
   .part3-title{
     height: 10%;
     margin-top: 5px;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 800;
   }
   .FrequencyButton{
     display: flex;
@@ -192,7 +194,7 @@ body {
   }
   .part4{
     height: 10%;
-    margin-top:-80px;
+    margin-top: -90px;
   }
 
   .eeg-5 {
