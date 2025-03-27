@@ -57,12 +57,12 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
     // 修改多边形样式配置
     chart.polygon()
         .position('channel*class')
-        .color('value', '#FFFFFF-#808080-#000000')
+        .color('value', '#084A8C-#0E6DA7-#A3DBB6-#F6FBF0') // 深蓝 → 蓝绿 → 浅绿 → 绿白
         .tooltip('channel*class*value')
         .style({
             stroke: '#fff',
             lineWidth: 1,
-            opacity: 'opacity' // 绑定透明度到数据中的opacity字段
+            opacity: 'opacity'
         });
 
     // 添加文本标签

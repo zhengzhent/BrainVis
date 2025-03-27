@@ -133,19 +133,19 @@ body {
     margin: 5px;
     font-size: 16px;
     cursor: pointer;
-    background: #4c78af;
+    background: #7988a6;
     color: white;
     border:none;
     /* border-radius: 4px; */
   }
  
   .eeg-5 {
-    width: 35%;
+    width: 45%;
     height: 100%;
     background-color: #fff;
     border-radius: 0;
     display: flex;
-    flex-direction: column; /* 垂直排列 */
+    flex-direction: row; /* 水平排列 */
     align-items: center; /* 水平居中 */
   }
   .controls_5{
@@ -160,7 +160,7 @@ body {
     align-items: center;
   }
   .zanding {
-    width: 35%;
+    width: 25%;
     height: 100%;
     background-color: #fff;
     border-radius: 0;
@@ -183,7 +183,7 @@ body {
     margin: 5px;
     font-size: 16px;
     cursor: pointer;
-    background: #4c78af;
+    background: #7988a6;
     color: white;
     border:none;
     /* border-radius: 4px; */
@@ -236,17 +236,7 @@ body {
     border-color: #fff;
     box-shadow: 0 0 5px rgba(65, 105, 225, 0.5);
 }
-/* 添加 #chart_5 的样式 */
-.chart_5 {
-  position: relative;
-  width: 100%;
-  height: 500px;  /* 给一个具体的高度 */
-  /* margin: 10px auto; */
-  border-radius: 8px;
 
-}
-
-、
 
 /* 雷达图样式如下 */
       /* 雷达线 */
@@ -296,19 +286,11 @@ body {
         cursor: pointer;
       }
       #Visualization-container{
-        transform:scale(0.6) translateX(10px);/***整体缩小 50%并向右偏移10像素***/
+        transform:scale(0.58) translateX(0px);/***整体缩小 50%并向右偏移10像素***/
         transform-origin:top left;/***保持放中心***/
         display: flex;
       }
-      .small-box{
-        display: flex;
-        width: 450px; /* 添加单位 */
-        height: 50%;
-        position: absolute; /* 绝对定位 */
-        top: 325PX; /* 距离顶部0px */
-        left: 1000px; /* 往右偏移10px */
-        border: 2px solid #909097; /* 添加边框 */
-      }      
+  
       .box1{
         display: flex;
         width: 450px; /* 添加单位 */
@@ -331,8 +313,21 @@ body {
       ::-webkit-scrollbar{display:none;}
       html,body{overflow:hidden;height:100%;margin:0;}
 
-      #mountNode{
+      #up {
         display: flex;
-        width: 100%;
         height: 100%;
+        width: 50%;
+        border: 1px solid #ccc; /* 添加浅灰色边框 */
+        padding: 10px; /* 添加内边距 */
+        box-sizing: border-box; /* 边框计入尺寸计算 */
+      }
+      
+      #down {
+        display: flex;
+        height: 100%;
+        width: 50%; /* 修复：添加缺失的分号 */
+        border: 1px solid #ccc; /* 添加相同样式边框 */
+        border-top: none; /* 去除顶部双边框 */
+        padding: 10px;
+        box-sizing: border-box;
       }
