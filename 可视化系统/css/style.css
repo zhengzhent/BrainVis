@@ -79,14 +79,6 @@ body {
     justify-content: center; /* 水平居中 */
     gap: 5px;  /*两个元素之间的间距 */
   }
-  /* #all-channel{
-    width:35%;
-    height: 45vh;
-    background-color: #fff;
-    border-radius: 0;
-    margin-bottom: 10px;  
-    display: flex;
-  } */
   #chart {
     width:89%;
     height: 45vh;
@@ -106,31 +98,49 @@ body {
     flex-direction: column;
     /* justify-content: space-evenly; */
     align-items: flex-start;
+    gap: 5px;
+  }
+  .control-button{
+    /* 播放按钮 */
+    width: 92%;
+    height: 55%;
+    font-size: 16px;
+    cursor: pointer;
+    background: #7988a6;
+    color: white;
+    border:none;
+    /* margin-top: -40px; */
   }
   #part1{
     display: flex;
     flex-direction: column;
-    height: 20%;
+    height: 10%;
     width: 100%;
     align-items: center;
     gap: 10px;
     justify-content: space-around;
+    border-bottom: 1px solid #7988a6; /* 添加黑色下边框 */
   }
   #part2{
     display: flex;
     flex-direction: column;
-    height: 80%;
+    height: 70%;
     width: 100%;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     justify-content: space-around ;
-    border-radius: 4px;
   }
-
+  .part2-title{
+    height: 10%;
+    margin-top: 5px;
+    font-size: 18px;
+  }
   .group-button{
-    width: 95%;
-    padding: 5px 10px;
-    margin: 5px;
+    /* 中间按钮 */
+    width: 92%;
+    height: 8%;
+    padding: 5px ;
+    margin: 10px;
     font-size: 16px;
     cursor: pointer;
     background: #7988a6;
@@ -138,7 +148,52 @@ body {
     border:none;
     /* border-radius: 4px; */
   }
- 
+  .button-group{
+    /* part2按钮部分 */
+    height: 90%;
+    width: 100%;
+    margin-top: -50px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  #part3{
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 100%;
+    align-items: center;
+    margin-top: -30px;
+    gap: 10px;
+    justify-content: space-around;
+    border-top: 1px solid #7988a6; /* 添加黑色下边框 */
+    /* border-bottom: 1px solid #7988a6; 添加黑色下边框 */
+  }
+  .part3-title{
+    height: 10%;
+    margin-top: 5px;
+    font-size: 18px;
+  }
+  .FrequencyButton{
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    width: 92%;
+    text-align: center;
+  }
+  .FrequencyButton button {
+    flex: 1;          /* 每个按钮平均分宽度 */
+    text-align: center;
+  }
+  .F-button{
+    background: #7988a6;
+    color: white;
+    border: none;
+  }
+  .part4{
+    height: 10%;
+  }
+
   .eeg-5 {
     width: 45%;
     height: 100%;
@@ -177,7 +232,7 @@ body {
     gap: 5px; /* 两个元素之间的间距 */
   }
 
-  .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c, #playButton, #playPauseButton{
+  .btn1, .btn2, .btn3, .btn4, .btn5 , .btn_p , .btn_s , .btn_c, #playButton{
     width: 95%;
     padding: 5px 10px;
     margin: 5px;

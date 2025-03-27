@@ -2,47 +2,47 @@
 const EEGchart = echarts.init(document.getElementById('chart'))
 // Channel and group information
 const EEGchannelInfo = [
-  { index: 0, name: 'FP1', group: 'All Channels' },
-  { index: 1, name: 'FPZ', group: 'All Channels' },
-  { index: 2, name: 'FP2', group: 'All Channels' },
+  { index: 0, name: 'Fp1', group: 'All Channels' },
+  { index: 1, name: 'FpZ', group: 'All Channels' },
+  { index: 2, name: 'Fp2', group: 'All Channels' },
   { index: 5, name: 'F7', group: 'All Channels' },
   { index: 7, name: 'F3', group: 'All Channels' },
-  { index: 9, name: 'FZ', group: 'All Channels' },
+  { index: 9, name: 'Fz', group: 'All Channels' },
   { index: 11, name: 'F4', group: 'All Channels' },
   { index: 13, name: 'F8', group: 'All Channels' },
   { index: 23, name: 'T7', group: 'All Channels' },
   { index: 31, name: 'T8', group: 'All Channels' },
   { index: 25, name: 'C3', group: 'All Channels' },
-  { index: 27, name: 'CZ', group: 'All Channels' },
+  { index: 27, name: 'Cz', group: 'All Channels' },
   { index: 29, name: 'C4', group: 'All Channels' },
   { index: 41, name: 'P7', group: 'All Channels' },
   { index: 43, name: 'P3', group: 'All Channels' },
-  { index: 45, name: 'PZ', group: 'All Channels' },
+  { index: 45, name: 'Pz', group: 'All Channels' },
   { index: 47, name: 'P4', group: 'All Channels' },
   { index: 49, name: 'P8', group: 'All Channels' },
   { index: 58, name: 'O1', group: 'All Channels' },
-  { index: 59, name: 'O2', group: 'All Channels' },
+  { index: 59, name: 'Oz', group: 'All Channels' },
   { index: 60, name: 'O3', group: 'All Channels' },
-  { index: 0, name: 'FP1', group: 'Frontal Poles' },
-  { index: 1, name: 'FPZ', group: 'Frontal Poles' },
-  { index: 2, name: 'FP2', group: 'Frontal Poles' },
+  { index: 0, name: 'Fp1', group: 'Frontal Poles' },
+  { index: 1, name: 'FpZ', group: 'Frontal Poles' },
+  { index: 2, name: 'Fp2', group: 'Frontal Poles' },
   { index: 5, name: 'F7', group: 'Frontal Lobes' },
   { index: 7, name: 'F3', group: 'Frontal Lobes' },
-  { index: 9, name: 'FZ', group: 'Frontal Lobes' },
+  { index: 9, name: 'Fz', group: 'Frontal Lobes' },
   { index: 11, name: 'F4', group: 'Frontal Lobes' },
   { index: 13, name: 'F8', group: 'Frontal Lobes' },
   { index: 23, name: 'T7', group: 'Temporal Lobes' },
   { index: 31, name: 'T8', group: 'Temporal Lobes' },
   { index: 25, name: 'C3', group: 'Central' },
-  { index: 27, name: 'CZ', group: 'Central' },
+  { index: 27, name: 'Cz', group: 'Central' },
   { index: 29, name: 'C4', group: 'Central' },
   { index: 41, name: 'P7', group: 'Parietal Lobes' },
   { index: 43, name: 'P3', group: 'Parietal Lobes' },
-  { index: 45, name: 'PZ', group: 'Parietal Lobes' },
+  { index: 45, name: 'Pz', group: 'Parietal Lobes' },
   { index: 47, name: 'P4', group: 'Parietal Lobes' },
   { index: 49, name: 'P8', group: 'Parietal Lobes' },
   { index: 58, name: 'O1', group: 'Occipital Lobes' },
-  { index: 59, name: 'O2', group: 'Occipital Lobes' },
+  { index: 59, name: 'Oz', group: 'Occipital Lobes' },
   { index: 60, name: 'O3', group: 'Occipital Lobes' },
   // -------------------------------------
 ]
@@ -161,7 +161,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
       filteredChannels.forEach((channel, idx) => {
         option.grid.push({
-          top: `${idx * (100 / filteredChannels.length) + 5}%`,
+          top: `${idx * (100 / filteredChannels.length) + 6}%`,
           height: `${100 / filteredChannels.length - 10}%`,
           left: '2.5%',
           right: '1%',
@@ -260,7 +260,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
 
           // Stop playback, keep EEG chart static
           isPlaying = false
-          playPauseButton.textContent = 'Execute'
+          playPauseButton.textContent = 'Play Video & EEG'
           video.pause()
 
           displayFiveFramesAtTime(clickedTime)
@@ -295,7 +295,7 @@ fetch('SEED-DV/single-channel/sub1_channel0.json')
       }
 
       isPlaying = !isPlaying
-      playPauseButton.textContent = isPlaying ? 'Stop' : 'Execute'
+      playPauseButton.textContent = isPlaying ? 'Stop' : 'Play Video & EEG'
 
       if (isPlaying) {
         video.play()

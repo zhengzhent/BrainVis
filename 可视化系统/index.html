@@ -25,57 +25,79 @@
       <div class="controls">
         <!-- <button id="playButton">Play</button> -->
         <div id="part1">
-          <button id="playPauseButton" class="control-button">Execute</button>
+          <button id="playPauseButton" class="control-button">
+            Play Video & EEG
+          </button>
           <!-- <button class="btn_c">Choose</button> -->
         </div>
 
         <div id="part2">
+          <div class="part2-title">Brain Region Selection</div>
           <div id="buttonGroup" class="button-group">
             <button class="group-button" data-group="All Channels">
               Whole Brain
             </button>
             <button class="group-button" data-group="Frontal Poles">
-              Frontal Poles(FP1,FPZ,FP2)
+              Frontal Poles &nbsp;&nbsp; (FP1,FPZ,FP2)
             </button>
             <button class="group-button" data-group="Frontal Lobes">
-              Frontal Lobes(F7,F3,FZ,F4,F8)
+              Frontal Lobes &nbsp; (F7,F3,FZ,F4,F8)
             </button>
             <button class="group-button" data-group="Temporal Lobes">
-              Temporal Lobes(T7,T8)
+              Temporal Lobes &nbsp; &nbsp;&nbsp; (T7,T8)
             </button>
             <button class="group-button" data-group="Central">
-              Central(C3,CZ,C4)
+              Central &nbsp; &nbsp; &nbsp;&nbsp; (C3,CZ,C4)
             </button>
             <button class="group-button" data-group="Parietal Lobes">
-              Parietal Lobes(P7,P3,PZ,P4,P8)
+              Parietal Lobes (P7,P3,PZ,P4,P8)
             </button>
             <button class="group-button" data-group="Occipital Lobes">
-              Occipital Lobes(O1,OZ,O2)
+              Occipital Lobes &nbsp; (O1,OZ,O2)
             </button>
           </div>
-          <div id="part3">
-            <button onclick="filterData('Delta')">Delta</button>
-            <button onclick="filterData('Theta')">Theta</button>
-            <button onclick="filterData('Alpha')">Alpha</button>
-            <button onclick="filterData('Beta')">Beta</button>
-            <button onclick="filterData('Gamma')">Gamma</button>
-            <button onclick="showAll()">All</button>
-            <div class="tab-buttons" style="margin-top: 10px;">
-              <select id="channelSelect" 
-        style="margin-left: 10px; padding: 4px;" 
-        onchange="filterByChannelGroup(this.value)">
-    <option value="all">All Brain Regions</option>
-    <option value="1">Frontal Poles</option>
-    <option value="2">Frontal Lobes</option>
-    <option value="3">Temporal Lobes</option>
-    <option value="4">Central</option>
-    <option value="5">Parietal Lobes</option>   
-    <option value="6">Occipital Lobes</option>
-    <!-- 其他脑区选项... -->
-</select>      
+        </div>
+
+        <div id="part3">
+          <div class="part3-title">Frequency Selection</div>
+          <div class="FrequencyButton">
+            <button onclick="filterData('Delta')" class="F-button">
+              Delta
+            </button>
+            <button onclick="filterData('Theta')" class="F-button">
+              Theta
+            </button>
+            <button onclick="filterData('Alpha')" class="F-button">
+              Alpha
+            </button>
+            <button onclick="filterData('Beta')" class="F-button">Beta</button>
+            <button onclick="filterData('Gamma')" class="F-button">
+              Gamma
+            </button>
+            <button onclick="showAll()" class="F-button">All</button>
           </div>
 
-          </div>
+          <!-- 选择其他脑区 -->
+          <!-- <div class="tab-buttons" style="margin-top: 10px">
+            <select
+              id="channelSelect"
+              style="margin-left: 10px; padding: 4px"
+              onchange="filterByChannelGroup(this.value)">
+              <option value="all">All Brain Regions</option>
+              <option value="1">Frontal Poles</option>
+              <option value="2">Frontal Lobes</option>
+              <option value="3">Temporal Lobes</option>
+              <option value="4">Central</option>
+              <option value="5">Parietal Lobes</option>
+              <option value="6">Occipital Lobes</option>
+            </select>
+          </div> -->
+        </div>
+        <div id="part4">
+          <img
+            src="image/lobescaptslateral.png"
+            alt="lobescaptslateral"
+            width="100%" />
         </div>
       </div>
       <div id="chart"></div>
@@ -128,9 +150,8 @@
 
       <!-- EEG Five Bands -->
       <div class="eeg-5">
-
-       <div id="up"></div>
-       <div id="down"></div>
+        <div id="up"></div>
+        <div id="down"></div>
       </div>
 
       <!-- 3d图 -->
