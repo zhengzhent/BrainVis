@@ -51,6 +51,29 @@
               Occipital Lobes
             </button>
           </div>
+          <div id="part3">
+            <button onclick="filterData('Delta')">Delta</button>
+            <button onclick="filterData('Theta')">Theta</button>
+            <button onclick="filterData('Alpha')">Alpha</button>
+            <button onclick="filterData('Beta')">Beta</button>
+            <button onclick="filterData('Gamma')">Gamma</button>
+            <button onclick="showAll()">All</button>
+            <div class="tab-buttons" style="margin-top: 10px;">
+              <select id="channelSelect" 
+        style="margin-left: 10px; padding: 4px;" 
+        onchange="filterByChannelGroup(this.value)">
+    <option value="all">All Brain Regions</option>
+    <option value="1">Frontal Poles</option>
+    <option value="2">Frontal Lobes</option>
+    <option value="3">Temporal Lobes</option>
+    <option value="4">Central</option>
+    <option value="5">Parietal Lobes</option>   
+    <option value="6">Occipital Lobes</option>
+    <!-- 其他脑区选项... -->
+</select>      
+          </div>
+
+          </div>
         </div>
       </div>
       <div id="chart"></div>
@@ -103,27 +126,9 @@
 
       <!-- EEG Five Bands -->
       <div class="eeg-5">
-        <!-- <div class="controls_5">
-            <button class="band-btn" data-band="Beta">Beta</button>
-            <button class="band-btn" data-band="Alpha">Alpha</button>
-            <button class="band-btn" data-band="Theta">Theta</button>
-            <button class="band-btn" data-band="Delta">Delta</button>
-            <button class="band-btn" data-band="Gamma">Gamma</button>
-            <button id="playButton_5">Play</button>
-            <button id="pauseButton_5">Pause</button>
-            <select id="regionSelect" class="region-select">
-              <option value="all">All Regions</option>
-              <option value="Frontal">Frontal</option>
-              <option value="Parietal">Frontal Lobe</option>
-              <option value="Temporal">Temporal Area</option>
-              <option value="Central">Central Area</option>
-              <option value="Occipital">Occipital Area</option>
-              <option value="Occipital">Occipital Area</option>
-            </select>
-          </div> -->
-        <!-- <div class="chart_5"></div> -->
 
-        <div id="mountNode"></div>
+       <div id="up"></div>
+       <div id="down"></div>
       </div>
 
       <!-- 3d图 -->
@@ -154,5 +159,6 @@
     <script src="js/radar.js"></script>
     <script src="js/3d.js"></script>
     <script src="js/circle_heatmap.js"></script>
+    <script src="js/detail.js"></script>
   </body>
 </html>

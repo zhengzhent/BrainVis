@@ -391,46 +391,46 @@
              highlightArc.attr('visibility', 'hidden')
              tooltip.style('visibility', 'hidden')
            })
-           .on('click', () => {
-            // 更新数字框中的时间点
-            d3.select('#time-value').text(segmentIndex * pointsPerSegment + subIndex + 1);
+          //  .on('click', () => {
+          //   // 更新数字框中的时间点
+          //   d3.select('#time-value').text(segmentIndex * pointsPerSegment + subIndex + 1);
         
-            // 框选第一个图片
-            document.querySelectorAll('.frame').forEach(frame => {
-              frame.classList.remove('highlighted-frame');
-            });
-            const firstFrame = document.querySelector('.frame');
-            if (firstFrame) {
-              firstFrame.classList.add('highlighted-frame');
-            }
+          //   // 框选第一个图片
+          //   document.querySelectorAll('.frame').forEach(frame => {
+          //     frame.classList.remove('highlighted-frame');
+          //   });
+          //   const firstFrame = document.querySelector('.frame');
+          //   if (firstFrame) {
+          //     firstFrame.classList.add('highlighted-frame');
+          //   }
         
-            // 跳转到对应的视频时间
-            const videoTime = (segmentIndex * pointsPerSegment + subIndex) / samplingRate; // 计算对应的视频时间
-            const videoElement = document.getElementById('origin-video');
-            videoElement.currentTime = videoTime; // 跳转到对应时间
+          //   // 跳转到对应的视频时间
+          //   const videoTime = (segmentIndex * pointsPerSegment + subIndex) / samplingRate; // 计算对应的视频时间
+          //   const videoElement = document.getElementById('origin-video');
+          //   videoElement.currentTime = videoTime; // 跳转到对应时间
         
-            // 等待视频加载并准备好绘制
-            videoElement.addEventListener('seeked', function() {
-              // 创建新的帧图片
-              const canvas = document.createElement('canvas');
-              const ctx = canvas.getContext('2d');
-              canvas.width = videoElement.videoWidth;
-              canvas.height = videoElement.videoHeight;
+          //   // 等待视频加载并准备好绘制
+          //   videoElement.addEventListener('seeked', function() {
+          //     // 创建新的帧图片
+          //     const canvas = document.createElement('canvas');
+          //     const ctx = canvas.getContext('2d');
+          //     canvas.width = videoElement.videoWidth;
+          //     canvas.height = videoElement.videoHeight;
         
-              // 绘制当前帧到 canvas
-              ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+          //     // 绘制当前帧到 canvas
+          //     ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
         
-              // 获取图像 URL
-              const frameImageUrl = canvas.toDataURL('image/png');
+          //     // 获取图像 URL
+          //     const frameImageUrl = canvas.toDataURL('image/png');
         
-              // 将图像放入 .photo-part1 容器中
-              const photoPart1 = document.querySelector('.small-box');
-              photoPart1.innerHTML = `<img src="${frameImageUrl}" alt="Frame" style="width: 100%; height: 100%; object-fit: cover;">`;
-            });
+          //     // 将图像放入 .photo-part1 容器中
+          //     const photoPart1 = document.querySelector('.small-box');
+          //     photoPart1.innerHTML = `<img src="${frameImageUrl}" alt="Frame" style="width: 100%; height: 100%; object-fit: cover;">`;
+          //   });
         
-            videoElement.pause(); // 暂停视频
-            console.log('显示视频帧图:', segmentIndex * pointsPerSegment + subIndex + 1);
-          })
+          //   videoElement.pause(); // 暂停视频
+          //   console.log('显示视频帧图:', segmentIndex * pointsPerSegment + subIndex + 1);
+          // })
 
 
          // 绘制 RGB 圆点-------------------------------------------------------------------------------------
