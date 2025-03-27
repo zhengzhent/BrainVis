@@ -135,13 +135,13 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
     
     // 保持原有 showAll 函数不变
     const channelGroups = {
-      '1': ['FP1', 'FPZ', 'FP2'],  
-      '2': ['F7', 'F3', 'FZ','F4','F8'], 
-      '3': ['T7','T8'],  
-      '4': ['C3', 'CZ', 'C4'],  
-      '5': ['P7', 'P3', 'PZ', 'P4', 'P8'],  
-      '6': ['O1', 'OZ', 'O2'],  
-      // 可以添加更多脑区映射
+      'All Channels': [], // 全部通道
+      'Frontal Poles': ['FP1', 'FPZ', 'FP2'],
+      'Frontal Lobes': ['F7', 'F3', 'FZ', 'F4', 'F8'],
+      'Temporal Lobes': ['T7', 'T8'],
+      'Central': ['C3', 'CZ', 'C4'],
+      'Parietal Lobes': ['P7', 'P3', 'PZ', 'P4', 'P8'],
+      'Occipital Lobes': ['O1', 'OZ', 'O2']
     };
     
     window.filterByChannelGroup = function(groupId) {
@@ -162,4 +162,16 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
     window.showAll = function() {
         chart.changeData(processedData);
     };
+});
+
+// 添加按钮事件绑定
+document.querySelectorAll('.group-button').forEach(button => {
+  button.addEventListener('click', function() {
+    const groupId = this.getAttribute('data-group');
+    if (groupId === 'All Channels') {
+      window.showAll();
+    } else {
+      window.filterByChannelGroup(groupId);
+    }
+  });
 });
