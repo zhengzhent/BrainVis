@@ -3,7 +3,7 @@ const EEGchart = echarts.init(document.getElementById('chart'))
 // Channel and group information
 const EEGchannelInfo = [
   { index: 0, name: 'Fp1', group: 'All Channels' },
-  { index: 1, name: 'FpZ', group: 'All Channels' },
+  { index: 1, name: 'Fpz', group: 'All Channels' },
   { index: 2, name: 'Fp2', group: 'All Channels' },
   { index: 5, name: 'F7', group: 'All Channels' },
   { index: 7, name: 'F3', group: 'All Channels' },
@@ -22,9 +22,9 @@ const EEGchannelInfo = [
   { index: 49, name: 'P8', group: 'All Channels' },
   { index: 58, name: 'O1', group: 'All Channels' },
   { index: 59, name: 'Oz', group: 'All Channels' },
-  { index: 60, name: 'O3', group: 'All Channels' },
+  { index: 60, name: 'O2', group: 'All Channels' },
   { index: 0, name: 'Fp1', group: 'Frontal Poles' },
-  { index: 1, name: 'FpZ', group: 'Frontal Poles' },
+  { index: 1, name: 'Fpz', group: 'Frontal Poles' },
   { index: 2, name: 'Fp2', group: 'Frontal Poles' },
   { index: 5, name: 'F7', group: 'Frontal Lobes' },
   { index: 7, name: 'F3', group: 'Frontal Lobes' },
@@ -43,7 +43,7 @@ const EEGchannelInfo = [
   { index: 49, name: 'P8', group: 'Parietal Lobes' },
   { index: 58, name: 'O1', group: 'Occipital Lobes' },
   { index: 59, name: 'Oz', group: 'Occipital Lobes' },
-  { index: 60, name: 'O3', group: 'Occipital Lobes' },
+  { index: 60, name: 'O2', group: 'Occipital Lobes' },
   // -------------------------------------
 ]
 

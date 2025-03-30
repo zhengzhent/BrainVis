@@ -3,9 +3,9 @@ const allEEGChart = echarts.init(document.getElementById('all-channel'))
 
 // EEG通道信息
 const EEGchannelInfo_all_channel = [
-  { index: 0, name: 'FP1' },
-  { index: 1, name: 'FPZ' },
-  { index: 2, name: 'FP2' },
+  { index: 0, name: 'Fp1' },
+  { index: 1, name: 'Fpz' },
+  { index: 2, name: 'Fp2' },
   { index: 5, name: 'F7' },
   { index: 7, name: 'F3' },
   { index: 9, name: 'FZ' },
@@ -22,8 +22,8 @@ const EEGchannelInfo_all_channel = [
   { index: 47, name: 'P4' },
   { index: 49, name: 'P8' },
   { index: 58, name: 'O1' },
-  { index: 59, name: 'O2' },
-  { index: 60, name: 'O3' },
+  { index: 59, name: 'Oz' },
+  { index: 60, name: 'O2' },
 ]
 
 // 颜色数组

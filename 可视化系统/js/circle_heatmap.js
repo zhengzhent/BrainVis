@@ -28,7 +28,7 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
 
     // 设置极坐标
     chart.coord('polar', {
-        innerRadius: 0.05,
+        innerRadius: 0.15,
         outerRadius: 0.95
     });
 
@@ -46,18 +46,14 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
             }
         }
     });
-    chart.axis('class', {
-        title: {
-            text: 'Class',
-            position: 'end'
-        }
-    });
+    // 确保不显示 class 轴
+    chart.axis('class', false);
 
     // 绘制多边形
     // 修改多边形样式配置
     chart.polygon()
         .position('channel*class')
-        .color('value', '#084A8C-#0E6DA7-#A3DBB6-#F6FBF0') // 深蓝 → 蓝绿 → 浅绿 → 绿白
+        .color('value', '#F6FBF0-#A3DBB6-#0E6DA7-#084A8C') // 绿白 → 浅绿 → 蓝绿 → 深蓝
         .tooltip('channel*class*value')
         .style({
             stroke: '#fff',
@@ -65,21 +61,7 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
             opacity: 'opacity'
         });
 
-    // 添加文本标签
-    var values = ['Delta', 'Theta', 'Alpha', 'Beta', 'Gamma'];
-    values.forEach(function(val, idx) {
-        chart.guide().text({
-            top: true,
-            position: [val, 1], // 根据 class 位置调整到最上层
-            content: val,
-            style: {
-                fill: '#FF0000', // 更加突出的颜色
-                textAlign: 'center',
-                shadowBlur: 2,
-                shadowColor: 'rgba(0, 0, 0, .45)'
-            }
-        });
-    });
+
 
     // 增加单个单元快块的高亮功能
     chart.on('polygon:mouseenter', function(ev) {
@@ -136,12 +118,12 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
     // 保持原有 showAll 函数不变
     const channelGroups = {
       'All Channels': [], // 全部通道
-      'Frontal Poles': ['FP1', 'FPZ', 'FP2'],
-      'Frontal Lobes': ['F7', 'F3', 'FZ', 'F4', 'F8'],
+      'Frontal Poles': ['Fp1', 'Fpz', 'Fp2'],
+      'Frontal Lobes': ['F7', 'F3', 'Fz', 'F4', 'F8'],
       'Temporal Lobes': ['T7', 'T8'],
       'Central': ['C3', 'CZ', 'C4'],
-      'Parietal Lobes': ['P7', 'P3', 'PZ', 'P4', 'P8'],
-      'Occipital Lobes': ['O1', 'OZ', 'O2']
+      'Parietal Lobes': ['P7', 'P3', 'Pz', 'P4', 'P8'],
+      'Occipital Lobes': ['O1', 'Oz', 'O2']
     };
     
     window.filterByChannelGroup = function(groupId) {

@@ -106,10 +106,17 @@ body {
     height: 55%;
     font-size: 16px;
     cursor: pointer;
-    background: #7988a6;
-    color: white;
-    border:none;
+    border-color:#dcdcdc;
+    font-weight:normal;
+    border-top-left-radius:1px;
+    border-top-right-radius:1px;
+    border-bottom-left-radius:1px;
+    border-bottom-right-radius:1px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff;
+    background:linear-gradient(#f9f9f9, #e9e9e9);
     /* margin-top: -40px; */
+    margin-left: -11px; /* 往左偏移10像素，可根据需求调整 */
   }
   #part1{
     display: flex;
@@ -119,7 +126,7 @@ body {
     align-items: center;
     gap: 10px;
     justify-content: space-around;
-    border-bottom: 5px solid #7988a6; /* 添加黑色下边框 */
+    border-bottom: 5px solid #989da2; /* 添加黑色下边框 */
   }
   #part2{
     display: flex;
@@ -136,17 +143,26 @@ body {
     font-size: 20px;
     font-weight: 800;
   }
+
+
   .group-button{
     /* 中间按钮 */
+    text-align:right;
     width: 92%;
-    height: 8%;
+    height: 10%;
     padding: 5px ;
-    margin: 10px;
+    margin: 5px;
     font-size: 16px;
     cursor: pointer;
-    background: #7988a6;
-    color: white;
-    border:none;
+    border-color:#dcdcdc;
+    font-weight: normal; /* 将字体粗细设置为正常，变细 */
+    border-top-left-radius:1px;
+    border-top-right-radius:1px;
+    border-bottom-left-radius:1px;
+    border-bottom-right-radius:1px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff;
+    background:linear-gradient(#f9f9f9, #e9e9e9);
     /* border-radius: 4px; */
   }
   .button-group{
@@ -167,7 +183,7 @@ body {
     margin-top: -10px;
     gap: 10px;
     justify-content: space-around;
-    border-top: 5px solid #7988a6; /* 添加黑色下边框 */
+    border-top: 5px solid #989da2; /* 添加黑色下边框 */
     /* border-bottom: 1px solid #7988a6; 添加黑色下边框 */
   }
   .part3-title{
@@ -179,8 +195,8 @@ body {
   .FrequencyButton{
     display: flex;
     flex-direction: row;
-    gap: 3px;
-    width: 92%;
+    gap: 1px;
+    width: 100%;
     text-align: center;
   }
   .FrequencyButton button {
@@ -188,9 +204,16 @@ body {
     text-align: center;
   }
   .F-button{
-    background: #7988a6;
-    color: white;
-    border: none;
+    cursor: pointer;
+    border-color:#dcdcdc;
+    font-weight: normal; /* 将字体粗细设置为正常，变细 */
+    border-top-left-radius:1px;
+    border-top-right-radius:1px;
+    border-bottom-left-radius:1px;
+    border-bottom-right-radius:1px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff;
+    background:linear-gradient(#f9f9f9, #e9e9e9);
   }
   .part4{
     height: 10%;
@@ -203,7 +226,7 @@ body {
     background-color: #fff;
     border-radius: 0;
     display: flex;
-    flex-direction: row; /* 水平排列 */
+    flex-direction: column; /* 垂直排列 */
     align-items: center; /* 水平居中 */
   }
   .controls_5{
@@ -223,6 +246,8 @@ body {
     background-color: #fff;
     border-radius: 0;
     display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 水平居中 */
   }
   .photo{
     width: 30%; 
@@ -343,8 +368,19 @@ body {
         font-size: 14px; /* 减小字体大小 */
         cursor: pointer;
       }
+
+      #title1{
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      #title3{
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+      }
       #Visualization-container{
-        transform:scale(0.58) translateX(0px);/***整体缩小 50%并向右偏移10像素***/
+        transform:scale(0.6) translateX(300px) translateY(10px);/***整体缩小 50%并向右偏移10像素，向下偏移20像素***/
         transform-origin:top left;/***保持放中心***/
         display: flex;
       }
@@ -371,21 +407,106 @@ body {
       ::-webkit-scrollbar{display:none;}
       html,body{overflow:hidden;height:100%;margin:0;}
 
+        /* 频率图的样式 */
+      #title2{
+        display: flex;
+        height: 10%;
+        width: 100%;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      #up-down{
+        display: flex;
+        height: 90%;
+        width: 100%;
+        flex-direction: row; /* 水平排列 */
+        }
       #up {
         display: flex;
-        height: 100%;
+        height: 95%;
         width: 50%;
-        border: 1px solid #ccc; /* 添加浅灰色边框 */
         padding: 10px; /* 添加内边距 */
         box-sizing: border-box; /* 边框计入尺寸计算 */
       }
       
       #down {
         display: flex;
-        height: 100%;
+        height: 95%;
         width: 50%; /* 修复：添加缺失的分号 */
-        border: 1px solid #ccc; /* 添加相同样式边框 */
         border-top: none; /* 去除顶部双边框 */
         padding: 10px;
         box-sizing: border-box;
       }
+      
+      /* 视频样式 */
+      #embedded-video::-webkit-media-controls {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-enclosure {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-panel {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-play-button {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-timeline {
+        display: none !important;
+      } #embedded-video::-webkit-media-controls {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-enclosure {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-panel {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-play-button {
+        display: none !important;
+      }
+      #embedded-video::-webkit-media-controls-timeline {
+        display: none !important;
+      }
+
+
+                  /* 模态框样式 */
+                  .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1;
+                    padding-top: 100px;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.9);
+                  }
+      
+                  /* 模态框图片样式 */
+                  .modal-content {
+                    margin: auto;
+                    display: block;
+                    width: 80%;
+                    max-width: 700px;
+                  }
+      
+                  /* 关闭按钮样式 */
+                  .close {
+                    position: absolute;
+                    top: 15px;
+                    right: 35px;
+                    color: #f1f1f1;
+                    font-size: 40px;
+                    font-weight: bold;
+                    transition: 0.3s;
+                  }
+      
+                  .close:hover,
+                  .close:focus {
+                    color: #bbb;
+                    text-decoration: none;
+                    cursor: pointer;
+                  }
