@@ -1,4 +1,4 @@
-      // 画布大小
+// 画布大小
       const width = 1000,
         height = 1000
       const svg = d3.select('svg').attr('width', width).attr('height', height)
@@ -24,8 +24,8 @@
 
       // 设定 DE 数据的显示阈值（可调整）
       // const deThreshold = -20.0823 //Beta sub5
-      const deThreshold = -21.8978 //gamma sub1
-      // const deThreshold = -21.0341 //gamma sub5
+      // const deThreshold = -21.8978 //gamma sub1
+      const deThreshold = -21.0341 //gamma sub5
 
       // **角度计算**
       const segmentAngle = (2 * Math.PI) / numSegments // 每个时间段的总角度（9°）
@@ -64,7 +64,7 @@
 
       // 读取 EEG 数据并绘制雷达图
       d3.json(
-        'SEED-DV/single-channel/EEG_Feature/sub1_block1_PSD_2s_OZ_Gamma.json',
+        'SEED-DV/single-channel/EEG_Feature/sub5_block1_PSD_2s_OZ_Gamma.json',
       ).then((eegData) => {
         console.log('原始EEG数据:', eegData)
 
@@ -113,7 +113,7 @@
         const gradient = defs
           .append('radialGradient')
           .attr('id', 'eegGradient')
-          .attr('cx', '45%') // 确保渐变中心点在圆心
+          .attr('cx', '59%') // 确保渐变中心点在圆心
           .attr('cy', '45%')
           .attr('r', '100%') // 让渐变更集中在 EEG 数据区域内
 
@@ -176,7 +176,7 @@
           d3.json('SEED-DV/single-channel/OF_Processed/OF1.json'), //读取 光流 特征数据
           d3.json('SEED-DV/single-channel/RGB_Processed/rgb_mean_200.json'), //读取 RGB 特征数据
           d3.json(
-            'SEED-DV/single-channel/EEG_Feature/sub1_block1_DE_2s_OZ_Gamma.json',
+            'SEED-DV/single-channel/EEG_Feature/sub5_block1_DE_2s_OZ_Gamma.json',
           ), // 读取 DE 特征数据
         ]).then(([flowData, rgbData, deData]) => {
           if (
@@ -406,7 +406,13 @@
                 highlightArc.attr('visibility', 'hidden')
                 tooltip.style('visibility', 'hidden')
               })
-
+              .on('click', () => {
+                console.log('光流柱被点击，固定切换time1数据源');
+                
+                if (typeof window.switchHeatmapData === 'function') {
+                  window.switchHeatmapData('time1'); 
+                }
+              });
             // 绘制 RGB 圆点-------------------------------------------------------------------------------------
             const rgbX = centerX + Math.cos(angle) * rgbBaseRadius
             const rgbY = centerY + Math.sin(angle) * rgbBaseRadius
@@ -610,7 +616,8 @@
           wasPaused = false // **重置暂停标志**
           clockHand
             .transition()
-            .duration(10000) // **10s 运动**
+            // .duration(10000) // **10s 运动**
+            .duration(10000)
             .ease(d3.easeLinear)
             .attr(
               'x2',
@@ -633,7 +640,8 @@
             if (!isPaused) {
               clockHand
                 .transition()
-                .duration(10000) // **10s 运动**
+                // .duration(10000) // **10s 运动**
+                .duration(10000)
                 .ease(d3.easeLinear)
                 .attr(
                   'x2',

@@ -1,5 +1,5 @@
 // 方案一：从js目录向上回溯到data目录
-$.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
+$.getJSON('data/time196.json', function(data) {
 
 // 方案二：基于网站根目录的绝对路径（需本地服务器）
 // $.getJSON('/data/5bands_3_with_opacity.json', function(data) {
@@ -121,7 +121,7 @@ $.getJSON('data/5bands_3_with_opacity_converted.json', function(data) {
       'Frontal Poles': ['Fp1', 'Fpz', 'Fp2'],
       'Frontal Lobes': ['F7', 'F3', 'Fz', 'F4', 'F8'],
       'Temporal Lobes': ['T7', 'T8'],
-      'Central': ['C3', 'CZ', 'C4'],
+      'Central': ['C3', 'Cz', 'C4'],
       'Parietal Lobes': ['P7', 'P3', 'Pz', 'P4', 'P8'],
       'Occipital Lobes': ['O1', 'Oz', 'O2']
     };
@@ -157,3 +157,34 @@ document.querySelectorAll('.group-button').forEach(button => {
     }
   });
 });
+
+
+// 全局函数，用于切换数据源
+// 定义一个变量来存储当前的数据源路径
+let currentDataPath = 'data/time196.json';
+
+// 使用变量来加载数据
+$.getJSON(currentDataPath, function(data) {
+    console.log('成功加载新数据:', data);
+    var processedData = [];
+    data.forEach(function(item) {
+        processedData.push({
+            class: item.class,
+            channel: item.channel,
+            value: item.value,
+            opacity: item.opacity
+        });
+    });
+
+    console.log('chart 对象:', chart); // 输出 chart 对象，检查其状态
+    if (chart && typeof chart.source === 'function') {
+        chart.source(processedData);
+        chart.render();
+    } else {
+        console.error('chart 对象不包含 source 方法:', chart);
+    }
+}).fail(function(error) {
+    console.error('加载数据失败:', error);
+});
+
+    // ... existing code ...
